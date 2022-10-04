@@ -32,10 +32,10 @@ public class AccountOauthServiceImpl implements AccountOauthService, UserDetails
 
         AccountOauthDataModel accountOauthDataModel = oauthRepo.getAccountOauth(username);
         if(accountOauthDataModel == null){
-            log.error("Account not found in the database",username);
+//            log.error("Account not found in the database",username);
             throw new UsernameNotFoundException("Account not found in the database"+username);
         }else {
-            log.info("Account  found in the database",username);
+//            log.info("Account  found in the database",username);
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         accountOauthDataModel.getRoles().forEach(role -> {
