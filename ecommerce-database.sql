@@ -116,7 +116,7 @@ CREATE TABLE Account
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(20),
-    password VARCHAR(20),
+    password TEXT,
     email VARCHAR(255) unique,
     date_of_birth DATETIME DEFAULT NOW(),
     full_name VARCHAR(50),
