@@ -14,9 +14,9 @@ public class AccountOauthDataModel {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @Column(name = "user_name")
+    @Column(name = "username")
     private String userName;
-    @Column(name = "pass_word")
+    @Column(name = "password")
     private String passWord;
     @Column(name = "email")
     @Email
