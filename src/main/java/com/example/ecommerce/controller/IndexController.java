@@ -8,11 +8,14 @@ import com.example.ecommerce.model.AccountOauthDataModel;
 import com.example.ecommerce.service.AccountOauthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,12 +35,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class IndexController {
     @Autowired
     private AccountOauthService oauthService;
-    @RequestMapping("/user/index")
+
+    @RequestMapping(value = "/user/index", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
     public String index(){
         return "Nguyễn Hoàng Hải";
     }
 
-    @RequestMapping("/refresh-token")
+
+    @RequestMapping(value = "/refresh-token", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
     public void refershToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

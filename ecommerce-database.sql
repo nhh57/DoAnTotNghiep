@@ -195,4 +195,4 @@ INSERT INTO  Account (username,password,email,date_of_birth,full_name,phone) val
 
 INSERT INTO Roles (role_name) values('OWNER'),('CUSTOMER'),('CUSTOMER_VIP'),('EMPLOYEE');
 
-INSERT INTO RolesDetail (account_id,role_id) values(5,1),(2,2),(2,4);
+INSERT INTO RolesDetail (account_id,role_id) values(1,1),(2,2),(2,4);
