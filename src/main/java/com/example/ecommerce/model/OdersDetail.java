@@ -26,10 +26,10 @@ public class OdersDetail {
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id",insertable = false, updatable = false)
     private Orders ordersByOrderId;
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id",insertable = false, updatable = false)
     private Product productByProductId;
 
     public int getId() {
