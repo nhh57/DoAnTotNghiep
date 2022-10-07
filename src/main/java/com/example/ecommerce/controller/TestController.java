@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class TestController {
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(){
         return "Nguyen Hoang Hai";
     }
