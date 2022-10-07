@@ -14,6 +14,7 @@ public interface ProductDAO extends JpaRepository<Product,Integer> {
     List<Product> findByName(String productName);
     @Query("SELECT p FROM Product p WHERE p.price > ?1 and p.price <?2")
     List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
+
 //    @Query("SELECT p FROM Product p ORDER BY p.numberOfSale DESC LIMIT ?1")
 //    List<Product> findByBestSellingProducts(Integer numberOfProduct);
 

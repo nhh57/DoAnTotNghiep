@@ -1,6 +1,7 @@
 package com.example.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class Account extends BaseEntity implements Serializable {
     @Column(name = "password", nullable = true, length = -1)
     private String password;
     @Basic
+    @Email
     @Column(name = "email", nullable = true, length = 255)
     private String email;
     @Basic
