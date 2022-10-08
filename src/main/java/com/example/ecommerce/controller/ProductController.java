@@ -1,7 +1,8 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.model.Product;
-import com.example.ecommerce.repository.ProductDAO;
+import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +14,16 @@ import java.util.List;
 @RequestMapping("/api")
 public class ProductController {
     @Autowired
-    ProductDAO productDAO;
+    ProductService productDAO;
 
-    // Get all list product
+    // Get all list product exist
     @GetMapping("/product/getall")
     public ResponseEntity<List<Product>> getAll(){
+        return ResponseEntity.ok(productDAO.findProductExist());
+    }
+    // Get all list product
+    @GetMapping("/product/getalladmin")
+    public ResponseEntity<List<Product>> getAllAdmin(){
         return ResponseEntity.ok(productDAO.findAll());
     }
     // Find by name
@@ -31,11 +37,11 @@ public class ProductController {
         return ResponseEntity.ok(productDAO.findByPrice(minPrice, maxPrice));
     }
 
-//    // Find by best selling products
-//    @GetMapping("/product/find/numberofproduct")
-//    public ResponseEntity<List<Product>> get(@PathVariable("numberofproduct") Integer numberOfProduct) {
-//        return ResponseEntity.ok(productDAO.findByBestSellingProducts(numberOfProduct));
-//    }
+    // Find by best selling products
+    @GetMapping("/product/find/numberofproduct")
+    public ResponseEntity<List<Product>> get(@PathVariable("numberofproduct") Integer numberOfProduct) {
+        return ResponseEntity.ok(productDAO.findByBestSellingProducts(numberOfProduct));
+    }
 
     //Get one product
     @GetMapping("/product/getone/{id}")
@@ -57,7 +63,7 @@ public class ProductController {
     }
 
     // Update
-    @PutMapping("/product/update/{id}")
+    @PostMapping("/product/update/{id}")
     public ResponseEntity<Product> put(@PathVariable("id") Integer id, @RequestBody Product product) {
         if (!productDAO.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -67,9 +73,9 @@ public class ProductController {
     }
 
     //Delete
-    @DeleteMapping("/product/update/{id}")
+    @PostMapping("/product/delete/{id}")
     public ResponseEntity<Product> delete(@PathVariable("id") Integer id) {
-        Product product= new Product();
+        Product product= productDAO.findById(id).get();
         if (!productDAO.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
