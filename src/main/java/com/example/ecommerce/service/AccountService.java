@@ -27,7 +27,22 @@ public interface AccountService {
     /**
      * <p>findOne</p>
      * @param keySearch
-     * @return
      */
     List<Account> getOneAccount(String keySearch) throws Exception;
+
+    /**
+     * <p>editProfile</p>
+     * @param account
+     * @throws Exception
+     */
+    void editProfile(Account account) throws Exception;
+
+    /**
+     *
+     * @param id
+     * @throws Exception
+     */
+    Account findOne(Integer id) throws Exception;
+
+    void deleteAccount(Integer id) throws Exception;
 }
