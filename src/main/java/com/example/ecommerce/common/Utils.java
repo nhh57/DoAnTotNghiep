@@ -84,17 +84,6 @@ public class Utils {
         return result;
     }
 
-    public static String convertStringToDate(Date indate) {
-        String dateString = null;
-        SimpleDateFormat sdfr = new SimpleDateFormat("dd/MM/yyyy");
-
-        try {
-            dateString = sdfr.format(indate);
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        return dateString;
-    }
 
     public static Date convertStringToDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_INPUT_FORMAT);
@@ -162,5 +151,240 @@ public class Utils {
             slug = "";
         }
         return slug;
+    }
+
+    public static String getDateFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("dd/MM/yyyy").format(date));
+        }
+    }
+
+    public static String getMonthYearFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("MM/yyyy").format(date));
+        }
+    }
+
+    public static String getDayFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("dd").format(date));
+        }
+    }
+
+    public static String getMonthFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("MM").format(date));
+        }
+    }
+
+    public static String getDateToCompare(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("yyyy/MM/dd").format(date));
+        }
+    }
+
+    public static String getMonthToCompare(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("yyyy/MM").format(date));
+        }
+    }
+
+    public static String getDateFormatVNForTopicFirebase(Date date) {
+        if (date == null) {
+            date = new Date();
+            return (new SimpleDateFormat("ddMMyyyy").format(date));
+        } else {
+            return (new SimpleDateFormat("ddMMyyyy").format(date));
+        }
+    }
+
+    public static String getDatetimeFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date));
+        }
+    }
+
+    public static String getFullDateTimeWithMilisecondFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date));
+        }
+    }
+
+    public static String getHourMinuteSecond(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("HH:mm:ss").format(date));
+        }
+    }
+
+    public static String getFullDatetimeFormatVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date));
+        }
+
+    }
+
+    public static String getDatetimeString(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date));
+        }
+    }
+
+    public static String getDateString(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("yyyy-MM-dd").format(date));
+        }
+    }
+
+    public static int getHourOfDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static Date addDate(Date date, int totalDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, totalDate);
+        return calendar.getTime();
+    }
+
+    public static int getDateOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static int getWeekOfYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    public static int getDateOfMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static int getMonthOfYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    public static int getYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public static Date getMondayOfThisWeek() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    public static Date getFirstDateOfMonth(Date date) {
+        Calendar c = Calendar.getInstance(); // this takes current date
+        if (date != null) {
+            c.setTime(date);
+        }
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    public static Date getLastDateOfMonth(Date date) {
+        Calendar c = Calendar.getInstance(); // this takes current date
+        c.setTime(getFirstDateOfMonth(date));
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return c.getTime();
+    }
+
+    public static Date getFirstDateOfYear(Date date) {
+        Calendar c = Calendar.getInstance(); // this takes current date
+        if (date != null) {
+            c.setTime(date);
+        }
+
+        c.add(Calendar.YEAR, 1);
+        c.set(Calendar.DAY_OF_YEAR, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c.getTime();
+    }
+
+    public static Date gotoPreviousYear(Date date, int totalDate) {
+        Calendar c = Calendar.getInstance(); // this takes current date
+        if (date != null) {
+            c.setTime(date);
+        }
+
+        c.add(Calendar.YEAR, -totalDate);
+        c.set(Calendar.DAY_OF_YEAR, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c.getTime();
+    }
+
+    public static Date getLastDateOfYear(Date date) {
+        Calendar c = Calendar.getInstance(); // this takes current date
+        if (date != null) {
+            c.setTime(date);
+        }
+        c.set(Calendar.YEAR, c.get(Calendar.YEAR));
+        c.set(Calendar.MONTH, 11); // 11 = december
+        c.set(Calendar.DAY_OF_MONTH, 31); // new years eve
+
+        return c.getTime();
+    }
+
+    public static String convertStringToDate(Date indate) {
+        String dateString = null;
+        SimpleDateFormat sdfr = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            dateString = sdfr.format(indate);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return dateString;
     }
 }

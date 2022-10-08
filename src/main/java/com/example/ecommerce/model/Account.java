@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -12,32 +13,32 @@ public class Account extends BaseEntity implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     private int id;
-    @Basic
+    
     @Column(name = "username", nullable = true, length = 20)
     private String username;
-    @Basic
+    
     @Column(name = "password", nullable = true, length = -1)
     private String password;
-    @Basic
+   
     @Email
     @Column(name = "email", nullable = true, length = 255)
     private String email;
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_of_birth", nullable = true)
-    private Timestamp dateOfBirth;
-    @Basic
+    private Date dateOfBirth;
+    
     @Column(name = "full_name", nullable = true, length = 50)
     private String fullName;
-    @Basic
+    
     @Column(name = "phone", nullable = true, length = 20)
     private String phone;
-    @Basic
+    
     @Column(name = "ship_detail_id", nullable = true)
     private Integer shipDetailId;
-    @Basic
+    
     @Column(name = "cart_id", nullable = true)
     private Integer cartId;
-    @Basic
+    
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
     @ManyToOne
@@ -79,11 +80,11 @@ public class Account extends BaseEntity implements Serializable {
         this.email = email;
     }
 
-    public Timestamp getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
