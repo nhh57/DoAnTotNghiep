@@ -1,19 +1,18 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.model.Brand;
-import com.example.ecommerce.repository.BrandDAO;
+import com.example.ecommerce.repository.BrandRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class BrandController {
     @Autowired
-    BrandDAO brandDAO;
+    BrandRepo brandDAO;
 
     // Get all list brand
     @GetMapping("/brand/getall")

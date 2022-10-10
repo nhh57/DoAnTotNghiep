@@ -1,46 +1,47 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.helper.ProductHelper;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
+    ProductHelper productHelper=new ProductHelper();
+    @Override
+    public List<ProductDataModel> findAll() {
+        return productHelper.getListProductDataModel(productRepo.findAll());
+    }
+
 
     @Override
-    public List<Product> findAll() {
-        return productRepo.findAll();
+    public List<ProductDataModel> findProductExist() {
+        return productHelper.getListProductDataModel(productRepo.findProductExist());
     }
 
     @Override
-    public List<Product> findProductExist() {
-        return productRepo.findProductExist();
+    public ProductDataModel findById(Integer id) {
+        return productHelper.getProductDataModel(productRepo.findById(id).get());
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
-        return productRepo.findById(id);
+    public List<ProductDataModel> findByName(String name) {
+        return productHelper.getListProductDataModel(productRepo.findByName(name));
     }
 
     @Override
-    public List<Product> findByName(String name) {
-        return productRepo.findByName(name);
-    }
-
-    @Override
-    public List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice) {
-        return productRepo.findByPrice(minPrice,maxPrice);
+    public List<ProductDataModel> findByPrice(BigDecimal minPrice, BigDecimal maxPrice) {
+        return productHelper.getListProductDataModel(productRepo.findByPrice(minPrice,maxPrice));
     }
 
     @Override
@@ -49,8 +50,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product product) {
-        return productRepo.save(product);
+    public Product save(ProductDataModel productDataModel) {
+        return productRepo.save(productHelper.getProduct(productDataModel));
     }
 
     @Override

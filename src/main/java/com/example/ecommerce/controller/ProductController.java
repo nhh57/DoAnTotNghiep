@@ -1,7 +1,7 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.model.Product;
-import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.model.data.ProductDataModel;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +18,22 @@ public class ProductController {
 
     // Get all list product exist
     @GetMapping("/product/getall")
-    public ResponseEntity<List<Product>> getAll(){
+    public ResponseEntity<List<ProductDataModel>> getAll(){
         return ResponseEntity.ok(productDAO.findProductExist());
     }
     // Get all list product
     @GetMapping("/product/getalladmin")
-    public ResponseEntity<List<Product>> getAllAdmin(){
+    public ResponseEntity<List<ProductDataModel>> getAllAdmin(){
         return ResponseEntity.ok(productDAO.findAll());
     }
     // Find by name
     @GetMapping("/product/find/{name}")
-    public ResponseEntity<List<Product>> get(@PathVariable("name") String name) {
+    public ResponseEntity<List<ProductDataModel>> get(@PathVariable("name") String name) {
         return ResponseEntity.ok(productDAO.findByName(name));
     }
     // Find by price
     @GetMapping("/product/find/{min}/{max}")
-    public ResponseEntity<List<Product>> get(@PathVariable("min") BigDecimal minPrice, @PathVariable("max") BigDecimal maxPrice) {
+    public ResponseEntity<List<ProductDataModel>> get(@PathVariable("min") BigDecimal minPrice, @PathVariable("max") BigDecimal maxPrice) {
         return ResponseEntity.ok(productDAO.findByPrice(minPrice, maxPrice));
     }
 
@@ -45,42 +45,42 @@ public class ProductController {
 
     //Get one product
     @GetMapping("/product/getone/{id}")
-    public ResponseEntity<Product> getOne(@PathVariable("id") Integer id) {
+    public ResponseEntity<ProductDataModel> getOne(@PathVariable("id") Integer id) {
         if (!productDAO.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(productDAO.findById(id).get());
+        return ResponseEntity.ok(productDAO.findById(id));
     }
 
     // Insert
     @PostMapping("/product/insert")
-    public ResponseEntity<Product> post(@RequestBody Product product) {
-        if (productDAO.existsById(product.getId())) {
+    public ResponseEntity<ProductDataModel> post(@RequestBody ProductDataModel productDataModel) {
+        if (productDAO.existsById(productDataModel.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        productDAO.save(product);
-        return ResponseEntity.ok(product);
+        productDAO.save(productDataModel);
+        return ResponseEntity.ok(productDataModel);
     }
 
     // Update
     @PostMapping("/product/update/{id}")
-    public ResponseEntity<Product> put(@PathVariable("id") Integer id, @RequestBody Product product) {
+    public ResponseEntity<ProductDataModel> put(@PathVariable("id") Integer id, @RequestBody ProductDataModel productDataModel) {
         if (!productDAO.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        productDAO.save(product);
-        return ResponseEntity.ok(product);
+        productDAO.save(productDataModel);
+        return ResponseEntity.ok(productDataModel);
     }
 
     //Delete
     @PostMapping("/product/delete/{id}")
-    public ResponseEntity<Product> delete(@PathVariable("id") Integer id) {
-        Product product= productDAO.findById(id).get();
+    public ResponseEntity<ProductDataModel> delete(@PathVariable("id") Integer id) {
+        ProductDataModel productDataModel= productDAO.findById(id);
         if (!productDAO.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        product.setDeleted(true);
-        productDAO.save(product);
-        return ResponseEntity.ok(product);
+        productDataModel.setIsDeleted(true);
+        productDAO.save(productDataModel);
+        return ResponseEntity.ok(productDataModel);
     }
 }
