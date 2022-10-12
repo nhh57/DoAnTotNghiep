@@ -1,6 +1,6 @@
 package com.example.ecommerce.jwt;
 
-import com.example.ecommerce.model.AccountOauthDataModel;
+import com.example.ecommerce.model.data.AccountOauthDataModel;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

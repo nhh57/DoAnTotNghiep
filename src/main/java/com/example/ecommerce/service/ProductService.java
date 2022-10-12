@@ -2,6 +2,7 @@ package com.example.ecommerce.service;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.data.ProductDataModelCreate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,4 +16,7 @@ public interface ProductService {
     boolean existsById(Integer id);
     Product save(ProductDataModel productDataModel);
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
+    Product findByProductName(String productName) throws Exception;
+
+    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
 }

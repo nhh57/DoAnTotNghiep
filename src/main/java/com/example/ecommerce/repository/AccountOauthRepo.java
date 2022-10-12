@@ -1,5 +1,5 @@
 package com.example.ecommerce.repository;
-import com.example.ecommerce.model.AccountOauthDataModel;
+import com.example.ecommerce.model.data.AccountOauthDataModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -2,7 +2,6 @@ package com.example.ecommerce.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 public class Cart extends BaseEntity implements Serializable {

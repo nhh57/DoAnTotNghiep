@@ -12,5 +12,10 @@ import java.util.List;
 @Service
 @Transactional
 public class CategoriesServiceImpl implements CategoriesService {
-
+    @Autowired
+    private CategoriesRepo categoriesRepo;
+    @Override
+    public Categories findOne(int id) throws Exception {
+        return categoriesRepo.findById(id);
+    }
 }
