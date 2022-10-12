@@ -1,10 +1,14 @@
 package com.example.ecommerce.repository;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.data.AccountOauthDataModel;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +26,5 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
     List<Product> findProductExist();
 
-
+    Product findByProductName(String productName);
 }

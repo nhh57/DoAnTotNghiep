@@ -1,7 +1,7 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.jwt.CustomUser;
-import com.example.ecommerce.model.AccountOauthDataModel;
+import com.example.ecommerce.model.data.AccountOauthDataModel;
 import com.example.ecommerce.repository.AccountOauthRepo;
 import com.example.ecommerce.service.AccountOauthService;
 import lombok.extern.slf4j.Slf4j;

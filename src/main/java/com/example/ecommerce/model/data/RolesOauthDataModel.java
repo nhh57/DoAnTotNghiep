@@ -1,4 +1,4 @@
-package com.example.ecommerce.model;
+package com.example.ecommerce.model.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
