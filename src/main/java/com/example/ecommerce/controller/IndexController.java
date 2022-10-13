@@ -30,7 +30,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class IndexController {
     @Autowired
     private AccountOauthService oauthService;
-
+    @RequestMapping(value = "/index", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+    public String index(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return "Nguyễn Hoàng Hải";
+    }
     @RequestMapping(value = "/refresh-token", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
     public void refershToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
