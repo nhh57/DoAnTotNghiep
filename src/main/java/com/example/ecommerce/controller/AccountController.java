@@ -51,7 +51,6 @@ public class AccountController {
             response.setStatus(HttpStatus.BAD_REQUEST);
             response.setMessageError("Số điện thoại đã tồn tại");
             return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_REQUEST);
-
         }
         listAccount = accountService.getOneAccount(request.getEmail());
          if(listAccount.size() > 0){

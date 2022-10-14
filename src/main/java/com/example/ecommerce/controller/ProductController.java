@@ -4,7 +4,10 @@ import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.data.ProductDataModelCreate;
 import com.example.ecommerce.model.helper.ProductHelper;
+import com.example.ecommerce.request.ProductRequest;
+import com.example.ecommerce.response.BaseResponse;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,28 +72,28 @@ public class ProductController {
     }
 
 
-//    @RequestMapping(value = "/product/create-product", method = RequestMethod.POST, produces = {
-//            MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<BaseResponse> createProduct(@Valid @RequestBody ProductRequest request) throws Exception {
-//        BaseResponse response = new BaseResponse();
-//            Product product =  productService.findByProductName(request.getProductName());
-//            if(product != null){
-//                response.setStatus(HttpStatus.BAD_REQUEST);
-//                response.setMessageError("Tên sản phẩm đã tồn tại");
-//                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_REQUEST);
-//            }
-//        ProductDataModelCreate productDataModel = new ProductDataModelCreate();
-//            productDataModel.setProductName(request.getProductName());
-//            productDataModel.setPrice(request.getPrice());
-//            productDataModel.setDiscount(request.getDiscount());
-//            productDataModel.setNote(request.getNote());
-//            productDataModel.setImages(request.getImages());
-//            productDataModel.setNumberOfSale(request.getNumberOfSale());
-//            productDataModel.setCategory(Utils.convertObjectToJsonString(request.getCategory()));
-//            productDataModel.setBrand(Utils.convertObjectToJsonString(request.getBrand()));
-//        productService.createProductDataModel(productDataModel);
-//        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/product/create-product", method = RequestMethod.POST, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> createProduct(@Valid @RequestBody ProductRequest request) throws Exception {
+        BaseResponse response = new BaseResponse();
+            Product product =  productService.findByProductName(request.getProductName());
+            if(product != null){
+                response.setStatus(HttpStatus.BAD_REQUEST);
+                response.setMessageError("Tên sản phẩm đã tồn tại");
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_REQUEST);
+            }
+        ProductDataModelCreate productDataModel = new ProductDataModelCreate();
+            productDataModel.setProductName(request.getProductName());
+            productDataModel.setPrice(request.getPrice());
+            productDataModel.setDiscount(request.getDiscount());
+            productDataModel.setNote(request.getNote());
+            productDataModel.setImages(request.getImages());
+            productDataModel.setNumberOfSale(request.getNumberOfSale());
+            productDataModel.setCategory(Utils.convertObjectToJsonString(request.getCategory()));
+            productDataModel.setBrand(Utils.convertObjectToJsonString(request.getBrand()));
+        productService.createProductDataModel(productDataModel);
+        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
 
     // Update
     @PostMapping("/product/update/{id}")

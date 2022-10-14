@@ -2,7 +2,9 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.data.ProductDataModelCreate;
 import com.example.ecommerce.model.helper.ProductHelper;
+import com.example.ecommerce.repository.ProductDataModelRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private ProductDataModelRepo productDataModelRepo;
 
     ProductHelper productHelper = new ProductHelper();
 
@@ -71,16 +75,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findByBestSellingProducts(numberOfProduct);
     }
 
-//    @Override
-//    public Product findByProductName(String productName) throws Exception {
-//        return productRepo.findByProductName(productName);
-//    }
+    @Override
+    public Product findByProductName(String productName) throws Exception {
+        return productRepo.findByProductName(productName);
+    }
 
-//    @Override
-//    public void createProductDataModel(ProductDataModelCreate product) {
-//        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
-//                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
-//    }
+    @Override
+    public void createProductDataModel(ProductDataModelCreate product) {
+        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
+                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
+    }
 
 
 }

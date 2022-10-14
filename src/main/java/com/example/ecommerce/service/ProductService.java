@@ -15,9 +15,10 @@ public interface ProductService {
     List<ProductDataModel> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
     boolean existsById(Integer id);
     ProductDataModel save(ProductDataModel productDataModel);
+
     //    ProductDataModel insert(ProductDataModel productDataModel);
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
-//    Product findByProductName(String productName) throws Exception;
-//
-//    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
+    Product findByProductName(String productName) throws Exception;
+
+    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
 }

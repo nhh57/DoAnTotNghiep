@@ -38,11 +38,17 @@ public interface AccountService {
     void editProfile(Account account) throws Exception;
 
     /**
-     *
+     *<p>findOne</p>
      * @param id
      * @throws Exception
      */
     Account findOne(Integer id) throws Exception;
 
+    /**
+     * <p>deleteAccount</p>
+     * @param id
+     * @throws Exception
+     */
     void deleteAccount(Integer id) throws Exception;
+
 }

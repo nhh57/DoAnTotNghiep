@@ -30,8 +30,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount(Account account) throws Exception {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
-        account.setDeleted(false);
-        accountRepo.save(account);
+        accountRepo.createAccount(account.getUsername(),account.getPassword(),account.getEmail(),account.getDateOfBirth(),account.getFullName(),account.getPhone());
     }
 
     @Override
