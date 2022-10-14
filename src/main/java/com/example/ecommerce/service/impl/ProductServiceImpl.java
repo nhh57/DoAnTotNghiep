@@ -2,9 +2,7 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
-import com.example.ecommerce.model.data.ProductDataModelCreate;
 import com.example.ecommerce.model.helper.ProductHelper;
-import com.example.ecommerce.repository.ProductDataModelRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
 
-    @Autowired
-    private ProductDataModelRepo productDataModelRepo;
 
     ProductHelper productHelper = new ProductHelper();
 
@@ -57,25 +53,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(ProductDataModel productDataModel) {
-        return productRepo.save(productHelper.getProduct(productDataModel));
+    public ProductDataModel save(ProductDataModel productDataModel) {
+        Product productSaved=productRepo.save(productHelper.getProduct(productDataModel));
+        return productHelper.getProductDataModel(productSaved);
     }
+
+//    @Override
+//    public ProductDataModel insert(ProductDataModel productDataModel) {
+//        return productHelper.getProductDataModel(productRepo.insert(productDataModel.getProductName(), productDataModel.getPrice(),
+//                productDataModel.getDiscount(),productDataModel.getNote(), productDataModel.getImages(),
+//                productDataModel.getNumberOfSale(),productDataModel.getCategoryId(), productDataModel.getBrandId(), false));
+//    }
+
 
     @Override
     public List<Product> findByBestSellingProducts(Integer numberOfProduct) {
         return productRepo.findByBestSellingProducts(numberOfProduct);
     }
 
-    @Override
-    public Product findByProductName(String productName) throws Exception {
-        return productRepo.findByProductName(productName);
-    }
+//    @Override
+//    public Product findByProductName(String productName) throws Exception {
+//        return productRepo.findByProductName(productName);
+//    }
 
-    @Override
-    public void createProductDataModel(ProductDataModelCreate product) {
-        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
-                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
-    }
+//    @Override
+//    public void createProductDataModel(ProductDataModelCreate product) {
+//        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
+//                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
+//    }
 
 
 }
