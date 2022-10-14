@@ -23,4 +23,6 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
     List<Product> findProductExist();
+
+    Product findByProductName(String productName);
 }

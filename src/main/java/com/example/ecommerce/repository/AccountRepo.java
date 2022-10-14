@@ -4,8 +4,10 @@ import com.example.ecommerce.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -45,4 +47,14 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE Account a SET a.is_deleted = 1 WHERE a.id = ?1", nativeQuery = true)
     void deleteAccount(Integer id);
+
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "{CALL sp_c_create_account(:userName, :passWord, :Email, :dateOfBirth, :fullName, :Phone)}", nativeQuery = true)
+    void createAccount(@Param("userName") String username,
+                       @Param("passWord") String password,
+                       @Param("Email") String Email,
+                       @Param("dateOfBirth") Date dateOfBirth,
+                       @Param("fullName") String fullName,
+                       @Param("Phone") String Phone);
 }
