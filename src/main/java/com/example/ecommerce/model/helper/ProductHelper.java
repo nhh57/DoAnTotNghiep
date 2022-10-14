@@ -5,6 +5,9 @@ import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.BrandDataModel;
 import com.example.ecommerce.model.data.CategoriesDataModel;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.repository.BrandRepo;
+import com.example.ecommerce.repository.CategoriesRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,8 +27,6 @@ public class ProductHelper {
         product.setNumberOfSale(productDataModel.getNumberOfSale());
         product.setBrandId(productDataModel.getBrandId());
         product.setCategoryId(productDataModel.getCategoryId());
-        product.setCategoriesByCategoryId(categoriesHelper.getCategories(productDataModel.getCategories()));
-        product.setBrandByBrandId(brandHelper.getBrand(productDataModel.getBrand()));
         product.setDeleted(productDataModel.getIsDeleted());
         return product;
     }
@@ -41,8 +42,12 @@ public class ProductHelper {
         productDataModel.setNumberOfSale(product.getNumberOfSale());
         productDataModel.setBrandId(product.getBrandId());
         productDataModel.setCategoryId(product.getCategoryId());
-        productDataModel.setCategories(categoriesHelper.getCategoriesDataModel(product.getCategoriesByCategoryId()));
-        productDataModel.setBrand(brandHelper.getBrandDataModel(product.getBrandByBrandId()));
+        if(product.getCategoriesByCategoryId()!=null){
+            productDataModel.setCategories(categoriesHelper.getCategoriesDataModel(product.getCategoriesByCategoryId()));
+        }
+        if(product.getBrandByBrandId()!=null){
+            productDataModel.setBrand(brandHelper.getBrandDataModel(product.getBrandByBrandId()));
+        }
         productDataModel.setIsDeleted(product.getDeleted());
         return productDataModel;
     }

@@ -2,6 +2,7 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.helper.ProductHelper;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +59,7 @@ public class ProductController {
         if (productDAO.existsById(productDataModel.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        productDAO.save(productDataModel);
-        return ResponseEntity.ok(productDataModel);
+        return ResponseEntity.ok(productDAO.save(productDataModel));
     }
 
     // Update

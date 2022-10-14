@@ -50,9 +50,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(ProductDataModel productDataModel) {
-        return productRepo.save(productHelper.getProduct(productDataModel));
+    public ProductDataModel save(ProductDataModel productDataModel) {
+        Product productSaved=productRepo.save(productHelper.getProduct(productDataModel));
+        return productHelper.getProductDataModel(productSaved);
     }
+
+//    @Override
+//    public ProductDataModel insert(ProductDataModel productDataModel) {
+//        return productHelper.getProductDataModel(productRepo.insert(productDataModel.getProductName(), productDataModel.getPrice(),
+//                productDataModel.getDiscount(),productDataModel.getNote(), productDataModel.getImages(),
+//                productDataModel.getNumberOfSale(),productDataModel.getCategoryId(), productDataModel.getBrandId(), false));
+//    }
+
 
     @Override
     public List<Product> findByBestSellingProducts(Integer numberOfProduct) {

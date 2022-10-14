@@ -13,6 +13,7 @@ public interface ProductService {
     List<ProductDataModel> findByName(String name);
     List<ProductDataModel> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
     boolean existsById(Integer id);
-    Product save(ProductDataModel productDataModel);
+    ProductDataModel save(ProductDataModel productDataModel);
+//    ProductDataModel insert(ProductDataModel productDataModel);
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
 }
