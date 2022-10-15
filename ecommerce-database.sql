@@ -198,7 +198,6 @@ INSERT INTO  Account (username,password,email,date_of_birth,full_name,phone) val
 ('thuatlh','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','lehoangthuat@gmail.com','2002-11-02','Lê Hoàng Thuật','0346135366');
 
 
-select * from rolesdetail r 
 INSERT INTO Roles (role_name) values('OWNER'),('CUSTOMER'),('CUSTOMER_VIP'),('EMPLOYEE');
 
 INSERT INTO RolesDetail (account_id,role_id) values(1,1),(2,2),(2,4);
@@ -238,6 +237,9 @@ BEGIN
 
 	DROP TEMPORARY TABLE IF EXISTS tbl_roles;
 END
+
+
+
 
 insert into brand(brand_name,is_deleted)
 values (N'Casio',0),

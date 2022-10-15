@@ -11,11 +11,4 @@ public class CategoriesHelper {
         categoriesDataModel.setIsDeleted(categories.getDeleted());
         return categoriesDataModel;
     }
-    public Categories getCategories(CategoriesDataModel categoriesDataModel){
-        Categories categories=new Categories();
-        categories.setId(categoriesDataModel.getId());
-        categories.setCategoryName(categoriesDataModel.getCategoryName());
-        categories.setDeleted(categories.getDeleted());
-        return categories;
-    }
 }

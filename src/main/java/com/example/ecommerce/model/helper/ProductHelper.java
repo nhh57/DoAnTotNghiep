@@ -24,8 +24,6 @@ public class ProductHelper {
         product.setNumberOfSale(productDataModel.getNumberOfSale());
         product.setBrandId(productDataModel.getBrandId());
         product.setCategoryId(productDataModel.getCategoryId());
-        product.setCategoriesByCategoryId(categoriesHelper.getCategories(productDataModel.getCategories()));
-        product.setBrandByBrandId(brandHelper.getBrand(productDataModel.getBrand()));
         product.setDeleted(productDataModel.getIsDeleted());
         return product;
     }
@@ -41,9 +39,14 @@ public class ProductHelper {
         productDataModel.setNumberOfSale(product.getNumberOfSale());
         productDataModel.setBrandId(product.getBrandId());
         productDataModel.setCategoryId(product.getCategoryId());
-        productDataModel.setCategories(categoriesHelper.getCategoriesDataModel(product.getCategoriesByCategoryId()));
-        productDataModel.setBrand(brandHelper.getBrandDataModel(product.getBrandByBrandId()));
-        productDataModel.setIsDeleted(product.getDeleted());
+        if(product.getCategoriesByCategoryId()!=null){
+            productDataModel.setCategories(categoriesHelper.getCategoriesDataModel(product.getCategoriesByCategoryId()));
+        }
+        if(product.getBrandByBrandId()!=null){
+            productDataModel.setBrand(brandHelper.getBrandDataModel(product.getBrandByBrandId()));
+        }
+
+        productDataModel.setIsDeleted(product.getDeleted()==null?false:product.getDeleted());
         return productDataModel;
     }
     public List<ProductDataModel> getListProductDataModel(List<Product> listProduct){
