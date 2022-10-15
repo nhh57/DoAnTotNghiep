@@ -1,11 +1,9 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.common.Utils;
-import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
 import com.example.ecommerce.model.data.ProductDataModelCreate;
-import com.example.ecommerce.model.helper.ProductHelper;
 import com.example.ecommerce.request.ProductRequest;
 import com.example.ecommerce.response.BaseResponse;
 import com.example.ecommerce.service.ProductService;
