@@ -75,16 +75,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findByBestSellingProducts(numberOfProduct);
     }
 
-    @Override
-    public Product findByProductName(String productName) throws Exception {
-        return productRepo.findByProductName(productName);
-    }
-
-    @Override
-    public void createProductDataModel(ProductDataModelCreate product) {
-        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
-                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
-    }
+//    @Override
+//    public Product findByProductName(String productName) throws Exception {
+//        return productRepo.findByProductName(productName);
+//    }
+//
+//    @Override
+//    public void createProductDataModel(ProductDataModelCreate product) {
+//        productDataModelRepo.createProduct(product.getProductName(), product.getPrice(), product.getDiscount(),
+//                product.getNote(), product.getImages(), product.getNumberOfSale(), product.getCategory(), product.getBrand());
+//    }
 
 
 }

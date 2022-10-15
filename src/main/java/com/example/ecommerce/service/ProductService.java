@@ -18,7 +18,7 @@ public interface ProductService {
 
     //    ProductDataModel insert(ProductDataModel productDataModel);
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
-    Product findByProductName(String productName) throws Exception;
-
-    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
+//    Product findByProductName(String productName) throws Exception;
+//
+//    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
 }

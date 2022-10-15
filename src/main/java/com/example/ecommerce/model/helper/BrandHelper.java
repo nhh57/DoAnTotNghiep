@@ -11,11 +11,4 @@ public class BrandHelper {
         brandDataModel.setIsDeleted(brand.getDeleted());
         return brandDataModel;
     }
-    public Brand getBrand(BrandDataModel brandDataModel){
-        Brand brand=new Brand();
-        brand.setId(brandDataModel.getId());
-        brand.setBrandName(brandDataModel.getBrandName());
-        brand.setDeleted(brand.getDeleted());
-        return brand;
-    }
 }
