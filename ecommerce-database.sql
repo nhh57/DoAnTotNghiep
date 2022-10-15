@@ -1,3 +1,7 @@
+DROP DATABASE WatchShop
+
+create DATABASE WatchShop
+use WatchShop
 -- Danh mục sản phẩm (Điện thoại, phụ kiện)
 CREATE TABLE Categories
 (
@@ -193,6 +197,68 @@ INSERT INTO  Account (username,password,email,date_of_birth,full_name,phone) val
 ('hainh','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','nguyenhoanghai0507@gmail.com','2002-07-05','Nguyễn Hoàng Hải','0346135365'),
 ('thuatlh','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','lehoangthuat@gmail.com','2002-11-02','Lê Hoàng Thuật','0346135366');
 
+
+select * from rolesdetail r 
 INSERT INTO Roles (role_name) values('OWNER'),('CUSTOMER'),('CUSTOMER_VIP'),('EMPLOYEE');
 
 INSERT INTO RolesDetail (account_id,role_id) values(1,1),(2,2),(2,4);
+
+CREATE PROCEDURE WatchShop.sp_g_list_user_roles(
+	IN userName VARCHAR(50)
+)
+    READS SQL DATA
+BEGIN
+	
+	DROP TEMPORARY TABLE IF EXISTS tbl_roles;
+	CREATE TEMPORARY TABLE tbl_roles AS (
+		SELECT 	a.id AS account_id,
+				JSON_UNQUOTE(CONCAT('[',GROUP_CONCAT(
+					JSON_OBJECT(
+					'name', r.role_name,
+					'id',r.id 
+		 			)SEPARATOR ','),']')) AS roles
+		FROM 	Roles r
+				LEFT JOIN RolesDetail rd ON r.id = rd.role_id 
+				LEFT JOIN Account a ON a.id = rd.account_id 
+		WHERE 	a.username = userName
+		GROUP BY a.id 
+	);
+	
+	
+	SELECT 	a.id,
+			a.username ,
+			a.password ,
+			a.email ,
+			a.full_name ,
+			a.phone ,
+			tr.roles
+	FROM 	Account a
+			LEFT JOIN tbl_roles tr ON a.id = tr.account_id
+	WHERE 	a.username = userName;
+
+	DROP TEMPORARY TABLE IF EXISTS tbl_roles;
+END
+
+insert into brand(brand_name,is_deleted)
+values (N'Casio',0),
+(N'Orient',0),
+(N'Citizen',0),
+(N'Movado',0),
+(N'Fossil',0)
+
+insert into categories(category_name,is_deleted)
+values (N'Nam',0),
+(N'Nữ',0),
+(N'Cặp đôi',0),
+(N'Trẻ em',0)
+
+insert into product(product_name,price,discount,images,note,number_of_sale,category_id,brand_id,is_deleted)
+values (N'Casio World Time AE1200WHD',2000000,10,'none.png',
+N'Đồng hồ nam Casio AE1200WHD có mặt đồng hồ vuông to với phong cách thể thao, mặt số điện tử với những tính năng hiện đại tiện dụng, kết hợp với dây đeo bằng kim loại đem lại vẻ mạnh mẽ cá tính dành cho phái nam.',
+20,1,1,0),
+(N'Orient ABC356',3000000,15,'none.png',
+N'Đồng hồ nam Orient, mặt số điện tử với những tính năng hiện đại tiện dụng, kết hợp với dây đeo bằng kim loại đem lại vẻ mạnh mẽ cá tính dành cho phái nam.',
+20,1,2,0),
+(N'Citizen HM456',4000000,10,'none.png',
+N'Đồng hồ nữ Citizen có mặt đồng hồ vuông to với phong cách thể thao, mặt số điện tử với những tính năng hiện đại tiện dụng, kết hợp với dây đeo bằng kim loại đem lại vẻ mạnh mẽ cá tính dành cho phái nam.',
+20,2,3,0)
