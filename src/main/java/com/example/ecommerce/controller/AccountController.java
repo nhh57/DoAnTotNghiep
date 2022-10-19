@@ -223,6 +223,7 @@ public class AccountController {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
                 .sign(algorithm);
+        System.out.println("Nguyễn Hoàng Hải");
         response.setData(access_token);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
