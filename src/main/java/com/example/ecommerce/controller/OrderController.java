@@ -22,7 +22,7 @@ public class OrderController {
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> createAccount(@Valid @RequestBody AccountRequest request) throws Exception {
-        BaseResponse response = new BaseResponse();
+        BaseResponse response = new BaseResponse(); 
 
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
