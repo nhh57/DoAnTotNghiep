@@ -1,7 +1,6 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.common.Utils;
-import com.example.ecommerce.model.Account;
+
 import com.example.ecommerce.request.AccountRequest;
 import com.example.ecommerce.response.BaseResponse;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
