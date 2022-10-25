@@ -25,7 +25,7 @@ public class CartDetail extends BaseEntity implements Serializable {
     private BigDecimal price;
     @Basic
     @Column(name = "is_deleted", nullable = true)
-    private Byte isDeleted;
+    private Boolean isDeleted;
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Cart cartByCartId;
@@ -73,14 +73,14 @@ public class CartDetail extends BaseEntity implements Serializable {
         this.price = price;
     }
 
-    public Byte getIsDeleted() {
+
+    public Boolean getDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
-
 
     public Cart getCartByCartId() {
         return cartByCartId;

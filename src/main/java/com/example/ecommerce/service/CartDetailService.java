@@ -2,7 +2,9 @@ package com.example.ecommerce.service;
 
 import com.example.ecommerce.model.data.CartDetailDataModel;
 
+import java.util.List;
+
 public interface CartDetailService {
-    CartDetailDataModel getCartDetailById(Integer cartId);
-    CartDetailDataModel save();
+    List<CartDetailDataModel> getCartDetailByCartId(Integer cartId);
+    CartDetailDataModel save(CartDetailDataModel cartDetailDataModel);
 }
