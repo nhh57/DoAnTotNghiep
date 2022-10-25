@@ -1,18 +1,39 @@
 package com.example.ecommerce.model.data;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import java.math.BigDecimal;
 
-public class CartDetailDataModel {
-    private ProductDataModel product;
-    private Integer amount;
-    private BigDecimal moneyOfAProduct;
 
-    public ProductDataModel getProduct() {
-        return product;
+public class CartDetailDataModel {
+    private int id;
+    private Integer cartId;
+    private Integer productId;
+    private Integer amount;
+    private BigDecimal price;
+
+    public int getId() {
+        return id;
     }
 
-    public void setProduct(ProductDataModel product) {
-        this.product = product;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getAmount() {
@@ -23,12 +44,11 @@ public class CartDetailDataModel {
         this.amount = amount;
     }
 
-    public BigDecimal getMoneyOfAProduct() {
-        return moneyOfAProduct;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setMoneyOfAProduct() {
-        double price = this.product.getPrice().doubleValue();
-        this.moneyOfAProduct = new BigDecimal(price*this.amount);
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
