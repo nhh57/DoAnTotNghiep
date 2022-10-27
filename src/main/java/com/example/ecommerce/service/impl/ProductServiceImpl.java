@@ -2,9 +2,7 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
-import com.example.ecommerce.model.data.ProductDataModelCreate;
 import com.example.ecommerce.model.helper.ProductHelper;
-import com.example.ecommerce.repository.ProductDataModelRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
 
-    @Autowired
-    private ProductDataModelRepo productDataModelRepo;
+
 
     ProductHelper productHelper = new ProductHelper();
 

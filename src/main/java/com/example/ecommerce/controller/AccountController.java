@@ -5,7 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.ecommerce.common.Utils;
-import com.example.ecommerce.jwt.CustomUser;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.data.AccountOauthDataModel;
 import com.example.ecommerce.request.AccountLoginRequest;
@@ -22,13 +21,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +58,13 @@ public class AccountController {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-
+    /**
+     * <p>getAllAccount</p>
+     * @param keySearch
+     * @param isDeleted
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/get-all-account", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getAllAccount(
@@ -76,6 +77,12 @@ public class AccountController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
 
+    /**
+     * <p>createAccount</p>
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/create-account", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> createAccount(@Valid @RequestBody AccountRequest request) throws Exception {
@@ -110,6 +117,13 @@ public class AccountController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
 
+    /**
+     * <p>editProfile</p>
+     * @param id
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/edit-profile/{id}", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> editProfile(@PathVariable("id") int id,
@@ -145,6 +159,12 @@ public class AccountController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
 
+    /**
+     * <p>deleteAccount</p>
+     * @param id
+     * @return response
+     * @throws Exception
+     */
     @RequestMapping(value = "/delete-account/{id}", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> deleteAccount(@PathVariable("id") int id) throws Exception {
@@ -159,6 +179,12 @@ public class AccountController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
 
+    /**
+     * <p>refershToken</p>
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/refresh-token", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void refershToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -195,37 +221,26 @@ public class AccountController {
         }
     }
 
+    /**
+     * <p>accountLogin</p>
+     * @param request
+     * @return response
+     * @throws Exception
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> accountLogin(@RequestBody AccountLoginRequest request) throws Exception {
+    public ResponseEntity<BaseResponse> accountLogin(@Valid @RequestBody AccountLoginRequest request) throws Exception {
         BaseResponse response = new BaseResponse();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(request.getUsername()); // thêm store
+        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(request.getUsername()); // sửa store
         String access_token = JWT.create()
                 .withSubject(accountOauthDataModel.getUserName())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60* 60*1000))
                 .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
                 .sign(algorithm);
-        response.setData(access_token);
+        Map<String,String> tokens = new HashMap<>();
+        tokens.put("access_token",access_token);
+        response.setData(tokens);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
-
-
-//    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {
-//            MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<BaseResponse> accountLogin(@RequestParam(name = "username", required = false, defaultValue = "") String username,
-//                                                     @RequestParam(name = "password", required = false, defaultValue = "") String password) throws Exception {
-//        BaseResponse response = new BaseResponse();
-//        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-//        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(username); // thêm store
-//        String access_token = JWT.create()
-//                .withSubject(accountOauthDataModel.getUserName())
-//                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
-//                .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
-//                .sign(algorithm);
-//        System.out.println("Nguyễn Hoàng Hải");
-//        response.setData(access_token);
-//        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
-//    }
-
 }
