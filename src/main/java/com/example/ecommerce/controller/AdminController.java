@@ -33,10 +33,10 @@ public class AdminController {
             @RequestParam(name = "size", required = false, defaultValue = "1") int size,
             @RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch) throws Exception {
         BaseResponse response = new BaseResponse();
-        List<Warehouse> listData = new ArrayList<>();
+
         try {
             Page<Warehouse> pageProducts = warehouseSsservice.getAllWarehouses(page, size, keySearch);
-            listData = pageProducts.getContent();
+            List<Warehouse> listData = pageProducts.getContent();
             response.setData(listData);
         } catch (Exception e) {
             e.printStackTrace();
