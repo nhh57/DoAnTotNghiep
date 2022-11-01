@@ -51,4 +51,9 @@ public interface AccountService {
      */
     void deleteAccount(Integer id) throws Exception;
 
+    /**
+     * <p>assignRoleForUser</p>
+     * @throws Exception
+     */
+    void assignRoleForUser(int userId, int roleId) throws Exception;
 }

@@ -53,4 +53,9 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Integer id) throws Exception {
         accountRepo.deleteAccount(id);
     }
+
+    @Override
+    public void assignRoleForUser(int userId, int roleId) throws Exception {
+
+    }
 }

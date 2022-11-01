@@ -4,7 +4,9 @@ import com.example.ecommerce.jwt.CustomUser;
 import com.example.ecommerce.model.data.AccountOauthDataModel;
 import com.example.ecommerce.repository.AccountOauthRepo;
 import com.example.ecommerce.service.AccountOauthService;
-import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +18,10 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional
 public class AccountOauthServiceImpl implements AccountOauthService, UserDetailsService {
+    private static Log log = LogFactory.getLog(AccountOauthServiceImpl.class);
     @Autowired
     private AccountOauthRepo oauthRepo;
     @Override
@@ -32,10 +34,10 @@ public class AccountOauthServiceImpl implements AccountOauthService, UserDetails
 
         AccountOauthDataModel accountOauthDataModel = oauthRepo.getAccountOauth(username);
         if(accountOauthDataModel == null){
-            log.error("Account not found in the database",username);
+            log.error("Account not found in the database"+username);
             throw new UsernameNotFoundException("Account not found in the database"+username);
         }else {
-            log.info("Account  found in the database",username);
+            log.info("Account  found in the database"+username);
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         accountOauthDataModel.getRoles().forEach(role -> {

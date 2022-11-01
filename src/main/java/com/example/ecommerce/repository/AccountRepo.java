@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +43,10 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     @Query(value = "UPDATE account a SET a.full_name = ?1, a.email = ?2, a.date_of_birth = ?3, a.phone = ?4 WHERE a.id = ?5", nativeQuery = true)
     void editProfile(String fullname, String email, Date dateOfBirth, String phone, Integer id);
 
+    /**
+     * <p>deleteAccount</p>
+     * @param id
+     */
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE account a SET a.is_deleted = 1 WHERE a.id = ?1", nativeQuery = true)
     void deleteAccount(Integer id);
@@ -57,4 +60,6 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
                        @Param("dateOfBirth") Date dateOfBirth,
                        @Param("fullName") String fullName,
                        @Param("Phone") String Phone);
+
+
 }
