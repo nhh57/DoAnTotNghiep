@@ -1,7 +1,11 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.common.Utils;
+import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.Warehouse;
+import com.example.ecommerce.request.AccountRequest;
+import com.example.ecommerce.request.ProductWarehouseRequest;
 import com.example.ecommerce.response.BaseResponse;
 import com.example.ecommerce.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +25,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
+    private static Log log = LogFactory.getLog(AdminController.class);
     @Autowired
     private WarehouseService warehouseSsservice;
-    private static Log log = LogFactory.getLog(AdminController.class);
 
     @RequestMapping(value = "/warehouse/get-all-product", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
@@ -41,7 +44,14 @@ public class AdminController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/warehouse/import-export-product", method = RequestMethod.POST, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> createAccount(@Valid @RequestBody ProductWarehouseRequest request) throws Exception {
+        BaseResponse response = new BaseResponse();
+        warehouseSsservice.importExportProductWarehouse(request.getNameProduct(),request.getStatusType(),request.getImportPirce(),request.getTotalPrice(),request.getNote(),request.getAmount());
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
 }
