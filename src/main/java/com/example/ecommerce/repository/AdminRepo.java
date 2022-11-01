@@ -1,3 +1,4 @@
+/*
 package com.example.ecommerce.repository;
 
 import com.example.ecommerce.model.Account;
@@ -5,10 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public interface AdminRepo extends JpaRepository<Account, Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value =  "SELECT a.id, a.username, a.password, a.email, a.date_of_birth, a.full_name, a.phone, a.is_deleted, a.created_at, a.updated_at " +
@@ -19,3 +21,4 @@ public interface AdminRepo extends JpaRepository<Account, Integer> {
     List<Account> getAllAccount(String keySearch, Date fromDate, Date toDate, Pageable pageable) throws Exception;
 
 }
+*/

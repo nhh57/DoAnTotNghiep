@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import java.util.Date;
 
 public interface AdminService {
-    Page<Account> getAllUser(String keySearch, int isDeleted , Date fromDate, Date toDate, Pageable pageable);
+//    Page<Account> getAllUser(String keySearch, int isDeleted , Date fromDate, Date toDate, Pageable pageable);
 }

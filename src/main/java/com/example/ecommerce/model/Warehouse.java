@@ -2,7 +2,7 @@ package com.example.ecommerce.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "ware_house")
@@ -17,15 +17,26 @@ public class Warehouse extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "product_id", nullable = true)
     private Integer productId;
+
+    @Basic
+    @Column(name = "import_price", nullable = true)
+    private BigDecimal importPrice;
+
+    @Basic
+    @Column(name = "note", nullable = true)
+    private String note;
+
+    @Basic
+    @Column(name = "total_price", nullable = true)
+    private BigDecimal totalPrice;
+
     @Basic
     @Column(name = "status", nullable = true)
     private Integer status;
     @Basic
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id",insertable = false, updatable = false)
-    private Product productByProductId;
+
 
     public int getId() {
         return id;
@@ -67,12 +78,27 @@ public class Warehouse extends BaseEntity implements Serializable {
         isDeleted = deleted;
     }
 
-
-    public Product getProductByProductId() {
-        return productByProductId;
+    public BigDecimal getImportPrice() {
+        return importPrice;
     }
 
-    public void setProductByProductId(Product productByProductId) {
-        this.productByProductId = productByProductId;
+    public void setImportPrice(BigDecimal importPrice) {
+        this.importPrice = importPrice;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

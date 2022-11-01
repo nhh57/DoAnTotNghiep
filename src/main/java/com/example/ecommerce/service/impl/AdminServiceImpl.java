@@ -1,3 +1,4 @@
+/*
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Account;
@@ -12,8 +13,9 @@ import java.util.Date;
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepo adminRepo;
-    @Override
-    public Page<Account> getAllUser(String keySearch, Date fromDate, Date toDate, Pageable pageable) {
-        return adminRepo.getAllAccount(keySearch,fromDate,toDate,);
-    }
+//    @Override
+//    public Page<Account> getAllUser(String keySearch, Date fromDate, Date toDate, Pageable pageable) {
+//        return adminRepo.getAllAccount(keySearch,fromDate,toDate,);
+//    }
 }
+*/
