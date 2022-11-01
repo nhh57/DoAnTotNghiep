@@ -21,7 +21,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public Page<Warehouse> getAllWarehouses(int pageNumber, int pageSize, String keySearch) throws Exception{
         log.info("pageNumber: "+pageNumber +" "+ "pageSize: "+pageSize+ " "+"keySearch: "+keySearch);
-        return warehouseRepo.findAllWarehouseByKeySearch(keySearch, PageRequest.of(pageNumber - 1, pageSize));
+        return warehouseRepo.findAllWarehouse(keySearch, PageRequest.of(pageNumber - 1, pageSize));
     }
 
 
