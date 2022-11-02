@@ -1,19 +1,13 @@
 package com.example.ecommerce.controller;
-
-import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
-import com.example.ecommerce.model.data.ProductDataModelCreate;
-import com.example.ecommerce.request.ProductRequest;
-import com.example.ecommerce.response.BaseResponse;
+import com.example.ecommerce.model.helper.ProductHelper;
+import com.example.ecommerce.model.result.ProductResult;
+import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -23,16 +17,31 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductRepo productRepo;
+
+    ProductHelper productHelper=new ProductHelper();
+
 
     // Get all list product exist
-    @GetMapping("/product/get-all")
-    public ResponseEntity<List<ProductDataModel>> getAll(){
-        return ResponseEntity.ok(productService.findProductExist());
+    @GetMapping("/product/get-all/{so-trang}/{so-san-pham}")
+    public ResponseEntity<ProductResult> getAll(@PathVariable("so-trang") Integer soTrang,
+                                                         @PathVariable("so-san-pham") Integer soSanPham){
+        ProductResult productResult=new ProductResult();
+        List<ProductDataModel> list=productService.findProductExist(soTrang,soSanPham);
+        productResult.setData(list);
+        productResult.setTotalPage(productHelper.getTotalPage(soSanPham,productRepo.findProductExist().size()));
+        return ResponseEntity.ok(productResult);
     }
     // Get all list product
-    @GetMapping("/product/get-all-admin")
-    public ResponseEntity<List<ProductDataModel>> getAllAdmin(){
-        return ResponseEntity.ok(productService.findAll());
+    @GetMapping("/product/get-all-admin/{so-trang}/{so-san-pham}")
+    public ResponseEntity<ProductResult> getAllAdmin(@PathVariable("so-trang") Integer soTrang,
+                                                     @PathVariable("so-san-pham") Integer soSanPham){
+        ProductResult productResult=new ProductResult();
+        List<ProductDataModel> list=productService.findAll(soTrang,soSanPham);
+        productResult.setData(list);
+        productResult.setTotalPage(productHelper.getTotalPage(soSanPham,productRepo.findAll().size()));
+        return ResponseEntity.ok(productResult);
     }
     // Find by name
     @GetMapping("/product/find/{name}")
@@ -47,7 +56,7 @@ public class ProductController {
 
     // Find by best selling products
     @GetMapping("/product/find/number-of-product")
-    public ResponseEntity<List<Product>> findBestSelling(@PathVariable("numberofproduct") Integer numberOfProduct) {
+    public ResponseEntity<List<Product>> findBestSelling(@PathVariable("number-of-product") Integer numberOfProduct) {
         return ResponseEntity.ok(productService.findByBestSellingProducts(numberOfProduct));
     }
 

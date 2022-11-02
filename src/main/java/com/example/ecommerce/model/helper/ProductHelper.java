@@ -17,7 +17,7 @@ public class ProductHelper {
         Product product=new Product();
         product.setId(productDataModel.getId());
         product.setProductName(productDataModel.getProductName());
-        product.setImages(productDataModel.getImages());
+        product.setImages(productDataModel.getImage());
         product.setNote(productDataModel.getNote());
         product.setPrice(productDataModel.getPrice());
         product.setDiscount(productDataModel.getDiscount());
@@ -31,7 +31,7 @@ public class ProductHelper {
         ProductDataModel productDataModel=new ProductDataModel();
         productDataModel.setId(product.getId());
         productDataModel.setProductName(product.getProductName());
-        productDataModel.setImages(product.getImages());
+        productDataModel.setImage(product.getImages());
         productDataModel.setNote(product.getNote());
         productDataModel.setPrice(product.getPrice());
         productDataModel.setDiscount(product.getDiscount());
@@ -57,6 +57,23 @@ public class ProductHelper {
         return listProductDataModel;
     }
     public BigDecimal getPromotionPrice(BigDecimal price, Integer discount){
-        return BigDecimal.valueOf(price.doubleValue()*discount/100);
+        if(price!=null){
+            return BigDecimal.valueOf(price.doubleValue()*discount/100);
+        }else{
+            return null;
+        }
+
     }
+    public int getTotalPage(int soSanPham,int tongSoSanPham) {
+        int tongSoTrang = 1;
+        double tempDouble = (double) tongSoSanPham / soSanPham;
+        int tempInt = (int) tempDouble;
+        if (tempDouble - tempInt > 0) {
+            tongSoTrang = tempInt + 1;
+        } else {
+            tongSoTrang = tempInt;
+        }
+        return tongSoTrang;
+    }
+
 }

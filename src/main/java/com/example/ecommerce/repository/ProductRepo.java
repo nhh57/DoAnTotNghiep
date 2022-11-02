@@ -1,6 +1,8 @@
 package com.example.ecommerce.repository;
 
 import com.example.ecommerce.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +24,8 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
     @Query(value = "SELECT p FROM Product p ORDER BY p.numberOfSale DESC LIMIT ?1", nativeQuery = true)
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
+    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
+    Page<Product> findProductExist(Pageable pageable);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
     List<Product> findProductExist();
 
