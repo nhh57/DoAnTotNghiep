@@ -2,50 +2,99 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.ProductDataModel;
+import com.example.ecommerce.model.data.ProductImageDataModel;
 import com.example.ecommerce.model.helper.ProductHelper;
 import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.service.ProductImageService;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
-    @Autowired
+    @Autowired(required = true)
     private ProductRepo productRepo;
 
-
-
+    @Autowired
+    private ProductImageService productImageService;
     ProductHelper productHelper = new ProductHelper();
-
-    @Override
-    public List<ProductDataModel> findAll() {
-        return productHelper.getListProductDataModel(productRepo.findAll());
+    private String[] getImages(ProductDataModel productDataModel){
+        List<ProductImageDataModel> list=productImageService.findByProductId(productDataModel.getId());
+        String[] images=new String[list.size()];
+        if(!list.isEmpty()){
+            for(int i=0;i<list.size();i++){
+                images[i]=list.get(i).getProductImageName();
+            }
+        }
+        return images;
     }
 
 
     @Override
-    public List<ProductDataModel> findProductExist() {
-        return productHelper.getListProductDataModel(productRepo.findProductExist());
+    public List<ProductDataModel> findAll(Integer soTrang,Integer soSanPham) {
+        Pageable pageable = PageRequest.of(soTrang-1, soSanPham);
+        Page<Product> pageProduct=productRepo.findAll(pageable);
+        List<Product> list=pageProduct.getContent();
+        List<ProductDataModel> listResult=productHelper.getListProductDataModel(list);
+        for(ProductDataModel productDataModel:listResult){
+            if (productDataModel != null) {
+                productDataModel.setImages(getImages(productDataModel));
+            }
+        }
+        return listResult;
+    }
+
+    @Override
+    public List<ProductDataModel> findProductExist(Integer soTrang,Integer soSanPham) {
+        Pageable pageable = PageRequest.of(soTrang-1, soSanPham);
+        Page<Product> pageProduct=productRepo.findProductExist(pageable);
+        List<Product> list=pageProduct.getContent();
+        List<ProductDataModel> listResult=productHelper.getListProductDataModel(list);
+        for(ProductDataModel productDataModel:listResult){
+            if (productDataModel != null) {
+                productDataModel.setImages(getImages(productDataModel));
+            }
+        }
+        return listResult;
     }
 
     @Override
     public ProductDataModel findById(Integer id) {
-        return productHelper.getProductDataModel(productRepo.findById(id).get());
+        ProductDataModel productDataModel=productHelper.getProductDataModel(productRepo.findById(id).get());
+        productDataModel.setImages(getImages(productDataModel));
+        return productDataModel;
     }
 
     @Override
     public List<ProductDataModel> findByName(String name) {
-        return productHelper.getListProductDataModel(productRepo.findByName(name));
+        List<ProductDataModel> list=productHelper.getListProductDataModel(productRepo.findByName(name));
+        for(ProductDataModel productDataModel:list){
+            if (productDataModel != null) {
+                productDataModel.setImages(getImages(productDataModel));
+            }
+        }
+        return list;
     }
 
     @Override
     public List<ProductDataModel> findByPrice(BigDecimal minPrice, BigDecimal maxPrice) {
-        return productHelper.getListProductDataModel(productRepo.findByPrice(minPrice, maxPrice));
+        List<ProductDataModel> list=productHelper.getListProductDataModel(productRepo.findByPrice(minPrice, maxPrice));
+        for(ProductDataModel productDataModel:list){
+            if (productDataModel != null) {
+                productDataModel.setImages(getImages(productDataModel));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -56,7 +105,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDataModel save(ProductDataModel productDataModel) {
         Product productSaved=productRepo.save(productHelper.getProduct(productDataModel));
-        return productHelper.getProductDataModel(productSaved);
+        if(productDataModel.getImages()!=null){
+            productImageService.save(productSaved.getId(),productDataModel.getImages());
+        }
+        ProductDataModel item=productHelper.getProductDataModel(productSaved);
+        productDataModel.setImages(getImages(item));
+        return item;
     }
 
 //    @Override

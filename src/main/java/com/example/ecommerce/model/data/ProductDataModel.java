@@ -13,7 +13,8 @@ public class ProductDataModel{
     private Integer discount;
     private BigDecimal promotionPrice;
     private String note;
-    private String images;
+    private String image;
+    private String[] images;
     private Integer categoryId;
     private Integer numberOfSale;
     private Integer brandId;

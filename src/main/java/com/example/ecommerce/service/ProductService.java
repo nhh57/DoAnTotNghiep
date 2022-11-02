@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDataModel> findAll();
-    List<ProductDataModel> findProductExist();
+    List<ProductDataModel> findAll(Integer soTrang,Integer soSanPham);
+    List<ProductDataModel> findProductExist(Integer soTrang,Integer soSanPham);
     ProductDataModel findById(Integer id);
     List<ProductDataModel> findByName(String name);
     List<ProductDataModel> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
