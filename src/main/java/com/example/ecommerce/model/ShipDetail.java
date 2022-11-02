@@ -18,8 +18,15 @@ public class ShipDetail extends BaseEntity implements Serializable {
     @Column(name = "address", nullable = true, length = -1)
     private String address;
     @Basic
+    @Column(name = "account_id", nullable = true, length = -1)
+    private int accountId;
+    @Basic
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Account accountByShipDetailId;
 
     public int getId() {
         return id;
@@ -53,4 +60,19 @@ public class ShipDetail extends BaseEntity implements Serializable {
         isDeleted = deleted;
     }
 
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public Account getAccountByShipDetailId() {
+        return accountByShipDetailId;
+    }
+
+    public void setAccountByShipDetailId(Account accountByShipDetailId) {
+        this.accountByShipDetailId = accountByShipDetailId;
+    }
 }

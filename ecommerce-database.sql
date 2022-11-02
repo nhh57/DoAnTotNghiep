@@ -3,7 +3,7 @@ DROP DATABASE WatchShop
 create DATABASE WatchShop
 use WatchShop
 -- Danh mục sản phẩm (Điện thoại, phụ kiện)
-CREATE TABLE Categories
+CREATE TABLE categories
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -12,7 +12,7 @@ CREATE TABLE Categories
     updated_at DATETIME DEFAULT NOW()
 );
 
-CREATE TABLE Brand
+CREATE TABLE brand
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     brand_name VARCHAR(70) CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -23,7 +23,7 @@ CREATE TABLE Brand
 );
 
 -- Bảng sản phẩm
-CREATE TABLE Product
+CREATE TABLE product
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     product_name TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -37,12 +37,12 @@ CREATE TABLE Product
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (category_id) REFERENCES Categories(id),
-    FOREIGN KEY (brand_id) REFERENCES Brand(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
 
 -- Bảng hình ảnh của sản phẩm
-CREATE TABLE ProductImage
+CREATE TABLE product_image
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     product_image_name VARCHAR(50),
@@ -50,10 +50,10 @@ CREATE TABLE ProductImage
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
+    FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
-CREATE TABLE Warehouse
+CREATE TABLE ware_house
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     amount INT(11),
@@ -62,13 +62,13 @@ CREATE TABLE Warehouse
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
+    FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
 
 
 -- Giỏ hàng
-CREATE TABLE Cart
+CREATE TABLE cart
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     card_status TINYINT(1),
@@ -78,7 +78,7 @@ CREATE TABLE Cart
 );
 
 -- Chi tiết giỏ hàng
-CREATE TABLE CartDetail
+CREATE TABLE cart_detail
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     cart_id INT(11),
@@ -90,23 +90,12 @@ CREATE TABLE CartDetail
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (cart_id) REFERENCES Cart(id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-);
-
--- Bảng chứa thông tin giao hàng
-CREATE TABLE ShipDetail
-(
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    phone VARCHAR(20),
-    address TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
-    is_deleted TINYINT(1) DEFAULT 0 ,
-    created_at DATETIME DEFAULT NOW(),
-    updated_at DATETIME DEFAULT NOW()
+    FOREIGN KEY (cart_id) REFERENCES cart(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
 -- Quyền(Người bán, khách thường)
-CREATE TABLE Roles
+CREATE TABLE roles
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(50),
@@ -116,7 +105,7 @@ CREATE TABLE Roles
 );
 
 -- Đây là Bảngg tài khoản
-CREATE TABLE Account
+CREATE TABLE account
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(20),
@@ -125,17 +114,28 @@ CREATE TABLE Account
     date_of_birth DATETIME DEFAULT NOW(),
     full_name VARCHAR(50),
     phone VARCHAR(20) unique,
-    ship_detail_id INT(11),
     cart_id INT(11),
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (ship_detail_id) REFERENCES ShipDetail(id),
-    FOREIGN KEY (cart_id) REFERENCES Cart(id)
+    FOREIGN KEY (cart_id) REFERENCES cart(id)
+);
+
+-- Bảng chứa thông tin giao hàng
+CREATE TABLE ship_detail
+(
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    phone VARCHAR(20),
+    address TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
+    account_id INT(11),
+    is_deleted TINYINT(1) DEFAULT 0 ,
+    created_at DATETIME DEFAULT NOW(),
+    updated_at DATETIME DEFAULT NOW(),
+    FOREIGN KEY (account_id) REFERENCES account(id)
 );
 
 --  Đây là Bảngg chi tiết quyền
-CREATE TABLE RolesDetail
+CREATE TABLE roles_detail
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     account_id INT(11),
@@ -143,12 +143,12 @@ CREATE TABLE RolesDetail
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (account_id) REFERENCES Account(id),
-    FOREIGN KEY (role_id) REFERENCES Roles(id)
+    FOREIGN KEY (account_id) REFERENCES account(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 -- Hóa đơn
-CREATE TABLE Orders
+CREATE TABLE orders
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     -- Ngày đặt hàng
@@ -167,12 +167,12 @@ CREATE TABLE Orders
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (ship_detail_id) REFERENCES ShipDetail(id),
-    FOREIGN KEY (account_id) REFERENCES Account(id)
+    FOREIGN KEY (ship_detail_id) REFERENCES ship_detail(id),
+    FOREIGN KEY (account_id) REFERENCES account(id)
 );
 
 --  Chi tiết hóa đơn
-CREATE TABLE OdersDetail
+CREATE TABLE oders_detail
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     order_id INT(11),
@@ -184,12 +184,12 @@ CREATE TABLE OdersDetail
     is_deleted TINYINT(1) DEFAULT 0 ,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
-    FOREIGN KEY (order_id) REFERENCES Orders(id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
 
-INSERT INTO  Account (username,password,email,date_of_birth,full_name,phone) values
+INSERT INTO  account (username,password,email,date_of_birth,full_name,phone) values
 ('anhhv','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','hoangvietanh02112002@gmail.com','2002-11-02','Hoàng Việt Anh','0346135361'),
 ('cuongdm','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','damdinhcuong@gmail.com','2002-07-05','Đàm Đình Cường','0346135362'),
 ('trietnpm','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','nguyenphamminhtriet@gmail.com','2002-07-05','Nguyễn Phạm Minh Triết','0346135363'),
@@ -198,9 +198,9 @@ INSERT INTO  Account (username,password,email,date_of_birth,full_name,phone) val
 ('thuatlh','$2a$10$bC3fIu4WyB/FGwlbOPlZt.3IRzkM34vZNt1Kbe5ZDcq7r/XZFWNrO','lehoangthuat@gmail.com','2002-11-02','Lê Hoàng Thuật','0346135366');
 
 
-INSERT INTO Roles (role_name) values('OWNER'),('CUSTOMER'),('CUSTOMER_VIP'),('EMPLOYEE');
+INSERT INTO roles (role_name) values('OWNER'),('CUSTOMER'),('CUSTOMER_VIP'),('EMPLOYEE');
 
-INSERT INTO RolesDetail (account_id,role_id) values(1,1),(2,2),(2,4);
+INSERT INTO roles_detail (account_id,role_id) values(1,1),(2,2),(2,4);
 
 CREATE PROCEDURE WatchShop.sp_g_list_user_roles(
 	IN userName VARCHAR(50)
@@ -216,9 +216,9 @@ BEGIN
 					'name', r.role_name,
 					'id',r.id 
 		 			)SEPARATOR ','),']')) AS roles
-		FROM 	Roles r
-				LEFT JOIN RolesDetail rd ON r.id = rd.role_id 
-				LEFT JOIN Account a ON a.id = rd.account_id 
+		FROM 	roles r
+				LEFT JOIN roles_detail rd ON r.id = rd.role_id 
+				LEFT JOIN account a ON a.id = rd.account_id 
 		WHERE 	a.username = userName
 		GROUP BY a.id 
 	);
@@ -231,7 +231,7 @@ BEGIN
 			a.full_name ,
 			a.phone ,
 			tr.roles
-	FROM 	Account a
+	FROM 	account a
 			LEFT JOIN tbl_roles tr ON a.id = tr.account_id
 	WHERE 	a.username = userName;
 
@@ -264,3 +264,4 @@ N'Đồng hồ nam Orient, mặt số điện tử với những tính năng hi�
 (N'Citizen HM456',4000000,10,'none.png',
 N'Đồng hồ nữ Citizen có mặt đồng hồ vuông to với phong cách thể thao, mặt số điện tử với những tính năng hiện đại tiện dụng, kết hợp với dây đeo bằng kim loại đem lại vẻ mạnh mẽ cá tính dành cho phái nam.',
 20,2,3,0)
+
