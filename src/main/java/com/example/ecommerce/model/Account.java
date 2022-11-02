@@ -43,9 +43,6 @@ public class Account extends BaseEntity implements Serializable {
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
     @ManyToOne
-    @JoinColumn(name = "ship_detail_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private ShipDetail shipDetailByShipDetailId;
-    @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Cart cartByCartId;
 
@@ -129,14 +126,6 @@ public class Account extends BaseEntity implements Serializable {
         isDeleted = deleted;
     }
 
-
-    public ShipDetail getShipDetailByShipDetailId() {
-        return shipDetailByShipDetailId;
-    }
-
-    public void setShipDetailByShipDetailId(ShipDetail shipDetailByShipDetailId) {
-        this.shipDetailByShipDetailId = shipDetailByShipDetailId;
-    }
 
     public Cart getCartByCartId() {
         return cartByCartId;
