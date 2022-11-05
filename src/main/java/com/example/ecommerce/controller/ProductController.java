@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     // Insert
-    @PostMapping("/product/insert")
+    @PostMapping("/product/crud/insert")
     public ResponseEntity<ProductDataModel> insert(@RequestBody ProductDataModel productDataModel) {
         if (productService.existsById(productDataModel.getId())) {
             return ResponseEntity.badRequest().build();
@@ -103,7 +103,7 @@ public class ProductController {
 //    }
 
     // Update
-    @PostMapping("/product/update/{id}")
+    @PostMapping("/product/crud/update/{id}")
     public ResponseEntity<ProductDataModel> update(@PathVariable("id") Integer id, @RequestBody ProductDataModel productDataModel) {
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -113,7 +113,7 @@ public class ProductController {
     }
 
     //Delete
-    @PostMapping("/product/delete/{id}")
+    @PostMapping("/product/crud/delete/{id}")
     public ResponseEntity<ProductDataModel> delete(@PathVariable("id") Integer id) {
         ProductDataModel productDataModel= productService.findById(id);
         if (!productService.existsById(id)) {
