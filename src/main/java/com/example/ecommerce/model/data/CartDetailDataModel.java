@@ -6,19 +6,11 @@ import java.math.BigDecimal;
 
 
 public class CartDetailDataModel {
-    private int id;
     private Integer cartId;
     private Integer productId;
     private Integer amount;
-    private BigDecimal price;
+    private ProductDataModel productDataModel;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Integer getCartId() {
         return cartId;
@@ -44,11 +36,12 @@ public class CartDetailDataModel {
         this.amount = amount;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+
+    public ProductDataModel getProductDataModel() {
+        return productDataModel;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setProductDataModel(ProductDataModel productDataModel) {
+        this.productDataModel = productDataModel;
     }
 }

@@ -9,10 +9,12 @@ import java.util.List;
 public class CartDetailHelper {
     public CartDetailDataModel getCartDetailDataModel(CartDetail cartDetail){
             CartDetailDataModel cartDetailDataModel=new CartDetailDataModel();
-            cartDetailDataModel.setId(cartDetail.getId());
             cartDetailDataModel.setCartId(cartDetail.getCartId());
             cartDetailDataModel.setProductId(cartDetail.getProductId());
-            cartDetailDataModel.setPrice(cartDetail.getPrice());
+            cartDetailDataModel.setAmount(cartDetail.getAmount());
+            if(cartDetail.getProductByProductId()!=null){
+                cartDetailDataModel.setProductDataModel(new ProductHelper().getProductDataModel(cartDetail.getProductByProductId()));
+            }
             return cartDetailDataModel;
     }
     public List<CartDetailDataModel> getListCartDetailDataModel(List<CartDetail> listCartDetail){
@@ -29,11 +31,8 @@ public class CartDetailHelper {
     public CartDetail getCartDetail(CartDetailDataModel cartDetailDataModel){
         CartDetail cartDetail=new CartDetail();
         if(cartDetailDataModel!=null){
-            cartDetail.setId(cartDetailDataModel.getId());
             cartDetail.setCartId(cartDetailDataModel.getCartId());
             cartDetail.setAmount(cartDetailDataModel.getAmount());
-            cartDetail.setPrice(cartDetailDataModel.getPrice());
-            cartDetail.setDeleted(false);
             cartDetail.setProductId(cartDetailDataModel.getProductId());
         }
         return cartDetail;

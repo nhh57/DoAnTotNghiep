@@ -1,7 +1,11 @@
 package com.example.ecommerce.model.helper;
 
 import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.CartDetail;
 import com.example.ecommerce.model.data.CartDataModel;
+import com.example.ecommerce.model.data.CartDetailDataModel;
+
+import java.util.List;
 
 public class CartHelper {
     public Cart getCart(CartDataModel cartDataModel){
@@ -19,5 +23,19 @@ public class CartHelper {
             cartDataModel.setIsDeleted(cart.getDeleted());
         }
         return cartDataModel;
+    }
+    public int getNumberOfCart(List<CartDetailDataModel> list){
+        int numberOfCart=0;
+        for(CartDetailDataModel item:list){
+            numberOfCart+=item.getAmount();
+        }
+        return  numberOfCart;
+    }
+    public int getTotalMoney(List<CartDetailDataModel> list){
+        int totalMoney=0;
+        for(CartDetailDataModel item:list){
+            totalMoney+=(item.getAmount()*item.getProductDataModel().getPrice().intValue());
+        }
+        return  totalMoney;
     }
 }
