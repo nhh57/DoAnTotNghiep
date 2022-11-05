@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -24,7 +24,7 @@ public class ProductController {
 
 
     // Get all list product exist
-    @GetMapping("/product/get-all/{so-trang}/{so-san-pham}")
+    @GetMapping("/free/get-all/{so-trang}/{so-san-pham}")
     public ResponseEntity<ProductResult> getAll(@PathVariable("so-trang") Integer soTrang,
                                                          @PathVariable("so-san-pham") Integer soSanPham){
         ProductResult productResult=new ProductResult();
@@ -34,7 +34,7 @@ public class ProductController {
         return ResponseEntity.ok(productResult);
     }
     // Get all list product
-    @GetMapping("/product/get-all-admin/{so-trang}/{so-san-pham}")
+    @GetMapping("/free/get-all-admin/{so-trang}/{so-san-pham}")
     public ResponseEntity<ProductResult> getAllAdmin(@PathVariable("so-trang") Integer soTrang,
                                                      @PathVariable("so-san-pham") Integer soSanPham){
         ProductResult productResult=new ProductResult();
@@ -44,24 +44,24 @@ public class ProductController {
         return ResponseEntity.ok(productResult);
     }
     // Find by name
-    @GetMapping("/product/find/{name}")
+    @GetMapping("/free/find/{name}")
     public ResponseEntity<List<ProductDataModel>> findByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(productService.findByName(name));
     }
     // Find by price
-    @GetMapping("/product/find/{min}/{max}")
+    @GetMapping("/free/find/{min}/{max}")
     public ResponseEntity<List<ProductDataModel>> findByPrice(@PathVariable("min") BigDecimal minPrice, @PathVariable("max") BigDecimal maxPrice) {
         return ResponseEntity.ok(productService.findByPrice(minPrice, maxPrice));
     }
 
     // Find by best selling products
-    @GetMapping("/product/find/number-of-product")
+    @GetMapping("/free/find/number-of-product")
     public ResponseEntity<List<Product>> findBestSelling(@PathVariable("number-of-product") Integer numberOfProduct) {
         return ResponseEntity.ok(productService.findByBestSellingProducts(numberOfProduct));
     }
 
     //Get one product
-    @GetMapping("/product/get-one/{id}")
+    @GetMapping("/free/get-one/{id}")
     public ResponseEntity<ProductDataModel> getOne(@PathVariable("id") Integer id) {
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     // Insert
-    @PostMapping("/product/crud/insert")
+    @PostMapping("/crud/insert")
     public ResponseEntity<ProductDataModel> insert(@RequestBody ProductDataModel productDataModel) {
         if (productService.existsById(productDataModel.getId())) {
             return ResponseEntity.badRequest().build();
@@ -103,7 +103,7 @@ public class ProductController {
 //    }
 
     // Update
-    @PostMapping("/product/crud/update/{id}")
+    @PostMapping("/crud/update/{id}")
     public ResponseEntity<ProductDataModel> update(@PathVariable("id") Integer id, @RequestBody ProductDataModel productDataModel) {
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -113,7 +113,7 @@ public class ProductController {
     }
 
     //Delete
-    @PostMapping("/product/crud/delete/{id}")
+    @PostMapping("/crud/delete/{id}")
     public ResponseEntity<ProductDataModel> delete(@PathVariable("id") Integer id) {
         ProductDataModel productDataModel= productService.findById(id);
         if (!productService.existsById(id)) {

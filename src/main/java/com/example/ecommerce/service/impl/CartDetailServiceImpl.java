@@ -39,4 +39,14 @@ public class CartDetailServiceImpl implements CartDetailService {
             return cartDetailHelper.getCartDetailDataModel(resultSaved);
         }
     }
+
+    @Override
+    public void deleteByProductId(Integer cartId,Integer productId) {
+        cartDetailRepo.deleteByProductId(cartId,productId);
+    }
+
+    @Override
+    public void deleteAllByCartId(Integer cartId) {
+        cartDetailRepo.deleteAllByCartId(cartId);
+    }
 }

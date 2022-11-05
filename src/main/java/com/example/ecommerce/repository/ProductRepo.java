@@ -18,9 +18,9 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
 //            " VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9)",nativeQuery = true)
 //    Product insert(String productName,BigDecimal price,Integer discount,String note,String images,
 //                   Integer numberOfSale,Integer categoryID,Integer brandId,Boolean isDeleted);
-    @Query("SELECT p FROM Product p WHERE p.productName like %?1%")
+    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.productName like %?1%")
     List<Product> findByName(String productName);
-    @Query("SELECT p FROM Product p WHERE p.price > ?1 and p.price <?2")
+    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.price > ?1 and p.price <?2")
     List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
     @Query(value = "SELECT p FROM Product p ORDER BY p.numberOfSale DESC LIMIT ?1", nativeQuery = true)
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
