@@ -24,7 +24,7 @@ public class ProductHelper {
         product.setNumberOfSale(productDataModel.getNumberOfSale());
         product.setBrandId(productDataModel.getBrandId());
         product.setCategoryId(productDataModel.getCategoryId());
-        product.setDeleted(productDataModel.getIsDeleted());
+        product.setDeleted(productDataModel.getIsDeleted()!=null?productDataModel.getIsDeleted():false);
         return product;
     }
     public ProductDataModel getProductDataModel(Product product){

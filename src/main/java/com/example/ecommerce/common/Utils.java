@@ -397,4 +397,15 @@ public class Utils {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return dateTimeFormat.format(dataTime);
     }
+
+    public static Timestamp covertStringToTimestamp(String timestampString) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date parsedDate = dateFormat.parse(timestampString);//my string
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+            return timestamp;
+        } catch (Exception e) { //this generic but you can control another types of exception
+            return new Timestamp(System.currentTimeMillis());// Trả về thời gian hiện tại
+        }
+    }
 }

@@ -42,6 +42,9 @@ public class Orders extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
+    @Basic
+    @Column(name = "payment_method", nullable = true, length = -1)
+    private String paymentMethod;
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account accountByAccountId;
