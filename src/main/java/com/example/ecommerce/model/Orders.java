@@ -1,11 +1,16 @@
 package com.example.ecommerce.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "orders")
 public class Orders extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +24,8 @@ public class Orders extends BaseEntity implements Serializable {
     @Column(name = "note", nullable = true, length = -1)
     private String note;
     @Basic
-    @Column(name = "order_status", nullable = true)
-    private Integer orderStatus;
+    @Column(name = "order_status", nullable = true, length = -1)
+    private String orderStatus;
     @Basic
     @Column(name = "total_money", nullable = true, precision = 0)
     private Integer totalMoney;
@@ -43,91 +48,4 @@ public class Orders extends BaseEntity implements Serializable {
     @JoinColumn(name = "ship_detail_id", referencedColumnName = "id", insertable = false, updatable = false)
     private ShipDetail shipDetailByShipDetailId;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Timestamp getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Timestamp orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public Integer getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(Integer orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Integer getTotalMoney() {
-        return totalMoney;
-    }
-
-    public void setTotalMoney(Integer totalMoney) {
-        this.totalMoney = totalMoney;
-    }
-
-    public Timestamp getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(Timestamp deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
-    public Integer getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-
-    public Integer getShipDetailId() {
-        return shipDetailId;
-    }
-
-    public void setShipDetailId(Integer shipDetailId) {
-        this.shipDetailId = shipDetailId;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public Account getAccountByAccountId() {
-        return accountByAccountId;
-    }
-
-    public void setAccountByAccountId(Account accountByAccountId) {
-        this.accountByAccountId = accountByAccountId;
-    }
-
-    public ShipDetail getShipDetailByShipDetailId() {
-        return shipDetailByShipDetailId;
-    }
-
-    public void setShipDetailByShipDetailId(ShipDetail shipDetailByShipDetailId) {
-        this.shipDetailByShipDetailId = shipDetailByShipDetailId;
-    }
 }

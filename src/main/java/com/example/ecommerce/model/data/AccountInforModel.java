@@ -12,6 +12,5 @@ public class AccountInforModel {
     private String dateOfBirth;
     private String fullName;
     private String phone;
-    private Integer shipDetailId;
     private Integer cartId;
 }
