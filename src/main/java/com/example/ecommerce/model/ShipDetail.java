@@ -26,7 +26,7 @@ public class ShipDetail extends BaseEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Account accountByShipDetailId;
+    private Account accountByAccountId;
 
     public int getId() {
         return id;
@@ -68,11 +68,11 @@ public class ShipDetail extends BaseEntity implements Serializable {
         this.accountId = accountId;
     }
 
-    public Account getAccountByShipDetailId() {
-        return accountByShipDetailId;
+    public Account getAccountByAccountId() {
+        return accountByAccountId;
     }
 
-    public void setAccountByShipDetailId(Account accountByShipDetailId) {
-        this.accountByShipDetailId = accountByShipDetailId;
+    public void setAccountByAccountId(Account accountByAccountId) {
+        this.accountByAccountId = accountByAccountId;
     }
 }

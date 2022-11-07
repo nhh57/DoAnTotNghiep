@@ -265,3 +265,8 @@ N'Đồng hồ nam Orient, mặt số điện tử với những tính năng hi�
 N'Đồng hồ nữ Citizen có mặt đồng hồ vuông to với phong cách thể thao, mặt số điện tử với những tính năng hiện đại tiện dụng, kết hợp với dây đeo bằng kim loại đem lại vẻ mạnh mẽ cá tính dành cho phái nam.',
 20,2,3,0)
 
+select * from ship_detail sd 
+
+
+select * from orders o 
+
