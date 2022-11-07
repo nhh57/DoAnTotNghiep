@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -386,5 +387,14 @@ public class Utils {
             System.out.println(ex);
         }
         return dateString;
+    }
+
+    public static String convertDateToString(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(date);
+    }
+    public static String convertDateTimeToString(Timestamp dataTime){
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return dateTimeFormat.format(dataTime);
     }
 }

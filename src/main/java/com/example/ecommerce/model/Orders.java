@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class Orders extends BaseEntity implements Serializable {
     private String orderStatus;
     @Basic
     @Column(name = "total_money", nullable = true, precision = 0)
-    private Integer totalMoney;
+    private BigDecimal totalMoney;
     @Basic
     @Column(name = "delivery_date", nullable = true)
     private Timestamp deliveryDate;
