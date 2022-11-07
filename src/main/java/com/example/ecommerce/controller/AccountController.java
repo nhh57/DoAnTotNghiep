@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.data.AccountOauthDataModel;
+import com.example.ecommerce.request.AccountLoginRequest;
 import com.example.ecommerce.request.AccountRequest;
 import com.example.ecommerce.response.AccountResponse;
 import com.example.ecommerce.response.BaseResponse;
@@ -225,54 +226,54 @@ public class AccountController {
         }
     }
 
-//    /**
-//     * <p>accountLogin</p>
-//     * @param request
-//     * @return response
-//     * @throws Exception
-//     */
-//    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {
-//            MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<BaseResponse> accountLogin(@Valid @RequestBody AccountLoginRequest request) throws Exception {
-//        BaseResponse response = new BaseResponse();
-//        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-//        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(request.getUsername()); // sửa store
-//        String access_token = JWT.create()
-//                .withSubject(accountOauthDataModel.getUserName())
-//                .withExpiresAt(new Date(System.currentTimeMillis() + 60* 60*1000))
-//                .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
-//                .sign(algorithm);
-//        Map<String,String> tokens = new HashMap<>();
-//        tokens.put("access_token",access_token);
-//        response.setData(tokens);
-//        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
-//    }
-
-
     /**
      * <p>accountLogin</p>
-     *
-     * @param username,password
+     * @param request
      * @return response
      * @throws Exception
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> accountLogin(
-            @RequestParam(name = "username", required = false, defaultValue = "") String username,
-            @RequestParam(name = "password", required = false, defaultValue = "") int password) throws Exception {
+    public ResponseEntity<BaseResponse> accountLogin(@Valid @RequestBody AccountLoginRequest request) throws Exception {
         BaseResponse response = new BaseResponse();
-        log.info("account login ");
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(username); // sửa store
+        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(request.getUsername()); // sửa store
         String access_token = JWT.create()
                 .withSubject(accountOauthDataModel.getUserName())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60* 60*1000))
                 .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
                 .sign(algorithm);
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
+        Map<String,String> tokens = new HashMap<>();
+        tokens.put("access_token",access_token);
         response.setData(tokens);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
+
+
+//    /**
+//     * <p>accountLogin</p>
+//     *
+//     * @param username,password
+//     * @return response
+//     * @throws Exception
+//     */
+//    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {
+//            MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<BaseResponse> accountLogin(
+//            @RequestParam(name = "username", required = false, defaultValue = "") String username,
+//            @RequestParam(name = "password", required = false, defaultValue = "") int password) throws Exception {
+//        BaseResponse response = new BaseResponse();
+//        log.info("account login ");
+//        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+//        AccountOauthDataModel accountOauthDataModel = oauthService.getAccountOauth(username); // sửa store
+//        String access_token = JWT.create()
+//                .withSubject(accountOauthDataModel.getUserName())
+//                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+//                .withClaim("roles", accountOauthDataModel.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()))
+//                .sign(algorithm);
+//        Map<String, String> tokens = new HashMap<>();
+//        tokens.put("access_token", access_token);
+//        response.setData(tokens);
+//        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+//    }
 }
