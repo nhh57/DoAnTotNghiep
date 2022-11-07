@@ -34,9 +34,6 @@ public class Account extends BaseEntity implements Serializable {
     @Column(name = "phone", nullable = true, length = 20)
     private String phone;
     
-    @Column(name = "ship_detail_id", nullable = true)
-    private Integer shipDetailId;
-    
     @Column(name = "cart_id", nullable = true)
     private Integer cartId;
     
@@ -102,13 +99,6 @@ public class Account extends BaseEntity implements Serializable {
         this.phone = phone;
     }
 
-    public Integer getShipDetailId() {
-        return shipDetailId;
-    }
-
-    public void setShipDetailId(Integer shipDetailId) {
-        this.shipDetailId = shipDetailId;
-    }
 
     public Integer getCartId() {
         return cartId;

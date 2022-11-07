@@ -25,8 +25,8 @@ public class AccountResponse {
 
     private String phone;
 
-    @JsonProperty("ship_detail_id")
-    private Integer shipDetailId;
+//    @JsonProperty("ship_detail_id")
+//    private Integer shipDetailId;
 
     @JsonProperty("cart_id")
     private Integer cartId;
@@ -42,7 +42,7 @@ public class AccountResponse {
         this.dateOfBirth = account.getDateOfBirth() == null ? "" : Utils.getDateFormatVN(account.getDateOfBirth());
         this.fullName = account.getFullName() == null ? "" : account.getFullName();
         this.phone = account.getPhone() == null ? "" : account.getPhone();
-        this.shipDetailId = account.getShipDetailId();
+//        this.shipDetailId = account.getShipDetailId();
         this.cartId = account.getCartId();
         this.isDeleted = account.getDeleted() == true ? 1 : 0;
     }
@@ -111,13 +111,13 @@ public class AccountResponse {
         this.phone = phone;
     }
 
-    public Integer getShipDetailId() {
-        return shipDetailId;
-    }
-
-    public void setShipDetailId(Integer shipDetailId) {
-        this.shipDetailId = shipDetailId;
-    }
+//    public Integer getShipDetailId() {
+//        return shipDetailId;
+//    }
+//
+//    public void setShipDetailId(Integer shipDetailId) {
+//        this.shipDetailId = shipDetailId;
+//    }
 
     public Integer getCartId() {
         return cartId;
