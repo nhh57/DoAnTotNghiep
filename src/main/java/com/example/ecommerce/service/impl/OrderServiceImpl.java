@@ -20,8 +20,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDataModel> getAll() {
-        List<Orders> list=orderRepo.findAll();
-        List<OrderDataModel> list1=orderHelper.getListOrderDataModel(list);
         return orderHelper.getListOrderDataModel(orderRepo.findAll());
+    }
+
+    @Override
+    public OrderDataModel save(OrderDataModel orderDataModel) {
+        Orders orders=orderHelper.getOrders(orderDataModel);
+        return orderHelper.getOrderDataModel(orderRepo.save(orders));
     }
 }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface OrderService {
     List<OrderDataModel> getAll();
+    OrderDataModel save(OrderDataModel orderDataModel);
 
 }
