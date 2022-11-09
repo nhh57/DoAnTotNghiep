@@ -6,9 +6,7 @@ import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.Warehouse;
 import com.example.ecommerce.request.AccountRequest;
 import com.example.ecommerce.request.ProductWarehouseRequest;
-import com.example.ecommerce.response.AccountResponse;
 import com.example.ecommerce.response.BaseResponse;
-import com.example.ecommerce.service.AccountService;
 import com.example.ecommerce.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,9 +28,6 @@ public class AdminController {
     private static Log log = LogFactory.getLog(AdminController.class);
     @Autowired
     private WarehouseService warehouseSsservice;
-
-    @Autowired
-    private AccountService accountService;
 
     @RequestMapping(value = "/warehouse/get-all-product", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
@@ -59,20 +54,4 @@ public class AdminController {
         warehouseSsservice.importExportProductWarehouse(request.getNameProduct(),request.getStatusType(),request.getImportPirce(),request.getTotalPrice(),request.getNote(),request.getAmount());
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/warehouse/get-list-customer", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> getAllCustomer(
-            @RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
-            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "1") int size,
-            @RequestParam(name = "is_deleted", required = false, defaultValue = "-1") int isDeleted) throws Exception {
-        BaseResponse response = new BaseResponse();
-        List<Account> listAccounts = accountService.getAllAccount(page, size,keySearch, isDeleted,2);
-        List<AccountResponse> responseList = new AccountResponse().mapToListResponse(listAccounts);
-        response.setData(responseList);
-        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
-    }
-
-
 }

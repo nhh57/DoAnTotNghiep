@@ -69,12 +69,10 @@ public class AccountController {
     @RequestMapping(value = "/get-all-account", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getAllAccount(
-            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "1") int size,
             @RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
             @RequestParam(name = "is_deleted", required = false, defaultValue = "-1") int isDeleted) throws Exception {
         BaseResponse response = new BaseResponse();
-        List<Account> listAccounts = accountService.getAllAccount(page, size, keySearch, isDeleted,2);
+        List<Account> listAccounts = accountService.getAllAccount(keySearch, isDeleted);
         List<AccountResponse> responseList = new AccountResponse().mapToListResponse(listAccounts);
         response.setData(responseList);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
