@@ -24,9 +24,9 @@ public class ProductController {
 
 
     // Get all list product exist
-    @GetMapping("/free/get-all/{so-trang}/{so-san-pham}")
-    public ResponseEntity<ProductResult> getAll(@PathVariable("so-trang") Integer soTrang,
-                                                         @PathVariable("so-san-pham") Integer soSanPham){
+    @GetMapping("/free/get-all/{page}/{size}")
+    public ResponseEntity<ProductResult> getAll(@PathVariable("page") Integer soTrang,
+                                                         @PathVariable("size") Integer soSanPham){
         ProductResult productResult=new ProductResult();
         List<ProductDataModel> list=productService.findProductExist(soTrang,soSanPham);
         productResult.setData(list);
@@ -34,9 +34,9 @@ public class ProductController {
         return ResponseEntity.ok(productResult);
     }
     // Get all list product
-    @GetMapping("/free/get-all-admin/{so-trang}/{so-san-pham}")
-    public ResponseEntity<ProductResult> getAllAdmin(@PathVariable("so-trang") Integer soTrang,
-                                                     @PathVariable("so-san-pham") Integer soSanPham){
+    @GetMapping("/free/get-all-admin/{page}/{size}")
+    public ResponseEntity<ProductResult> getAllAdmin(@PathVariable("page") Integer soTrang,
+                                                     @PathVariable("size") Integer soSanPham){
         ProductResult productResult=new ProductResult();
         List<ProductDataModel> list=productService.findAll(soTrang,soSanPham);
         productResult.setData(list);
@@ -70,11 +70,8 @@ public class ProductController {
     }
 
     // Insert
-    @PostMapping("/crud/insert")
-    public ResponseEntity<ProductDataModel> insert(@RequestBody ProductDataModel productDataModel) {
-        if (productService.existsById(productDataModel.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping("/crud/save")
+    public ResponseEntity<ProductDataModel> save(@RequestBody ProductDataModel productDataModel) {
         return ResponseEntity.ok(productService.save(productDataModel));
     }
 
@@ -101,16 +98,6 @@ public class ProductController {
 //        productService.createProductDataModel(productDataModel);
 //        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
 //    }
-
-    // Update
-    @PostMapping("/crud/update/{id}")
-    public ResponseEntity<ProductDataModel> update(@PathVariable("id") Integer id, @RequestBody ProductDataModel productDataModel) {
-        if (!productService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        productService.save(productDataModel);
-        return ResponseEntity.ok(productDataModel);
-    }
 
     //Delete
     @PostMapping("/crud/delete/{id}")

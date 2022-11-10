@@ -1,7 +1,9 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.model.Categories;
+import com.example.ecommerce.model.data.CategoriesDataModel;
 import com.example.ecommerce.repository.CategoriesRepo;
+import com.example.ecommerce.service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,55 +11,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categories")
 public class CategoriesController {
     @Autowired
-    CategoriesRepo categoriesDAO;
+    CategoriesService categoriesService;
 
     // Get all list category
-    @GetMapping("/categories/getall")
-    public ResponseEntity<List<Categories>> getAll(){
-        return ResponseEntity.ok(categoriesDAO.findAll());
+    @GetMapping("/free/get-all/{page}/{size}")
+    public ResponseEntity<List<CategoriesDataModel>> getAll(@PathVariable("page") Integer soTrang,
+                                                            @PathVariable("size") Integer soSanPham){
+        return ResponseEntity.ok(categoriesService.findAll(soTrang,soSanPham));
+    }
+    @GetMapping("/free/get-all-admin/{page}/{size}")
+    public ResponseEntity<List<CategoriesDataModel>> getAllAdmin(@PathVariable("page") Integer soTrang,
+                                                            @PathVariable("size") Integer soSanPham){
+        return ResponseEntity.ok(categoriesService.findAllAdmin(soTrang,soSanPham));
     }
 
-    //Get one category
-    @GetMapping("/categories/getone/{id}")
-    public ResponseEntity<Categories> getOne(@PathVariable("id") Integer id) {
-        if (!categoriesDAO.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(categoriesDAO.findById(id).get());
-    }
 
     // Insert
-    @PostMapping("/categories/insert")
-    public ResponseEntity<Categories> post(@RequestBody Categories categories) {
-        if (categoriesDAO.existsById(categories.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        categoriesDAO.save(categories);
-        return ResponseEntity.ok(categories);
-    }
-
-    // Update
-    @PutMapping("/categories/update/{id}")
-    public ResponseEntity<Categories> put(@PathVariable("id") Integer id, @RequestBody Categories categories) {
-        if (!categoriesDAO.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        categoriesDAO.save(categories);
-        return ResponseEntity.ok(categories);
+    @PostMapping("/crud/save")
+    public ResponseEntity<CategoriesDataModel> save(@RequestBody CategoriesDataModel categoriesDataModel) {
+        return ResponseEntity.ok(categoriesService.save(categoriesDataModel));
     }
 
     //Delete
-    @DeleteMapping("/categories/update/{id}")
-    public ResponseEntity<Categories> delete(@PathVariable("id") Integer id) {
-        Categories categories= new Categories();
-        if (!categoriesDAO.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        categories.setDeleted(true);
-        categoriesDAO.save(categories);
-        return ResponseEntity.ok(categories);
+    @PostMapping("/crud/delete/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(categoriesService.delete(id));
     }
 }
