@@ -15,7 +15,7 @@ public interface AccountService {
      * @throws Exception
      */
 
-    List<Account> getAllAccount(String keySearch, int isDeleted) throws Exception;
+    List<Account> getAllAccount(String keySearch, int isDeleted,int roleId,int pageNumber,int pageSize) throws Exception;
 
     /**
      * <p>insertAccount</p>

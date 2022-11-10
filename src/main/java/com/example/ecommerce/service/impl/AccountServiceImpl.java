@@ -5,6 +5,7 @@ import com.example.ecommerce.model.Account;
 import com.example.ecommerce.repository.AccountRepo;
 import com.example.ecommerce.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Account> getAllAccount(String keySearch, int isDeleted) throws Exception {
-        return accountRepo.getAllAccount(keySearch, isDeleted);
+    public List<Account> getAllAccount(String keySearch, int isDeleted,int pageNumber, int pageSize,int roleId) throws Exception {
+        return accountRepo.getAllAccount(keySearch, isDeleted,roleId, PageRequest.of(pageNumber - 1, pageSize));
     }
 
     @Override
