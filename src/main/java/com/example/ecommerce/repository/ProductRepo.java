@@ -4,9 +4,7 @@ import com.example.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +18,9 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
 //                   Integer numberOfSale,Integer categoryID,Integer brandId,Boolean isDeleted);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.productName like %?1%")
     List<Product> findByName(String productName);
+
+    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.productName like %?1%")
+    Page<Product> findByName(Pageable pageable, String productName);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.price > ?1 and p.price <?2")
     List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
     @Query(value = "SELECT * FROM product p ORDER BY p.number_of_sale DESC LIMIT ?1", nativeQuery = true)
@@ -29,5 +30,4 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
     List<Product> findProductExist();
 
-    Product findByProductName(String productName);
 }
