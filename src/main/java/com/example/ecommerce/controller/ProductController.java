@@ -55,8 +55,8 @@ public class ProductController {
     }
 
     // Find by best selling products
-    @GetMapping("/free/find/number-of-product")
-    public ResponseEntity<List<Product>> findBestSelling(@PathVariable("number-of-product") Integer numberOfProduct) {
+    @GetMapping("/free/find/best-selling/{number-of-product}")
+    public ResponseEntity<List<ProductDataModel>> findBestSelling(@PathVariable("number-of-product") Integer numberOfProduct) {
         return ResponseEntity.ok(productService.findByBestSellingProducts(numberOfProduct));
     }
 

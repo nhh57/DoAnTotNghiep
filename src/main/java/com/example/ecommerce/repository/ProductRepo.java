@@ -22,7 +22,7 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     List<Product> findByName(String productName);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.price > ?1 and p.price <?2")
     List<Product> findByPrice(BigDecimal minPrice, BigDecimal maxPrice);
-    @Query(value = "SELECT p FROM Product p ORDER BY p.numberOfSale DESC LIMIT ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM product p ORDER BY p.number_of_sale DESC LIMIT ?1", nativeQuery = true)
     List<Product> findByBestSellingProducts(Integer numberOfProduct);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0")
     Page<Product> findProductExist(Pageable pageable);

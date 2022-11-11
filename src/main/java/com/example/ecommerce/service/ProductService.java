@@ -17,7 +17,7 @@ public interface ProductService {
     ProductDataModel save(ProductDataModel productDataModel);
 
     //    ProductDataModel insert(ProductDataModel productDataModel);
-    List<Product> findByBestSellingProducts(Integer numberOfProduct);
+    List<ProductDataModel> findByBestSellingProducts(Integer numberOfProduct);
 //    Product findByProductName(String productName) throws Exception;
 //
 //    void createProductDataModel(ProductDataModelCreate productDataModelCreate);
