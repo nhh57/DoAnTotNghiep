@@ -17,7 +17,7 @@ public class Product extends BaseEntity implements Serializable {
     private String productName;
     @Basic
     @Column(name = "price", nullable = true, precision = 0)
-    private BigDecimal price;
+    private Integer price;
     @Basic
     @Column(name = "discount", nullable = true, precision = 0)
     private Integer discount;
@@ -62,11 +62,11 @@ public class Product extends BaseEntity implements Serializable {
         this.productName = productName;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

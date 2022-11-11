@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 public class ProductDataModel{
     private int id;
     private String productName;
-    private BigDecimal price;
+    private Integer price;
     private Integer discount;
-    private BigDecimal promotionPrice;
+    private Double promotionPrice;
     private String note;
     private String image;
     private String[] images;

@@ -1,9 +1,6 @@
 package com.example.ecommerce.model.helper;
 
-import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
-import com.example.ecommerce.model.data.BrandDataModel;
-import com.example.ecommerce.model.data.CategoriesDataModel;
 import com.example.ecommerce.model.data.ProductDataModel;
 
 import java.math.BigDecimal;
@@ -56,9 +53,9 @@ public class ProductHelper {
         }
         return listProductDataModel;
     }
-    public BigDecimal getPromotionPrice(BigDecimal price, Integer discount){
+    public Double getPromotionPrice(Integer price, Integer discount){
         if(price!=null){
-            return BigDecimal.valueOf(price.doubleValue()*discount/100);
+            return price.doubleValue()*discount/100;
         }else{
             return null;
         }

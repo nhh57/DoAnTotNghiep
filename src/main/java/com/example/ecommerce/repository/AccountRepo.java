@@ -62,5 +62,8 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
                        @Param("fullName") String fullName,
                        @Param("Phone") String Phone);
 
+    @Query("SELECT a FROM Account a WHERE a.username=?1")
+    Account findByUsername(String username);
+
 
 }
