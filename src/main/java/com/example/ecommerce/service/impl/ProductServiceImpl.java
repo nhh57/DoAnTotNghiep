@@ -122,8 +122,8 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> findByBestSellingProducts(Integer numberOfProduct) {
-        return productRepo.findByBestSellingProducts(numberOfProduct);
+    public List<ProductDataModel> findByBestSellingProducts(Integer numberOfProduct) {
+        return productHelper.getListProductDataModel(productRepo.findByBestSellingProducts(numberOfProduct));
     }
 
 //    @Override
