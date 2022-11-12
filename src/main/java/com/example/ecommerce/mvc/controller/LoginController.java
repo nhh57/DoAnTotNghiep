@@ -2,7 +2,6 @@ package com.example.ecommerce.mvc.controller;
 
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.mvc.dao.SessionDAO;
-import com.example.ecommerce.mvc.message.MESSAGE_CONSTANT;
 import com.example.ecommerce.mvc.validate.AccountValidate;
 import com.example.ecommerce.repository.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
