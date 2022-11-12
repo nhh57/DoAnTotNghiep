@@ -55,8 +55,8 @@
 				<div class="main-menu-wrap">
 					<!-- logo -->
 					<div class="site-logo">
-						<a href="/index">
-							<img th:src="@{/assets/logo/logo.png}" />
+						<a href="/mvc/index">
+							<img th:src="@{/assets/logo/logo.png}"/>
 						</a>
 					</div>
 					<!-- logo -->
@@ -64,62 +64,41 @@
 					<!-- menu start -->
 					<nav class="main-menu">
 						<ul>
-							<li class="current-list-item"><a href="/index">Home</a>
+							<li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
 							</li>
-							<li><a href="/about">About</a></li>
-							<li><a href="#">Pages</a>
-								<ul class="sub-menu">
-									<li><a href="/404">404 page</a></li>
-									<li><a href="/about">About</a></li>
-									<li><a href="/cart">Cart</a></li>
-									<li><a href="/checkout">Check Out</a></li>
-									<li><a href="/contact">Contact</a></li>
-									<li><a href="/news">News</a></li>
-									<li><a href="/shop">Shop</a></li>
-								</ul>
-							</li>
-							<li><a href="/news">News</a>
-								<ul class="sub-menu">
-									<li><a href="/news">News</a></li>
-									<li><a href="/Single-news">Single News</a></li>
-								</ul>
-							</li>
-							<li><a href="/contact">Contact</a></li>
-							<li><a href="/shop">Shop</a>
-								<ul class="sub-menu">
-									<li><a href="/shop">Shop</a></li>
-									<li><a href="/checkout">Check Out</a></li>
-									<li><a href="/Single-product">Single Product</a></li>
-									<li><a href="/cart">Cart</a></li>
-								</ul>
+							<li><a href="/mvc/shop">Mua sắm</a></li>
+							<li><a href="">Liên hệ</a>
 							</li>
 							<li>
 								<div class="header-icons">
 									<a class="shopping-cart" href="/mvc/shopping-cart">
 										<i class="fas fa-shopping-cart checkout" aria-hidden="true"></i>
-										<span id="checkout_items" class="checkout_items">[[${tongSoLuongGioHang}]]</span>
+										<span id="checkout_items"
+											  class="checkout_items">[[${tongSoLuongGioHang}]]</span>
 									</a>
 									<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 									<div th:if="${sessionUsername}!=null" class="dropdown dropdownCustom">
-										<div class="dropdown-toggle customUser" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+										<div class="dropdown-toggle customUser" id="dropdownMenuButton"
+											 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
 											<i class="fas fa-user">
 												Xin chào, [[${sessionUsername}]]</i>
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 											<a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/changePassword}">Đổi mật khẩu</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/logout?urlReturn=shopping-cart}">Đăng xuất</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/changePassword}">Đổi mật
+												khẩu</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout}">Đăng xuất</a>
 										</div>
 									</div>
 
-									<div th:if="${sessionUsername}==null"class="dropdown dropdownCustom">
+									<div th:if="${sessionUsername}==null" class="dropdown dropdownCustom">
 										<div class="dropdown-toggle customUser" id="dropdownMenuButton"
 											 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 											 href="#">
 											<i class="fas fa-user"></i>
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/login?urlReturn=shopping-cart}">Đăng nhập</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/login}">Đăng nhập</a>
 											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng ký</a>
 										</div>
 									</div>

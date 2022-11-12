@@ -24,7 +24,7 @@ public class Account extends BaseEntity implements Serializable {
     @Email
     @Column(name = "email", nullable = true, length = 255)
     private String email;
-    @Temporal(TemporalType.TIMESTAMP)
+
     @Column(name = "date_of_birth", nullable = true)
     private Date dateOfBirth;
     
@@ -33,12 +33,16 @@ public class Account extends BaseEntity implements Serializable {
     
     @Column(name = "phone", nullable = true, length = 20)
     private String phone;
+
+    @Column(name = "gender", nullable = true,length = 10)
+    private String gender;
     
     @Column(name = "cart_id", nullable = true)
     private Integer cartId;
     
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
+
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Cart cartByCartId;
@@ -123,5 +127,13 @@ public class Account extends BaseEntity implements Serializable {
 
     public void setCartByCartId(Cart cartByCartId) {
         this.cartByCartId = cartByCartId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

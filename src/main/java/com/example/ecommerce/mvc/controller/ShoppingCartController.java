@@ -54,7 +54,7 @@ public class ShoppingCartController {
 		model.addAttribute("listGioHang",listGioHang);
 		model.addAttribute("tongTienGioHang",shoppingCartDAO.getAmout());
 		model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
-		return "customer/Cart";
+		return "customer/cart";
 	}
 	@PostMapping("addToCart")
 	public ResponseEntity<String> addToCart(@RequestParam String maSanPham,@RequestParam Integer soLuong) throws JSONException {
