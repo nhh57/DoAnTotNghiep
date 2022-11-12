@@ -1,5 +1,7 @@
 package com.example.ecommerce.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
@@ -20,12 +22,13 @@ public class Account extends BaseEntity implements Serializable {
     
     @Column(name = "password", nullable = true, length = -1)
     private String password;
-   
+
     @Email
     @Column(name = "email", nullable = true, length = 255)
     private String email;
 
     @Column(name = "date_of_birth", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     
     @Column(name = "full_name", nullable = true, length = 50)
