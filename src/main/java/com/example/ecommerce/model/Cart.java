@@ -6,6 +6,12 @@ import java.io.Serializable;
 @Entity
 @Table(name="cart")
 public class Cart extends BaseEntity implements Serializable {
+    public Cart() {
+
+    }
+    public Cart(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)

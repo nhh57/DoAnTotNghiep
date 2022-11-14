@@ -85,7 +85,7 @@ public class RegisterController {
                 return "redirect:/mvc/register?registerStatus=phone_exist";
             }
 
-            Cart cartSaved=cartDAO.save(new Cart());
+            Cart cartSaved=cartDAO.save(new Cart(false));
             Account account=new Account();
             account.setUsername(user.getUsername());
             account.setPassword(passwordEncoder.encode(user.getPassword()));

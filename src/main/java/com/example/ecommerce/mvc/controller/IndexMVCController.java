@@ -1,11 +1,14 @@
 package com.example.ecommerce.mvc.controller;
 
 import com.example.ecommerce.model.Account;
+import com.example.ecommerce.model.CartDetail;
 import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.mvc.helper.ProductHelper;
+import com.example.ecommerce.repository.CartDetailRepo;
 import com.example.ecommerce.repository.CategoriesRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,10 @@ public class IndexMVCController {
 
     @Autowired
     ShoppingCartDAO shoppingCartDAO;
+    @Autowired
+    CartDetailRepo cartDetailRepo;
+
+    CartHelper cartHelper=new CartHelper();
 
     @Autowired
     SessionDAO session;
@@ -67,10 +74,14 @@ public class IndexMVCController {
         //Category
         List<Categories> listCategory=categoryDAO.findAll();
         model.addAttribute("listCategory",listCategory);
-        model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
+        //Set số lượng giỏ hàng
         Account khachHang=(Account) session.get("user");
         if(khachHang!=null) {
+            List<CartDetail> listCart=cartDetailRepo.getCartDetail(khachHang.getCartId());
+            model.addAttribute("tongSoLuongGioHang",cartHelper.getNumberOfListCart(listCart));
             model.addAttribute("sessionUsername",khachHang.getUsername());
+        }else{
+            model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
         }
         return "customer/index";
     }

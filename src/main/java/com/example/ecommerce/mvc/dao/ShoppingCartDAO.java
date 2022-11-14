@@ -9,7 +9,7 @@ public interface ShoppingCartDAO {
 	public void remove(int id);
 	public int getAmout();
 	public int getCount();
-	public int getTotalByProductId(int productId);
+	public int getTotalMoneyOfOneProduct(int productId);
 	public Collection<ShoppingCart> getAll();
 	public void clear();
 	public ShoppingCart update(int productId, int soLuong);

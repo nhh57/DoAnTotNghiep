@@ -52,7 +52,7 @@ public class ShoppingCartImpl implements ShoppingCartDAO {
 	}
 
 	@Override
-	public int getTotalByProductId(int productId) {
+	public int getTotalMoneyOfOneProduct(int productId) {
 		ShoppingCart cartItem=maps.get(productId);
 		return cartItem.getSoLuong()*cartItem.getPrice().intValue();
 	}
