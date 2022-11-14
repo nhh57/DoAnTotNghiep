@@ -38,4 +38,23 @@ public class CartHelper {
         }
         return  totalMoney;
     }
+
+    public int getTotalMoneyCart(List<CartDetail> list){
+        int totalMoney=0;
+        for(CartDetail item:list){
+            totalMoney+=(item.getAmount()*item.getProductByProductId().getPrice().intValue());
+        }
+        return  totalMoney;
+    }
+    public int getNumberOfListCart(List<CartDetail> list){
+        int numberOfCart=0;
+        for(CartDetail item:list){
+            numberOfCart+=item.getAmount();
+        }
+        return  numberOfCart;
+    }
+
+    public int getTotalMoneyOfOneProduct(CartDetail cartDetail){
+        return  cartDetail.getAmount()*cartDetail.getProductByProductId().getPrice();
+    }
 }

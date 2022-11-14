@@ -168,12 +168,24 @@
 							<th class="product-total">Tổng tiền</th>
 						</tr>
 						</thead>
-						<tbody>
+						<tbody th:if="listGioHangLogin!=null" >
+						<th:block th:each="item : ${listGioHangLogin}">
+							<tr class="table-body-row">
+								<td class="product-remove"><a th:attr="data-masanpham=${item.productByProductId.id}" class="productRemove"><i class="far fa-window-close"></i></a></td>
+								<td class="product-image"><img th:src="@{'/assets/img/products/'+${item.productByProductId.images}}" alt=""></td>
+								<td class="product-name" th:text="${item.productByProductId.productName}"></td>
+								<td class="product-price">[[${#numbers.formatDecimal(item.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+								<td class="product-quantity"><input th:attr="data-masp=${item.productByProductId.id}" class="inputSoLuong" type="number" min="1" max="1000" placeholder="0" th:value="${item.amount}"></td>
+								<td class="product-total productTotal">[[${#numbers.formatDecimal(item.productByProductId.price*item.amount, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+							</tr>
+						</th:block>
+						</tbody>
+						<tbody th:if="listGioHang!=null">
 						<th:block th:each="item : ${listGioHang}">
 							<tr class="table-body-row">
 								<td class="product-remove"><a th:attr="data-masanpham=${item.id}" class="productRemove"><i class="far fa-window-close"></i></a></td>
-								<td class="product-image"><img src="/assets/img/products/none.png" alt=""></td>
-								<td class="product-name" th:text="${item.productName}">Strawberry</td>
+								<td class="product-image"><img th:src="@{'/assets/img/products/'+${item.images}}" alt=""></td>
+								<td class="product-name" th:text="${item.productName}"></td>
 								<td class="product-price">[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ</td>
 								<td class="product-quantity"><input th:attr="data-masp=${item.id}" class="inputSoLuong" type="number" min="1" max="1000" placeholder="0" th:value="${item.soLuong}"></td>
 								<td class="product-total productTotal">[[${#numbers.formatDecimal(item.price*item.soLuong, 0, 'COMMA', 0, 'POINT')}]] đ</td>
