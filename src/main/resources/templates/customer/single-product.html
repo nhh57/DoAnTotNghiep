@@ -88,9 +88,9 @@
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 											<a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/changePassword}">Đổi mật
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/change-password}">Đổi mật
 												khẩu</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout}">Đăng xuất</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{'/mvc/logout?urlReturn=single-product?id='+${productIdParam}}">Đăng xuất</a>
 										</div>
 									</div>
 
@@ -101,7 +101,7 @@
 											<i class="fas fa-user"></i>
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/login}">Đăng nhập</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{'/mvc/login?urlReturn=single-product?id='+${productIdParam}}">Đăng nhập</a>
 											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng ký</a>
 										</div>
 									</div>

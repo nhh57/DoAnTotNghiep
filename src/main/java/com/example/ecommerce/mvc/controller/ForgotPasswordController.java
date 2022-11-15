@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller;
 
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.mvc.dao.MailerService;
+import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.helper.MailerHelper;
 import com.example.ecommerce.mvc.model.MailInfo;
 import com.example.ecommerce.repository.AccountRepo;
@@ -27,6 +28,9 @@ public class ForgotPasswordController {
 	MailerService mailer;
 	@Autowired
 	AccountRepo accountDAO;
+
+	@Autowired
+	SessionDAO session;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

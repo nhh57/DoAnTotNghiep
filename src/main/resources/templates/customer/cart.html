@@ -85,9 +85,9 @@
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 											<a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/changePassword}">Đổi mật
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/change-password}">Đổi mật
 												khẩu</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout}">Đăng xuất</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout?urlReturn=shopping-cart}">Đăng xuất</a>
 										</div>
 									</div>
 
@@ -98,7 +98,7 @@
 											<i class="fas fa-user"></i>
 										</div>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/login}">Đăng nhập</a>
+											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/login?urlReturn=shopping-cart}">Đăng nhập</a>
 											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng ký</a>
 										</div>
 									</div>
@@ -245,11 +245,31 @@
 										<div class="modal-body">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<p><input th:field="*{fullName}" type="text" placeholder="Họ và tên" ></p>
-													<p><input th:field="*{email}" type="email" placeholder="Email"></p>
-													<p><input th:field="*{phone}" type="text" placeholder="Số điện thoại"></p>
+													<p><input name="total-money" type="hidden" th:value="${tongTienGioHang+15000}" ></p>
+													<p><input name="cart-id" type="hidden" th:value="${cartId}" ></p>
+													<p><input th:field="*{fullName}" required="required" type="text" placeholder="Họ và tên" ></p>
+													<p><input th:field="*{email}" required="required" type="email" placeholder="Email"></p>
+													<p><input pattern="(0[3|5|7|8|9])+([0-9]{8})"
+															  title="Số điện thoại Việt Nam bao gồm 10 chữ số"
+															  required="required"
+															  th:field="*{phone}"
+															  type="text"
+															  placeholder="Số điện thoại"></p>
 													<p><input name="note" type="text" placeholder="Ghi chú"></p>
-													<p><textarea cols="30" rows="10" placeholder="Địa chỉ giao hàng"></textarea></p>
+													<fieldset>
+														<legend>Địa chỉ</legend>
+														<h5 style="color:red;">[[${addressNull}]]</h5>
+														<div class="form__radios">
+															<th:block th:each="item : ${listDiaChi}">
+																<div class="form__radio">
+																	<label th:for="'diaChi' + ${item.id}" th:text="${item.address}"></label>
+																	<input th:id="'diaChi' + ${item.id}" th:value="${item.id}" name="ship-detail-id" type="radio" />
+																</div>
+															</th:block>
+														</div>
+														<legend style="font-size: 15px;">Thêm địa chỉ mới</legend>
+														<p><textarea cols="30" rows="10" name="address" placeholder="Địa chỉ giao hàng"></textarea></p>
+													</fieldset>
 													<fieldset>
 														<legend>Phương thức thanh toán</legend>
 														<div class="form__radios">
@@ -274,10 +294,10 @@
 																<input value="Master Card" id="mastercard" name="payment-method" type="radio" />
 															</div>
 															<div class="form__radio">
-																<label for="mastercard">
+																<label for="thanhToanKhiNhanHang">
 																	<img width="14px" height="14px" src="/assets/img/icon/nhanhang.png" >
 																	Thanh toán khi nhận hàng</label>
-																<input value="Tiền mặt" id="mastercard" name="payment-method" type="radio" />
+																<input id="thanhToanKhiNhanHang" value="Tiền mặt" name="payment-method" type="radio" />
 															</div>
 														</div>
 													</fieldset>
@@ -285,7 +305,7 @@
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button formaction="/order/add" formmethod="post" type="submit" class="btn btn-primary">Thanh toán</button>
+											<button formaction="/mvc/order/add" formmethod="post" type="submit" class="btn btn-primary">Thanh toán</button>
 											<button type="button" class="btn btn-secondary"
 													data-dismiss="modal">Đóng</button>
 										</div>

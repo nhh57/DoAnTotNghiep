@@ -2,6 +2,7 @@ package com.example.ecommerce.model.helper;
 
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.model.CartDetail;
+import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.data.CartDataModel;
 import com.example.ecommerce.model.data.CartDetailDataModel;
 
@@ -26,6 +27,9 @@ public class CartHelper {
     }
     public int getNumberOfCart(List<CartDetailDataModel> list){
         int numberOfCart=0;
+        if(list == null || list.isEmpty()){
+            return 0;
+        }
         for(CartDetailDataModel item:list){
             numberOfCart+=item.getAmount();
         }
@@ -33,21 +37,30 @@ public class CartHelper {
     }
     public int getTotalMoney(List<CartDetailDataModel> list){
         int totalMoney=0;
+        if(list == null || list.isEmpty()){
+            return 0;
+        }
         for(CartDetailDataModel item:list){
-            totalMoney+=(item.getAmount()*item.getProductDataModel().getPrice().intValue());
+            totalMoney+=(item.getAmount()*item.getProductDataModel().getPrice());
         }
         return  totalMoney;
     }
 
     public int getTotalMoneyCart(List<CartDetail> list){
         int totalMoney=0;
-        for(CartDetail item:list){
-            totalMoney+=(item.getAmount()*item.getProductByProductId().getPrice().intValue());
+        if(list == null || list.isEmpty()){
+            return 0;
         }
-        return  totalMoney;
+        for(CartDetail item:list){
+            totalMoney+=(item.getAmount()*item.getProductByProductId().getPrice());
+        }
+        return totalMoney;
     }
     public int getNumberOfListCart(List<CartDetail> list){
         int numberOfCart=0;
+        if(list == null || list.isEmpty()){
+            return 0;
+        }
         for(CartDetail item:list){
             numberOfCart+=item.getAmount();
         }
@@ -56,5 +69,13 @@ public class CartHelper {
 
     public int getTotalMoneyOfOneProduct(CartDetail cartDetail){
         return  cartDetail.getAmount()*cartDetail.getProductByProductId().getPrice();
+    }
+    public boolean checkNullProductByProductId(List<CartDetail> listCart){
+        for(CartDetail item:listCart){
+            if(item.getProductByProductId()==null) {
+                return true;
+            }
+        }
+        return false;
     }
 }

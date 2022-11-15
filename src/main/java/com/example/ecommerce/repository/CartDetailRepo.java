@@ -12,8 +12,8 @@ import java.util.List;
 public interface CartDetailRepo extends JpaRepository<CartDetail,Integer> {
     @Query("SELECT c FROM CartDetail c WHERE c.cartId=?1")
     List<CartDetail> getCartDetail(Integer cartId);
-    @Query("SELECT cd FROM CartDetail cd WHERE cd.productId=?1")
-    CartDetail existByProductId(Integer productId);
+    @Query("SELECT cd FROM CartDetail cd WHERE cd.cartId=?1 AND cd.productId=?2")
+    CartDetail existByProductId(Integer cartId,Integer productId);
     @Modifying
     @Query("DELETE FROM CartDetail cd WHERE cd.cartId=?1 AND cd.productId=?2")
     void deleteByProductId(Integer cartId,Integer productId);

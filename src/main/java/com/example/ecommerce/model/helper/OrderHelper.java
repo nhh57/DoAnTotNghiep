@@ -5,7 +5,10 @@ import com.example.ecommerce.model.Orders;
 import com.example.ecommerce.model.data.OrderDataModel;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OrderHelper {
@@ -14,11 +17,11 @@ public class OrderHelper {
     public OrderDataModel getOrderDataModel(Orders orders){
         OrderDataModel orderDataModel=new OrderDataModel();
         orderDataModel.setId(orders.getId());
-        orderDataModel.setOrderDate(orders.getOrderDate()!=null?Utils.convertDateTimeToString(orders.getOrderDate()):null);
+        orderDataModel.setOrderDate(orders.getOrderDate()!=null?Utils.convertDateToString(orders.getOrderDate()):null);
         orderDataModel.setNote(orders.getNote());
         orderDataModel.setOrderStatus(orders.getOrderStatus());
         orderDataModel.setTotalMoney(orders.getTotalMoney().intValue());
-        orderDataModel.setDeliveryDate(orders.getDeliveryDate()!=null?Utils.convertDateTimeToString(orders.getDeliveryDate()):null);
+        orderDataModel.setDeliveryDate(orders.getDeliveryDate()!=null?Utils.convertDateToString(orders.getDeliveryDate()):null);
         orderDataModel.setAccountId(orders.getAccountId());
         orderDataModel.setShipDetailId(orders.getShipDetailId());
         orderDataModel.setPaymentMethod(orders.getPaymentMethod());
@@ -48,5 +51,16 @@ public class OrderHelper {
         orders.setPaymentMethod(orderDataModel.getPaymentMethod());
         orders.setIsDeleted(orderDataModel.getIsDeleted());
         return  orders;
+    }
+
+    // Sau 5 ngày đặt hàng
+    public Timestamp getDeliveryDate(){
+        Timestamp ts=new Timestamp(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(ts);
+        cal.add(Calendar.DAY_OF_WEEK, 5);
+        ts.setTime(cal.getTime().getTime()); // or
+        ts = new Timestamp(cal.getTime().getTime());
+        return ts;
     }
 }

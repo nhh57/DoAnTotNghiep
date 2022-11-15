@@ -29,7 +29,7 @@ public class CartDetailServiceImpl implements CartDetailService {
 
     @Override
     public CartDetailDataModel save(CartDetailDataModel cartDetailDataModel) {
-        CartDetail cartDetail=cartDetailRepo.existByProductId(cartDetailDataModel.getProductId());
+        CartDetail cartDetail=cartDetailRepo.existByProductId(cartDetailDataModel.getCartId(),cartDetailDataModel.getProductId());
         if(cartDetail==null){
             CartDetail resultSaved= cartDetailRepo.save(cartDetailHelper.getCartDetail(cartDetailDataModel));
             return cartDetailHelper.getCartDetailDataModel(resultSaved);
