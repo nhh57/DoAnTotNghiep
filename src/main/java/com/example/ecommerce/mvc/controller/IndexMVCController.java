@@ -38,50 +38,67 @@ public class IndexMVCController {
     @Autowired
     CartDetailRepo cartDetailRepo;
 
-    CartHelper cartHelper=new CartHelper();
+    CartHelper cartHelper = new CartHelper();
 
     @Autowired
     SessionDAO session;
 
-    ProductHelper productHelper=new ProductHelper();
+    ProductHelper productHelper = new ProductHelper();
+
     @GetMapping("/index")
     public String index(Model model, @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString,
                         @RequestParam("txtSearch") Optional<String> txtSearch) {
-        int soTrang=!soTrangString.isPresent()?1:Integer.parseInt(soTrangString.get());
-        int soSanPham=!soSanPhamString.isPresent()?6:Integer.parseInt(soSanPhamString.get());
-        int tongSoTrang=txtSearch.isPresent()
-                ?productHelper.getTotalPage(soSanPham, productDAO.findByName(txtSearch.get()))
-                :productHelper.getTotalPage(soSanPham, productDAO.findProductExist());
-        if(soTrang<1){
-            soTrang=1;
-        }else if(soTrang>tongSoTrang){
-            soTrang=tongSoTrang;
+        int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
+        int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
+        int tongSoTrang = txtSearch.isPresent()
+                ? productHelper.getTotalPage(soSanPham, productDAO.findByName(txtSearch.get()))
+                : productHelper.getTotalPage(soSanPham, productDAO.findProductExist());
+        if (soTrang < 1) {
+            soTrang = 1;
+        } else if (soTrang > tongSoTrang) {
+            soTrang = tongSoTrang;
         }
         model.addAttribute("soTrangHienTai", soTrang);
         model.addAttribute("soSanPhamHienTai", soSanPham);
         model.addAttribute("tongSoTrang", tongSoTrang);
-        Pageable pageable = PageRequest.of(soTrang-1, soSanPham);
-        Page<Product> pageProduct=txtSearch.isPresent()
-                ?productDAO.findByName(pageable,txtSearch.get())
-                :productDAO.findAll(pageable);
-        List<Product> list=pageProduct.getContent();
-        if(message.isPresent()) {
-            model.addAttribute("message",message.get());
+        Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
+        Page<Product> pageProduct = txtSearch.isPresent()
+                ? productDAO.findByName(pageable, txtSearch.get())
+                : productDAO.findAll(pageable);
+        List<Product> list = pageProduct.getContent();
+        if (message.isPresent()) {
+            model.addAttribute("message", message.get());
         }
-        model.addAttribute("listProduct",list);
+        model.addAttribute("listProduct", list);
         //Category
-        List<Categories> listCategory=categoryDAO.findAll();
-        model.addAttribute("listCategory",listCategory);
+        List<Categories> listCategory = categoryDAO.findAll();
+        model.addAttribute("listCategory", listCategory);
         //Set số lượng giỏ hàng
-        Account khachHang=(Account) session.get("user");
-        if(khachHang!=null) {
-            List<CartDetail> listCart=cartDetailRepo.getCartDetail(khachHang.getCartId());
-            model.addAttribute("tongSoLuongGioHang",cartHelper.getNumberOfListCart(listCart));
-            model.addAttribute("sessionUsername",khachHang.getUsername());
-        }else{
-            model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
+        Account khachHang = (Account) session.get("user");
+        Integer cartId = khachHang != null ? khachHang.getCartId() : null;
+        if (khachHang != null) {
+            shoppingCartDAO.getAll().forEach(item -> {
+                CartDetail cartDetail = cartDetailRepo.existByProductId(cartId, item.getId());
+                if (cartDetail != null) {
+                    cartDetail.setAmount(cartDetail.getAmount() + item.getSoLuong());
+                    cartDetailRepo.saveAndFlush(cartDetail);
+                } else {
+                    CartDetail cartDetailNew = new CartDetail();
+                    cartDetailNew.setCartId(cartId);
+                    cartDetailNew.setProductId(item.getId());
+                    cartDetailNew.setAmount(item.getSoLuong());
+                    cartDetailRepo.saveAndFlush(cartDetailNew);
+                }
+            });
+            shoppingCartDAO.clear();
+
+            List<CartDetail> listCart = cartDetailRepo.getCartDetail(khachHang.getCartId());
+            model.addAttribute("tongSoLuongGioHang", cartHelper.getNumberOfListCart(listCart));
+            model.addAttribute("sessionUsername", khachHang.getUsername());
+        } else {
+            model.addAttribute("tongSoLuongGioHang", shoppingCartDAO.getCount());
         }
         return "customer/index";
     }

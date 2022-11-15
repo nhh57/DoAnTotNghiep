@@ -75,4 +75,15 @@ public class ShipDetail extends BaseEntity implements Serializable {
     public void setAccountByAccountId(Account accountByAccountId) {
         this.accountByAccountId = accountByAccountId;
     }
+
+    public ShipDetail() {
+
+    }
+
+    public ShipDetail(String phone, String address, int accountId, Boolean isDeleted) {
+        this.phone = phone;
+        this.address = address;
+        this.accountId = accountId;
+        this.isDeleted = isDeleted;
+    }
 }

@@ -3,12 +3,14 @@ package com.example.ecommerce.mvc.controller;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.CartDetail;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.mvc.model.ShoppingCart;
 import com.example.ecommerce.repository.CartDetailRepo;
 import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.repository.ShipDetailRepo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +37,9 @@ public class ShoppingCartController {
 	CartDetailRepo cartDetailRepo;
 
 	@Autowired
+	ShipDetailRepo shipDetailRepo;
+
+	@Autowired
 	SessionDAO session;
 
 	CartHelper cartHelper=new CartHelper();
@@ -41,28 +47,53 @@ public class ShoppingCartController {
 	@GetMapping("")
 	public String viewCart(Model model,
 						   @RequestParam("orderSaved") Optional<String> orderSaved,
+						   @RequestParam("addressNull") Optional<String> addressNull,
 						   @RequestParam("orderId") Optional<String> orderId,
-						   @RequestParam("error") Optional<String> error,
 						   @ModelAttribute("user") Account user) {
+		if(addressNull.isPresent()){
+			model.addAttribute("addressNull","Chọn hoặc điền 1 địa chỉ!");
+		}
 		if(orderSaved.isPresent()){
 			if(orderSaved.get().equals("true") && orderId.isPresent()){
 				model.addAttribute("orderSaved",true);
 				model.addAttribute("orderIdSaved",orderId.get());
+			}else {
+				model.addAttribute("error","Đặt hàng thất bại");
 			}
-		}
-		if(error.isPresent()){
-			model.addAttribute("error","Đặt hàng thất bại");
 		}
 		Account khachHang=session.get("user") != null ? (Account) session.get("user") : null;
 		Integer cartId= khachHang != null ? khachHang.getCartId() : null;
 		if(khachHang!=null) {
 			model.addAttribute("sessionUsername",khachHang.getUsername());
 			model.addAttribute("user",khachHang);
+			shoppingCartDAO.getAll().forEach(item -> {
+				CartDetail cartDetail=cartDetailRepo.existByProductId(cartId,item.getId());
+				if(cartDetail != null){
+					cartDetail.setAmount(cartDetail.getAmount()+item.getSoLuong());
+					cartDetailRepo.saveAndFlush(cartDetail);
+				}else{
+					CartDetail cartDetailNew=new CartDetail();
+					cartDetailNew.setCartId(cartId);
+					cartDetailNew.setProductId(item.getId());
+					cartDetailNew.setAmount(item.getSoLuong());
+					cartDetailRepo.saveAndFlush(cartDetailNew);
+				}
+			});
+			shoppingCartDAO.clear();
 		}
 		if(khachHang != null && cartId != null){
 			List<CartDetail> listCart=cartDetailRepo.getCartDetail(cartId);
+			if(listCart.size() > 0 ){
+				if(cartHelper.checkNullProductByProductId(listCart)){
+					for(CartDetail item:listCart){
+						item.setProductByProductId(productDAO.findById(item.getProductId()).get());
+					}
+				}
+			}
+			model.addAttribute("cartId",cartId);
 			model.addAttribute("checkCart",true);
 			model.addAttribute("listGioHangLogin",listCart);
+			model.addAttribute("listDiaChi",shipDetailRepo.findByAccountId(khachHang.getId()));
 			model.addAttribute("tongTienGioHang",cartHelper.getTotalMoneyCart(listCart));
 			model.addAttribute("tongSoLuongGioHang",cartHelper.getNumberOfListCart(listCart));
 		}else{
@@ -82,7 +113,7 @@ public class ShoppingCartController {
 		Integer maSanPham=Integer.parseInt(maSanPhamString);
 		Integer soLuong=Integer.parseInt(soLuongString);
 		if(khachHang != null && cartId != null){
-			CartDetail cartDetail=cartDetailRepo.existByProductId(maSanPham);
+			CartDetail cartDetail=cartDetailRepo.existByProductId(cartId,maSanPham);
 			if(cartDetail != null){
 				cartDetail.setAmount(cartDetail.getAmount()+soLuong);
 				cartDetailRepo.save(cartDetail);
@@ -126,7 +157,7 @@ public class ShoppingCartController {
 		Account khachHang=session.get("user") != null ? (Account) session.get("user") : null;
 		Integer cartId= khachHang != null ? khachHang.getCartId() : null;
 		if(khachHang != null && cartId != null){
-			CartDetail item=cartDetailRepo.existByProductId(maSanPham);
+			CartDetail item=cartDetailRepo.existByProductId(cartId,maSanPham);
 			item.setAmount(soLuongSanPham);
 			CartDetail cartDetailSaved=cartDetailRepo.save(item);
 			List<CartDetail> listCart=cartDetailRepo.getCartDetail(cartId);

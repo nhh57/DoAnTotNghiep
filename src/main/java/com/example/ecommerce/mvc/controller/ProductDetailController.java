@@ -37,6 +37,7 @@ public class ProductDetailController {
     @GetMapping("")
     public String index(Model model, @RequestParam("id") Optional<String> productIdParam){
         if(productIdParam.isPresent()){
+            model.addAttribute("productIdParam",productIdParam);
             int productId=Integer.parseInt(productIdParam.get());
             Product product=productDAO.findById(productId).get();
             model.addAttribute("product",product);
