@@ -65,5 +65,7 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     @Query("SELECT a FROM Account a WHERE a.username=?1")
     Account findByUsername(String username);
 
+    @Query("SELECT a FROM Account a WHERE a.email=?2 OR a.phone=?2 AND a.username=?1")
+    Account findByEmailOrPhone(String username,String emailOrPhone);
 
 }
