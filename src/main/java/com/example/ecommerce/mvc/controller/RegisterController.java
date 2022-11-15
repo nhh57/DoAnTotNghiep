@@ -9,7 +9,6 @@ import com.example.ecommerce.mvc.validate.AccountValidate;
 import com.example.ecommerce.repository.AccountRepo;
 import com.example.ecommerce.repository.CartRepo;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
