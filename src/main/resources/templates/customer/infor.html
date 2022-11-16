@@ -38,6 +38,7 @@
     <link rel="stylesheet" th:href="@{/css/menu_custom.css}">
     <!-- custom open modal -->
     <link rel="stylesheet" th:href="@{/css/infor.css}">
+    <link rel="stylesheet" th:href="@{/css/modal_custom.css}">
 </head>
 <body>
 
@@ -87,7 +88,7 @@
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/change-password}">Đổi
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information/change-password}">Đổi
                                                 mật
                                                 khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
@@ -162,27 +163,30 @@
         <div class="col-3">
             <div class="sidebar show">
                 <div class="sidebar-header">
-                    <p class="sidebar-header-name">[[${sessionUsername}]]</p>
-                    <span class="sidebar-header-update">
-                        <i class="fa-solid fa-pen"></i>
-                        Sửa hồ sơ
-                    </span>
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-4" >
+                            <img style="border-radius: 50%;" src="/assets/logo/user.png" />
+                        </div>
+                        <div class="col-8">
+                            <p style="font-size:16px;padding-top: 8px;">[[${sessionUsername}]]</p>
+                        </div>
+                    </div>
                 </div>
                 <ul class="nav first">
-                    <li class="active">
+                    <li class="active" id="containerForm">
                         <a class="feat-btn" data-toggle="pill" data-target="#user-info" aria-selected="true">
                             <i class="fa-regular fa-user"></i>
                             Tài khoản của tôi
                             <span class="fas fa-caret-down first"></span>
                         </a>
                         <ul class="feat-show nav">
-                            <li class="feat-show-btn active first">
+                            <li class="feat-show-btn active first" id="hoSo">
                                 <a data-toggle="pill" data-target="#user-info" aria-selected="true">Hồ sơ</a>
                             </li>
-                            <li class="feat-show-btn">
+                            <li class="feat-show-btn" id="diaChi">
                                 <a data-toggle="pill" data-target="#user-address" aria-selected="false">Địa chỉ</a>
                             </li>
-                            <li class="feat-show-btn">
+                            <li class="feat-show-btn"  id="doiMatKhau">
                                 <a data-toggle="pill" data-target="#user-pass" aria-selected="false">Đổi mật khẩu</a>
                             </li>
                         </ul>
@@ -203,7 +207,7 @@
         <div class="col-9">
             <div class="tab-content" id="v-pills-tabContent">
                 <!-- Hồ sơ -->
-                <div class="tab-pane fade fade show first active" id="user-info">
+                <div class="tab-pane fade show first active" id="user-info">
                     <div class="user-info-head">
                         <p class="head-title">Hồ sơ của tôi</p>
                         <span class="head-text">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
@@ -217,7 +221,6 @@
                                 </div>
                                 <div class="col-6">
                                     <span id="exampleInputUserName">[[${userInfor.username}]]</span>
-                                    <input name="id" type="hidden" class="form-control" th:value="${userInfor.id}">
                                     <input name="username" type="hidden" class="form-control" th:value="${userInfor.username}">
                                 </div>
                             </div>
@@ -226,7 +229,7 @@
                                     <label for="exampleInputName">Họ Và Tên:</label>
                                 </div>
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="exampleInputName" name="fullName"
+                                    <input type="text" class="form-control" id="exampleInputName" name="fullName" required="required"
                                            placeholder="Nhập họ và tên" th:value="${userInfor.fullName}">
                                 </div>
                             </div>
@@ -235,7 +238,7 @@
                                     <label for="exampleInputEmail1">Email:</label>
                                 </div>
                                 <div class="col-6">
-                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email"
+                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" required="required"
                                            placeholder="Nhập email" th:value="${userInfor.email}">
                                 </div>
                             </div>
@@ -245,7 +248,11 @@
                                 </div>
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="exampleInputUserPhone" name="phone"
-                                           placeholder="Nhập số điện thoại" th:value="${userInfor.phone}">
+                                           placeholder="Nhập số điện thoại"
+                                           pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                           title="Số điện thoại Việt Nam bao gồm 10 chữ số"
+                                           required="required"
+                                           th:value="${userInfor.phone}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -281,8 +288,7 @@
                                     <label for="exampleInputDate">Ngày sinh:</label>
                                 </div>
                                 <div class="col-6">
-                                    <input type="date" name="dateOfBirth" class="form-control" value="2022-11-11">
-                                    <input type="text" class="form-control" th:th:value="${#dates.format(userInfor.dateOfBirth, 'YYYY-MM-DD')}">
+                                    <input required="required" type="date" name="dateOfBirth" class="form-control" th:value="${#dates.format(userInfor.dateOfBirth, 'YYYY-MM-dd')}">
                                 </div>
                             </div>
                             <div class="form-group row ">
@@ -299,7 +305,8 @@
                 <div class="tab-pane fade" id="user-address">
                     <div class="address-head">
                         <p class="head-title">Địa chỉ của tôi</p>
-                        <button class="btn btn-success btnCustom">
+                        <button data-toggle="modal"
+                                data-target="#modalShipDetail" class="btn btn-success btnCustom">
                             <i class="fa-solid fa-plus address-btn-icon"></i>
                             <span>Thêm địa chỉ mới</span>
                         </button>
@@ -307,77 +314,122 @@
                     <hr>
                     <div class="address-body">
                         <div class="address-body-list">
-                            <div class="address-body-item">
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <div class="info-user">
-                                            <div class="info-user-group">
-                                                <p class="info-user-name">Đàm Đình Cường</p>
-                                                <span class="info-user-phone">023584775</span>
-                                            </div>
-                                            <div class="info-user-address">
-                                                435/18/17 Lê Văn Thọ phường 9 quận Gò Vấp Thành phố Hồ Chí Minh
+                            <th:block th:each="item : ${listShipDetail}">
+                                <div class="address-body-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <div class="info-user">
+                                                <div class="info-user-group">
+                                                    <p class="info-user-name">[[${item.fullName}]]</p>
+                                                    <span class="info-user-phone">[[${item.phone}]]</span>
+                                                </div>
+                                                <div class="info-user-address">
+                                                    [[${item.address}]]
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <div class="address-btn-group">
-                                            <div class="btn-group-first">
-                                                <button class="btn btn-primary btnCustom">Cập nhật</button>
-                                                <button class="btn btn-danger btnCustom">Xóa</button>
+                                        <div class="col-4 text-right">
+                                            <div class="address-btn-group">
+                                                <div class="btn-group-first">
+                                                    <button data-toggle="modal"
+                                                            th:attr="data-target='#modalUpdate'+${item.id}"
+                                                            class="btn btn-primary btnCustom">Cập nhật</button>
+                                                    <button data-toggle="modal"
+                                                            th:attr="data-target='#modalDelete'+${item.id}"
+                                                            class="btn btn-danger btnCustom">Xóa</button>
+                                                </div>
                                             </div>
+                                            <!--Modal Cập nhật chỉ -->
+                                            <form>
+                                                <div class="modal fade"
+                                                     th:id="'modalUpdate' + ${item.id}"
+                                                     tabindex="-1" role="dialog"
+                                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Thông tin địa chỉ</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="card-body">
+                                                                    <div class="billing-address-form">
+                                                                        <p><input th:value="${item.id}"
+                                                                                 type="hidden"
+                                                                                 name="id"></p>
+                                                                        <p><input th:value="${item.fullName}"
+                                                                                  type="text"
+                                                                                  name="fullName"
+                                                                                  placeholder="Họ và tên"
+                                                                                  required="required"></p>
+                                                                        <p><input th:value="${item.phone}" type="text"
+                                                                                  pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                                                                  name="phone"
+                                                                                  title="Số điện thoại Việt Nam bao gồm 10 chữ số"
+                                                                                  required="required"
+                                                                                  placeholder="Số điện thoại"></p>
+                                                                        <p><textarea
+                                                                                th:value="${item.address}"
+                                                                                th:text="${item.address}"
+                                                                                cols="30" rows="10"
+                                                                                required="required"
+                                                                                name="address"
+                                                                                placeholder="Địa chỉ giao hàng"></textarea></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button formaction="/mvc/information/ship-detail/update" formmethod="post" type="submit" class="btn btn-primary">Hoàn thành</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Đóng</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <!-- end modal địa chỉ -->
+
+                                            <!--Modal xóa địa chỉ -->
+                                            <form>
+                                                <div class="modal fade"
+                                                     th:id="'modalDelete' + ${item.id}"
+                                                     tabindex="-1" role="dialog"
+                                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="card-body">
+                                                                    <div class="billing-address-form">
+                                                                        <input th:value="${item.id}"
+                                                                                 type="hidden"
+                                                                                 name="id">
+                                                                        <p class="pThongBao">Bạn có muốn xóa địa chỉ này không?</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button formaction="/mvc/information/ship-detail/delete" formmethod="post" type="submit" class="btn btn-danger">Có</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Không</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <!-- end modal địa chỉ -->
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="address-body-item">
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <div class="info-user">
-                                            <div class="info-user-group">
-                                                <p class="info-user-name">Đàm Đình Cường</p>
-                                                <span class="info-user-phone">023584775</span>
-                                            </div>
-                                            <div class="info-user-address">
-                                                435/18/17 Lê Văn Thọ phường 9 quận Gò Vấp Thành phố Hồ Chí Minh
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <div class="address-btn-group">
-                                            <div class="btn-group-first">
-                                                <button class="btn btn-primary btnCustom">Cập nhật</button>
-                                                <button class="btn btn-danger btnCustom">Xóa</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="address-body-item">
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <div class="info-user">
-                                            <div class="info-user-group">
-                                                <p class="info-user-name">Đàm Đình Cường</p>
-                                                <span class="info-user-phone">023584775</span>
-                                            </div>
-                                            <div class="info-user-address">
-                                                435/18/17 Lê Văn Thọ phường 9 quận Gò Vấp Thành phố Hồ Chí Minh
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <div class="address-btn-group">
-                                            <div class="btn-group-first">
-                                                <button class="btn btn-primary btnCustom">Cập nhật</button>
-                                                <button class="btn btn-danger btnCustom">Xóa</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <hr>
+                            </th:block>
                         </div>
 
                     </div>
@@ -394,36 +446,52 @@
                         <form>
                             <div class="form-group row">
                                 <div class="col-3 text-right">
-                                    <label for="current-pass">Mật Khẩu Hiện Tại:</label>
+                                    <label for="currentPass">Mật khẩu hiện tại:</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" id="current-pass"
+                                    <input type="password" name="currentPassword" class="form-control"
+                                           th:value="${currentPassValue}"
+                                           id="currentPass" required="required" onkeyup='saveValue(this);'
                                            placeholder="Nhập mật khẩu hiện tại">
+                                    <small th:if="${errorPass}" class="text-danger"><i>Sai mật khẩu</i></small>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3 text-right">
-                                    <label for="new-pass">Mật Khẩu Mới:</label>
+                                    <label for="newPassword">Mật khẩu mới:</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" id="new-pass"
-                                           placeholder="Nhập mật khẩu mới">
+                                    <input type="password"
+                                           name="newPassword"
+                                           th:value="${newPassValue}"
+                                           placeholder="Nhập mật khẩu mới"
+                                           id="newPassword"
+                                           onkeyup='saveValue(this);'
+                                           class="form-control"
+                                           title="Mật khẩu bao gồm 8 ký tự, chữ in hoa, chữ cái thường và số"
+                                           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                           required="required" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3 text-right">
-                                    <label for="confirm-pass">Xác Nhận Mật Khẩu:</label>
+                                    <label for="confirmPassword">Xác nhận mật khẩu:</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" id="confirm-pass"
-                                           placeholder="Xác nhận mật khẩu">
+                                    <input type="password" name="confirmPassword"
+                                           id="rePassword" required="required"
+                                           th:value="${confirmPassValue}"
+                                           onkeyup='saveValue(this);'
+                                           placeholder="Xác nhận mật khẩu mới"
+                                           class="form-control" />
+                                    <small th:if="${errorRePass}" class="text-danger"><i>Nhập lại mật khẩu sai</i></small>
                                 </div>
                             </div>
                             <div class="form-group row ">
                                 <div class="col-3">
                                 </div>
                                 <div class="col-6">
-                                    <button class="btn btn-primary btnCustom">Lưu</button>
+                                    <button formaction="/mvc/information/change-password" formmethod="post" class="btn btn-primary btnCustom">Lưu</button>
                                 </div>
                             </div>
                         </form>
@@ -476,6 +544,75 @@
             </div>
         </div>
     </div>
+    <!--start modal-->
+    <div th:if="${success!=null}" class="modal fade"
+         id="modalNotify2"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+                    <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="billing-address-form">
+                            <p class="pThongBao">[[${success}]]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                            data-dismiss="modal">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-->
+
+    <!--Modal thêm địa chỉ -->
+    <form th:object="${shipDetail}">
+        <div class="modal fade" id="modalShipDetail" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Địa chỉ mới</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="billing-address-form">
+                                <p><input th:field="*{fullName}" type="text" placeholder="Họ và tên" required="required"></p>
+                                <p><input th:field="*{phone}" type="text"
+                                          pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                          title="Số điện thoại Việt Nam bao gồm 10 chữ số"
+                                          required="required"
+                                          placeholder="Số điện thoại"></p>
+                                <p><textarea th:field="*{address}" cols="30" rows="10" required="required"  placeholder="Địa chỉ giao hàng"></textarea></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button formaction="/mvc/information/ship-detail/add" formmethod="post" type="submit" class="btn btn-primary">Hoàn thành</button>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- end modal địa chỉ -->
+    <input type="hidden" id="clickElement" th:value="${clickElement}" >
+    <input type="hidden" id="changePassSuccess" th:value="${changePassSuccess}" >
 </div>
 <!-- end infor -->
 

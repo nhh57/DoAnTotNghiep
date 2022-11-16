@@ -71,7 +71,7 @@ public class LoginController {
         if(loginSuccess) {
             return !path.isEmpty() ? "redirect:/mvc/"+path : "redirect:/mvc/index";
         }else {
-            return "redirect:/mvc/login?error=LoginFail";
+            return !path.isEmpty() ? "redirect:/mvc/login?error=LoginFail&urlReturn="+path :"redirect:/mvc/login?error=LoginFail";
         }
     }
 

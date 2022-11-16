@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -419,5 +420,11 @@ public class Utils {
             tongSoTrang = tempInt;
         }
         return tongSoTrang;
+    }
+
+    public static Date converStringToDate(String dateString) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateResult = (Date)formatter.parse(dateString);
+        return dateResult;
     }
 }
