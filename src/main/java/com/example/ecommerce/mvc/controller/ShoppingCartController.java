@@ -46,21 +46,7 @@ public class ShoppingCartController {
 	
 	@GetMapping("")
 	public String viewCart(Model model,
-						   @RequestParam("orderSaved") Optional<String> orderSaved,
-						   @RequestParam("addressNull") Optional<String> addressNull,
-						   @RequestParam("orderId") Optional<String> orderId,
 						   @ModelAttribute("user") Account user) {
-		if(addressNull.isPresent()){
-			model.addAttribute("addressNull","Chọn hoặc điền 1 địa chỉ!");
-		}
-		if(orderSaved.isPresent()){
-			if(orderSaved.get().equals("true") && orderId.isPresent()){
-				model.addAttribute("orderSaved",true);
-				model.addAttribute("orderIdSaved",orderId.get());
-			}else {
-				model.addAttribute("error","Đặt hàng thất bại");
-			}
-		}
 		Account khachHang=session.get("user") != null ? (Account) session.get("user") : null;
 		Integer cartId= khachHang != null ? khachHang.getCartId() : null;
 		if(khachHang!=null) {

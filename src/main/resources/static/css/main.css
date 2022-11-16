@@ -2758,3 +2758,10 @@ table.order-details tbody td {
   vertical-align: middle;
   width: 100%;
 }
+
+.customBtn{
+    margin: 10px;
+    border-radius: 10px;
+    padding:8px;
+    float: right;
+}

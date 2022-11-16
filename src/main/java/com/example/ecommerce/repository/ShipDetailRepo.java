@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ShipDetailRepo extends JpaRepository<ShipDetail, Integer> {
-    @Query("SELECT sd FROM ShipDetail sd WHERE sd.accountId=?1")
+    @Query("SELECT sd FROM ShipDetail sd WHERE sd.accountId=?1 AND sd.isDeleted = 0")
     List<ShipDetail> findByAccountId(Integer accountId);
 }
