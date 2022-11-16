@@ -408,4 +408,16 @@ public class Utils {
             return new Timestamp(System.currentTimeMillis());// Trả về thời gian hiện tại
         }
     }
+
+    public static int getTotalPage(int soSanPham,int tongSoSanPham) {
+        int tongSoTrang = 1;
+        double tempDouble = (double) tongSoSanPham / soSanPham;
+        int tempInt = (int) tempDouble;
+        if (tempDouble - tempInt > 0) {
+            tongSoTrang = tempInt + 1;
+        } else {
+            tongSoTrang = tempInt;
+        }
+        return tongSoTrang;
+    }
 }

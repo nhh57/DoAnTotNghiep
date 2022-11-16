@@ -7,6 +7,7 @@ public class ShipDetailHelper {
     public ShipDetailDataModel getShipDetailDataModel(ShipDetail shipDetail){
         ShipDetailDataModel shipDetailDataModel=new ShipDetailDataModel();
         shipDetailDataModel.setId(shipDetail.getId());
+        shipDetailDataModel.setFullName(shipDetail.getFullName());
         shipDetailDataModel.setPhone(shipDetail.getPhone());
         shipDetailDataModel.setAddress(shipDetail.getAddress());
         return shipDetailDataModel;

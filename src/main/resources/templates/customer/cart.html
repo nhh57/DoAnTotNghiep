@@ -224,95 +224,11 @@
 						</tbody>
 					</table>
 					<div class="cart-buttons">
-						<a th:if="${sessionUsername==null && tongTienGioHang!=0}" class="boxed-btn black" th:href="@{/mvc/login?error=errorNoLogin&urlReturn=shopping-cart}">
+						<a th:if="${sessionUsername==null && tongTienGioHang!=0}" class="boxed-btn black" th:href="@{/mvc/login?error=errorNoLogin&urlReturn=order}">
 							Thanh toán
 						</a>
 						<a th:if="${sessionUsername!=null && tongTienGioHang!=0}" class="boxed-btn black"
-						   data-toggle="modal"
-						   data-target="#exampleModalCenter">Thanh toán</a>
-						<!-- Modal -->
-						<form th:object="${user}">
-							<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-								 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLongTitle">Thông tin khách hàng</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<div class="card-body">
-												<div class="billing-address-form">
-													<p><input name="total-money" type="hidden" th:value="${tongTienGioHang+15000}" ></p>
-													<p><input name="cart-id" type="hidden" th:value="${cartId}" ></p>
-													<p><input th:field="*{fullName}" required="required" type="text" placeholder="Họ và tên" ></p>
-													<p><input th:field="*{email}" required="required" type="email" placeholder="Email"></p>
-													<p><input pattern="(0[3|5|7|8|9])+([0-9]{8})"
-															  title="Số điện thoại Việt Nam bao gồm 10 chữ số"
-															  required="required"
-															  th:field="*{phone}"
-															  type="text"
-															  placeholder="Số điện thoại"></p>
-													<p><input name="note" type="text" placeholder="Ghi chú"></p>
-													<fieldset>
-														<legend>Địa chỉ</legend>
-														<h5 style="color:red;">[[${addressNull}]]</h5>
-														<div class="form__radios">
-															<th:block th:each="item : ${listDiaChi}">
-																<div class="form__radio">
-																	<label th:for="'diaChi' + ${item.id}" th:text="${item.address}"></label>
-																	<input th:id="'diaChi' + ${item.id}" th:value="${item.id}" name="ship-detail-id" type="radio" />
-																</div>
-															</th:block>
-														</div>
-														<legend style="font-size: 15px;">Thêm địa chỉ mới</legend>
-														<p><textarea cols="30" rows="10" name="address" placeholder="Địa chỉ giao hàng"></textarea></p>
-													</fieldset>
-													<fieldset>
-														<legend>Phương thức thanh toán</legend>
-														<div class="form__radios">
-															<div class="form__radio">
-																<label for="visa"><svg class="icon">
-																	<use xlink:href="#icon-visa" />
-																</svg>Visa Payment</label>
-																<input checked id="visa" value="Visa" name="payment-method" type="radio" />
-															</div>
-
-															<div class="form__radio">
-																<label for="paypal"><svg class="icon">
-																	<use xlink:href="#icon-paypal" />
-																</svg>PayPal</label>
-																<input id="paypal" value="Paypal" name="payment-method" type="radio" />
-															</div>
-
-															<div class="form__radio">
-																<label for="mastercard"><svg class="icon">
-																	<use xlink:href="#icon-mastercard" />
-																</svg>Master Card</label>
-																<input value="Master Card" id="mastercard" name="payment-method" type="radio" />
-															</div>
-															<div class="form__radio">
-																<label for="thanhToanKhiNhanHang">
-																	<img width="14px" height="14px" src="/assets/img/icon/nhanhang.png" >
-																	Thanh toán khi nhận hàng</label>
-																<input id="thanhToanKhiNhanHang" value="Tiền mặt" name="payment-method" type="radio" />
-															</div>
-														</div>
-													</fieldset>
-												</div>
-											</div>
-										</div>
-										<div class="modal-footer">
-											<button formaction="/mvc/order/add" formmethod="post" type="submit" class="btn btn-primary">Thanh toán</button>
-											<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Đóng</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</form>
+						   th:href="@{/mvc/order}">Thanh toán</a>
 					</div>
 				</div>
 			</div>
@@ -320,36 +236,6 @@
 	</div>
 </div>
 <!-- end cart -->
-
-<!--start modal-->
-<div th:if="${orderSaved}" class="modal fade"
-	 id="modalNotify"
-	 tabindex="-1"
-	 role="dialog"
-	 aria-labelledby="exampleModalCenterTitle"
-	 aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Đơn hàng</h5>
-				<button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="card-body">
-					<div class="billing-address-form">
-						<p class="pDonHang">Đơn hàng của bạn đã được đặt thành công! Mã đơn hàng của bạn là:[[${orderIdSaved}]]</p>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" data-dismiss="modal" class="btn btn-primary">Đồng ý</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!--end modal-->
 
 <!-- logo carousel -->
 <div class="logo-carousel-section">

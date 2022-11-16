@@ -17,6 +17,9 @@ public class ShipDetail extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "address", nullable = true, length = -1)
     private String address;
+
+    @Column(name = "full_name", nullable = true)
+    private String fullName;
     @Basic
     @Column(name = "account_id", nullable = true, length = -1)
     private int accountId;
@@ -80,9 +83,18 @@ public class ShipDetail extends BaseEntity implements Serializable {
 
     }
 
-    public ShipDetail(String phone, String address, int accountId, Boolean isDeleted) {
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public ShipDetail(String phone, String address, String fullName, int accountId, Boolean isDeleted) {
         this.phone = phone;
         this.address = address;
+        this.fullName = fullName;
         this.accountId = accountId;
         this.isDeleted = isDeleted;
     }
