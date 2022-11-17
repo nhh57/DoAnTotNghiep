@@ -42,6 +42,7 @@ public class InforController {
 
     @GetMapping("")
     public String view(Model model,@ModelAttribute("shipDetail") ShipDetail shipDetail,
+                       @RequestParam Optional<String> tag,
                        @RequestParam Optional<String> success,
                        @RequestParam Optional<String> errorPass,
                        @RequestParam Optional<String> currentPassword,
@@ -73,6 +74,14 @@ public class InforController {
             model.addAttribute("userInfor",accountRepo.findByUsername(khachHang.getUsername()));
             model.addAttribute("listShipDetail",shipDetailRepo.findByAccountId(khachHang.getId()));
         }
+        if(tag.isPresent()){
+            if(tag.get().equals("change-password")){
+                model.addAttribute("clickElement","doiMatKhau");
+            }else if(tag.get().equals("information")){
+                model.addAttribute("clickElement","hoSo");
+            }
+        }
+
         if(success.isPresent()){
             if(success.get().equals("saved")){
                 model.addAttribute("clickElement","hoSo");

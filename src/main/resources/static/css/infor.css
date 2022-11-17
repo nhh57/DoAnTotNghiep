@@ -85,15 +85,7 @@
 .sidebar-left div ul li a span.rotate {
   transform: translateY(-50%) rotate(-180deg);
 }
-/* .content{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  color: #202020;
-  z-index: -1;
-  text-align: center;
-} */
+
 .content .header {
   font-size: 45px;
   font-weight: 600;
@@ -180,7 +172,6 @@ legend {
   background: #6225e6;
   transition: 1s;
   box-shadow: 6px 6px 0 black;
-  /* transform: skewX(-15deg); */
 }
 
 .cta:focus {

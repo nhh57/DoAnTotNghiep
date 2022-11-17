@@ -87,12 +87,12 @@
                                                 Xin chào, [[${sessionUsername}]]</i>
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information/change-password}">Đổi
+                                            <a class="dropdown-item dropdownCustom" href="/mvc/information?tag=information">Thông tin</a>
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information?tag=change-password}">Đổi
                                                 mật
                                                 khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
-                                               th:href="@{/mvc/logout?urlReturn=shopping-cart}">Đăng xuất</a>
+                                               th:href="@{/mvc/logout}">Đăng xuất</a>
                                         </div>
                                     </div>
 
