@@ -12,11 +12,29 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 
+/**
+ * <p>WarehouseRepo</p>
+ */
 @Repository("WarehouseRepo")
 public interface WarehouseRepo extends JpaRepository<Warehouse, Integer> {
-@Query(value = "SELECT * FROM ware_house  WHERE (?1 <> '' AND (product_id LIKE CONCAT('%',?1,'%') OR import_price LIKE CONCAT('%',?1,'%') OR note LIKE CONCAT('%',?1,'%') OR total_price LIKE CONCAT('%',?1,'%') )) OR ?1 = ''", nativeQuery = true)
+    /**
+     * <p>findAllWarehouse</p>
+     * @param keySearch
+     * @param pageable
+     * @return Page
+     */
+    @Query(value = "SELECT * FROM ware_house  WHERE (?1 <> '' AND (product_id LIKE CONCAT('%',?1,'%') OR import_price LIKE CONCAT('%',?1,'%') OR note LIKE CONCAT('%',?1,'%') OR total_price LIKE CONCAT('%',?1,'%') )) OR ?1 = ''", nativeQuery = true)
     Page<Warehouse> findAllWarehouse(String keySearch,Pageable pageable);
 
+    /**
+     * <p>spCreateImportExportWarehouse</p>
+     * @param nameProduct
+     * @param statusType
+     * @param importPirce
+     * @param totalPrice
+     * @param note
+     * @param amount
+     */
     @Modifying(clearAutomatically = true)
     @Query(value = "{CALL sp_c_create_import_export_warehouse(:nameProduct, :statusType, :importPirce, :totalPrice, :note, :amount)}", nativeQuery = true)
     void spCreateImportExportWarehouse(@Param("nameProduct") String nameProduct,

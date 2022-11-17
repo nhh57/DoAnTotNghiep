@@ -68,7 +68,7 @@ public class AccountController {
      */
     @RequestMapping(value = "/get-all-account", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> getAllAccount(
+    public ResponseEntity<BaseResponse> getAllAccount (
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "size", required = false, defaultValue = "1") int size,
             @RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,

@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private EncodeConfig encodeConfig;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(encodeConfig.passwordEncoder());
@@ -35,17 +36,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeHttpRequests().antMatchers("/api/login/**","/api/admin/**",
-                "/api/account/create-account","/api/account/login",
-                "/api/refresh-token/**","/api/product/free/**",
-                "/api/categories/free/**","/api/brand/free/**",
-                "/mvc/**","/assets/**","/bootstrap/**","/css/**",
-                "/fly_to_cart/**","/js/**","/webfonts/**").permitAll();
-        http.authorizeHttpRequests().antMatchers(GET,"/api/user/**", "/api/account/**")
-                .hasAnyAuthority("OWNER","CUSTOMER");
-        http.authorizeHttpRequests().antMatchers(POST,"/api/account/**","/api/product/crud/**",
-                        "/api/categories/crud/**","/api/brand/crud/**")
-                .hasAnyAuthority("OWNER","CUSTOMER");
+        http.authorizeHttpRequests().antMatchers("/api/login/**", "/api/admin/**",
+                "/api/account/create-account", "/api/account/login",
+                "/api/refresh-token/**", "/api/product/free/**",
+                "/api/categories/free/**", "/api/brand/free/**",
+                "/mvc/**", "/assets/**", "/bootstrap/**", "/css/**",
+                "/fly_to_cart/**", "/js/**", "/webfonts/**").permitAll();
+        http.authorizeHttpRequests().antMatchers(GET, "/api/user/**", "/api/account/**")
+                .hasAnyAuthority("OWNER", "CUSTOMER");
+        http.authorizeHttpRequests().antMatchers(GET, "/api/admin/**").hasAnyAuthority("OWNER");
+        http.authorizeHttpRequests().antMatchers(POST, "/api/account/**", "/api/product/crud/**",
+                        "/api/categories/crud/**", "/api/brand/crud/**")
+                .hasAnyAuthority("OWNER", "CUSTOMER");
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -53,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 }
