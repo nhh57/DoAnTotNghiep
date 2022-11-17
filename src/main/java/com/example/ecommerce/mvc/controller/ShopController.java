@@ -25,10 +25,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("mvc")
-public class IndexMVCController {
+@RequestMapping("mvc/shop")
+public class ShopController {
     @Autowired
     ProductRepo productDAO;
+
+    @Autowired
+    CategoriesRepo categoryDAO;
 
     @Autowired
     ShoppingCartDAO shoppingCartDAO;
@@ -42,16 +45,36 @@ public class IndexMVCController {
 
     ProductHelper productHelper = new ProductHelper();
 
-    @GetMapping("/index")
-    public String index(Model model, @RequestParam Optional<String> message) {
-        Pageable pageable = PageRequest.of(0, 4);
-        Page<Product> pageProduct = productDAO.findAll(pageable);
+    @GetMapping("")
+    public String index(Model model, @RequestParam Optional<String> message,
+                        @RequestParam("soTrang") Optional<String> soTrangString,
+                        @RequestParam("soSanPham") Optional<String> soSanPhamString,
+                        @RequestParam("txtSearch") Optional<String> txtSearch) {
+        int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
+        int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
+        int tongSoTrang = txtSearch.isPresent()
+                ? productHelper.getTotalPage(soSanPham, productDAO.findByName(txtSearch.get()))
+                : productHelper.getTotalPage(soSanPham, productDAO.findProductExist());
+        if (soTrang < 1) {
+            soTrang = 1;
+        } else if (soTrang > tongSoTrang) {
+            soTrang = tongSoTrang;
+        }
+        model.addAttribute("soTrangHienTai", soTrang);
+        model.addAttribute("soSanPhamHienTai", soSanPham);
+        model.addAttribute("tongSoTrang", tongSoTrang);
+        Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
+        Page<Product> pageProduct = txtSearch.isPresent()
+                ? productDAO.findByName(pageable, txtSearch.get())
+                : productDAO.findAll(pageable);
         List<Product> list = pageProduct.getContent();
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
         }
         model.addAttribute("listProduct", list);
-        model.addAttribute("listBestSelling", productDAO.findByBestSellingProducts(10));
+        //Category
+        List<Categories> listCategory = categoryDAO.findAll();
+        model.addAttribute("listCategory", listCategory);
         //Set số lượng giỏ hàng
         Account khachHang = (Account) session.get("user");
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
@@ -77,6 +100,7 @@ public class IndexMVCController {
         } else {
             model.addAttribute("tongSoLuongGioHang", shoppingCartDAO.getCount());
         }
-        return "customer/index";
+        return "customer/shop";
     }
+
 }

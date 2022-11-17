@@ -65,9 +65,9 @@
                     <!-- menu start -->
                     <nav class="main-menu">
                         <ul>
-                            <li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
+                            <li><a href="/mvc/index">Trang chủ</a>
                             </li>
-                            <li><a href="/mvc/shop">Mua sắm</a></li>
+                            <li class="current-list-item"><a href="/mvc/shop">Mua sắm</a></li>
                             <li><a href="">Liên hệ</a>
                             </li>
                             <li>
@@ -85,10 +85,8 @@
                                                 Xin chào, [[${sessionUsername}]]</i>
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item dropdownCustom" href="#">Thông tin</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information/change-password}">Đổi
-                                                mật
-                                                khẩu</a>
+                                            <a class="dropdown-item dropdownCustom" href="/mvc/information?tag=information">Thông tin</a>
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/logout?urlReturn=shopping-cart}">Đăng xuất</a>
                                         </div>
@@ -376,7 +374,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="/mvc/index" class="btn btn-primary">Đồng ý</a>
+                <a href="/mvc/shop" class="btn btn-primary">Đồng ý</a>
             </div>
         </div>
     </div>
