@@ -42,7 +42,13 @@ $(document).ready(() => {
         $("#user-info").removeClass("show first active");
         $("#user-address").removeClass("show first active");
         $("#user-pass").addClass("show first active");
-    }else{
+    }else if(check=="donMua"){
+    $("#donMua").addClass("active").siblings().removeClass("active");
+             $("#user-cart").addClass("active").siblings().removeClass("active");
+             $("#user-info").removeClass("show first active");
+             $("#user-address").removeClass("show first active");
+             $("#user-pass").removeClass("show first active");
+         }else{
         $("div ul .feat-show").toggleClass("show");
         $("div ul .first").toggleClass("rotate");
         $(".feat-show .feat-show-btn.first").addClass("active").siblings().removeClass("active");
