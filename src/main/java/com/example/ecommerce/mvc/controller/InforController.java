@@ -3,13 +3,14 @@ package com.example.ecommerce.mvc.controller;
 import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.CartDetail;
+import com.example.ecommerce.model.Orders;
 import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
-import com.example.ecommerce.repository.AccountRepo;
-import com.example.ecommerce.repository.CartDetailRepo;
-import com.example.ecommerce.repository.ShipDetailRepo;
+import com.example.ecommerce.mvc.model.OrderResult;
+import com.example.ecommerce.mvc.model.OrderStatus;
+import com.example.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,11 @@ public class InforController {
     @Autowired
     ShipDetailRepo shipDetailRepo;
     @Autowired
+    OrderDetailRepo orderDetailRepo;
+
+    @Autowired
+    OrderRepo orderRepo;
+    @Autowired
     AccountRepo accountRepo;
 
     CartHelper cartHelper = new CartHelper();
@@ -40,6 +47,16 @@ public class InforController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private List<OrderResult> getListOrderResult(List<Orders> list){
+        List<OrderResult> listOrderResult=new ArrayList<>();
+        for (Orders item : list) {
+            OrderResult orderResult = new OrderResult();
+            orderResult.setOrders(item);
+            orderResult.setListOrderDetail(orderDetailRepo.findAllByOrderId(item.getId()));
+            listOrderResult.add(orderResult);
+        }
+        return listOrderResult;
+    }
     @GetMapping("")
     public String view(Model model,@ModelAttribute("shipDetail") ShipDetail shipDetail,
                        @RequestParam Optional<String> tag,
@@ -47,7 +64,9 @@ public class InforController {
                        @RequestParam Optional<String> errorPass,
                        @RequestParam Optional<String> currentPassword,
                        @RequestParam Optional<String> newPassword,
-                       @RequestParam Optional<String> confirmPassword) {
+                       @RequestParam Optional<String> confirmPassword,
+                       @RequestParam Optional<Integer> orderId,
+                       @RequestParam Optional<String> productName) {
         Account khachHang = (Account) session.get("user");
         if (khachHang == null) {
             return "redirect:/mvc/login?error=errorNoLogin&urlReturn=information";
@@ -74,31 +93,55 @@ public class InforController {
             model.addAttribute("userInfor",accountRepo.findByUsername(khachHang.getUsername()));
             model.addAttribute("listShipDetail",shipDetailRepo.findByAccountId(khachHang.getId()));
         }
+        List<OrderStatus> listOrderStatus= Arrays.asList(
+                new OrderStatus("listTatCa",""),
+                new OrderStatus("listChoXacNhan","Chờ xác nhận"),
+                new OrderStatus("listChoLayHang","Chờ lấy hàng"),
+                new OrderStatus("listDangGiao","Đang giao"),
+                new OrderStatus("listDaGiao","Đã giao"),
+                new OrderStatus("listDaHuy","Đã hủy"),
+                new OrderStatus("listHoanTien","Hoàn tiền")
+        );
+        if(orderId.isPresent()){
+            for(OrderStatus i:listOrderStatus){
+                List<Orders> list=orderRepo.findAllByAccountIdAndOrderIdAndOrderStatus(khachHang.getId(),orderId.get(), i.getValue());
+                model.addAttribute(i.getKey(), getListOrderResult(list));
+            }
+        }else{
+            for(OrderStatus i:listOrderStatus){
+                List<Orders> list=orderRepo.findAllByAccountIdAndOrderStatus(khachHang.getId(), i.getValue());
+                model.addAttribute(i.getKey(), getListOrderResult(list));
+            }
+        }
         if(tag.isPresent()){
             if(tag.get().equals("change-password")){
                 model.addAttribute("clickElement","doiMatKhau");
             }else if(tag.get().equals("information")){
                 model.addAttribute("clickElement","hoSo");
+            }else if(tag.get().equals("order")){
+                model.addAttribute("clickElement","donMua");
             }
         }
 
         if(success.isPresent()){
+            String keyClickElement="clickElement";
+            String keySuccess="success";
             if(success.get().equals("saved")){
-                model.addAttribute("clickElement","hoSo");
-                model.addAttribute("success","Lưu thành công!");
+                model.addAttribute(keyClickElement,"hoSo");
+                model.addAttribute(keySuccess,"Lưu thành công!");
             }else if(success.get().equals("changePass")){
-                model.addAttribute("clickElement","doiMatKhau");
-                model.addAttribute("success","Đổi mật khẩu thành công!");
+                model.addAttribute(keyClickElement,"doiMatKhau");
+                model.addAttribute(keySuccess,"Đổi mật khẩu thành công!");
                 model.addAttribute("changePassSuccess",true);
             }else if(success.get().equals("shipDetail")){
                 model.addAttribute("clickElement","diaChi");
-                model.addAttribute("success","Thêm địa chỉ thành công!");
+                model.addAttribute(keySuccess,"Thêm địa chỉ thành công!");
             }else if(success.get().equals("shipDetail2")){
-                model.addAttribute("clickElement","diaChi");
-                model.addAttribute("success","Cập nhật địa chỉ thành công!");
+                model.addAttribute(keyClickElement,"diaChi");
+                model.addAttribute(keySuccess,"Cập nhật địa chỉ thành công!");
             }else if(success.get().equals("shipDetail3")){
-                model.addAttribute("clickElement","diaChi");
-                model.addAttribute("success","Xóa địa chỉ thành công!");
+                model.addAttribute(keyClickElement,"diaChi");
+                model.addAttribute(keySuccess,"Xóa địa chỉ thành công!");
             }
         }
         if(errorPass.isPresent()){

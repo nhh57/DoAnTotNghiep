@@ -386,3 +386,62 @@ path.two {
   margin-left: 220px;
   justify-content: unset;
 }
+
+.orderSearch {
+        padding: 12px 0;
+        margin: 12px 0;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+        color: #212121;
+        background: #eaeaea;
+        border-radius: 2px;
+    }
+
+    .orderSearch i {
+        margin: 0 15px;
+        color: #bbb;
+    }
+
+    .orderSearch input {
+        flex: 1;
+        font-size: 14px;
+        line-height: 16px;
+        border: 0;
+        outline: none;
+        background-color: inherit;
+    }
+    .tab-content-custom{
+        padding: 0;
+    }
+    .idHomeCustom{
+        padding: 20px;
+        background-color: #f5f1f1;
+        margin-bottom: 20px;
+    }
+    .tableCustom{
+        margin-bottom: 20px;
+    }
+    .col5Custom{
+        color: #26aa99;
+        text-align:right;
+    }
+    .spanCustom1{
+        color:rgb(146, 144, 144);
+    }
+    .spanCustom2{
+        color: #ee4d2d;
+    }
+    #user-cart #myTab a{
+        color: #1c1c1c;
+    }
+    #user-cart #myTab a:hover{
+        color: #F07748;
+    }
+    #user-cart #myTab .active{
+        color: #F07748;
+    }
+    .tongTienCustom{
+        color: #ee4d2d;
+        font-size:18px;
+    }
