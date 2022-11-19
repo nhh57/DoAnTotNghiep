@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Strings;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -426,5 +427,23 @@ public class Utils {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date dateResult = (Date)formatter.parse(dateString);
         return dateResult;
+    }
+
+    //Paypal
+    public static String getBaseURL(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        StringBuffer url =  new StringBuffer();
+        url.append(scheme).append("://").append(serverName);
+        if ((serverPort != 80) && (serverPort != 443)) {
+            url.append(":").append(serverPort);
+        }
+        url.append(contextPath);
+        if(url.toString().endsWith("/")){
+            url.append("/");
+        }
+        return url.toString();
     }
 }
