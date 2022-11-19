@@ -1,8 +1,10 @@
 package com.example.ecommerce.mvc.controller;
 
+import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.model.helper.OrderHelper;
+import com.example.ecommerce.mvc.common.PAYPAL_URL;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.mvc.model.ShoppingCart;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -35,6 +38,8 @@ public class OrderMVCController {
     ShipDetailRepo shipDetailRepo;
 
     @Autowired
+    ShoppingCartDAO shoppingCartDAO;
+    @Autowired
     CartDetailRepo cartDetailRepo;
 
     @Autowired
@@ -52,7 +57,7 @@ public class OrderMVCController {
                        @ModelAttribute("user") Account user) {
         Account khachHang = session.get("user") != null ? (Account) session.get("user") : null;
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
-        if(khachHang==null){
+        if (khachHang == null) {
             return "redirect:/mvc/login?error=errorNoLogin&urlReturn=order";
         }
         if (addressNull.isPresent()) {
@@ -69,6 +74,28 @@ public class OrderMVCController {
         if (khachHang != null) {
             model.addAttribute("sessionUsername", khachHang.getUsername());
             model.addAttribute("user", khachHang);
+        }
+        if (khachHang != null) {
+            shoppingCartDAO.getAll().forEach(item -> {
+                CartDetail cartDetail = cartDetailRepo.existByProductId(cartId, item.getId());
+                if (cartDetail != null) {
+                    cartDetail.setAmount(cartDetail.getAmount() + item.getSoLuong());
+                    cartDetailRepo.saveAndFlush(cartDetail);
+                } else {
+                    CartDetail cartDetailNew = new CartDetail();
+                    cartDetailNew.setCartId(cartId);
+                    cartDetailNew.setProductId(item.getId());
+                    cartDetailNew.setAmount(item.getSoLuong());
+                    cartDetailRepo.saveAndFlush(cartDetailNew);
+                }
+            });
+            shoppingCartDAO.clear();
+
+            List<CartDetail> listCart = cartDetailRepo.getCartDetail(khachHang.getCartId());
+            model.addAttribute("tongSoLuongGioHang", cartHelper.getNumberOfListCart(listCart));
+            model.addAttribute("sessionUsername", khachHang.getUsername());
+        } else {
+            model.addAttribute("tongSoLuongGioHang", shoppingCartDAO.getCount());
         }
         if (khachHang != null && cartId != null) {
             List<CartDetail> listCart = cartDetailRepo.getCartDetail(cartId);
@@ -89,6 +116,10 @@ public class OrderMVCController {
         return "customer/order";
     }
 
+    //    @PostMapping("/payment/pay")
+//    public String pay(HttpServletRequest request, @RequestParam("price") double price ){
+//
+//    }
     @PostMapping("/add")
     public String add(@ModelAttribute("user") Account user,
                       @RequestParam("total-money") Optional<Integer> totalMoney,
@@ -115,7 +146,7 @@ public class OrderMVCController {
                 order.setShipDetailId(Integer.parseInt(shipDetailId.get()));
             } else if (address.isPresent()) {
                 // Lưu địa chỉ
-                ShipDetail shipDetailSaved = shipDetailRepo.save(new ShipDetail(user.getPhone(), address.get(),user.getFullName(), sessionLogin.getId(), false));
+                ShipDetail shipDetailSaved = shipDetailRepo.save(new ShipDetail(user.getPhone(), address.get(), user.getFullName(), sessionLogin.getId(), false));
                 order.setShipDetailId(shipDetailSaved.getId());
             }
             //Save đơn hàng
