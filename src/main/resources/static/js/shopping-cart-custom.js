@@ -61,6 +61,18 @@ $(document).ready(() => {
       			}
       		});
     });
-
+    $(".btnAddressCustom").click(function () {
+       $(".btnAddressCustom").removeClass("btnActive").addClass("btnDisable");
+       	$(this).removeClass("btnDisable").addClass("btnActive");
+       	const shipDetailId=$(this).data('shipid');
+        const shipFullName=$(this).data('shipname');
+        const shipPhone=$(this).data('shipphone');
+        const shipAddress=$(this).data('shipaddress');
+        $("#shipDetailId").val(shipDetailId);
+        $("#fullName").val(shipFullName);
+        $("#phone").val(shipPhone);
+        $("#address").val(shipAddress);
+       	console.log("shipId:",shipDetailId);
+    });
     $("#modalNotify").modal('show');
 });

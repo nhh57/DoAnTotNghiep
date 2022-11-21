@@ -37,6 +37,8 @@
 
     <!-- custom open modal -->
     <link rel="stylesheet" th:href="@{/css/cart_custom.css}">
+
+    <link rel="stylesheet" th:href="@{/css/modal_custom.css}">
 </head>
 <body>
 
@@ -85,8 +87,10 @@
                                                 Xin chào, [[${sessionUsername}]]</i>
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item dropdownCustom" href="/mvc/information?tag=information">Thông tin</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               href="/mvc/information?tag=information">Thông tin</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/logout?urlReturn=shopping-cart}">Đăng xuất</a>
                                         </div>
@@ -157,7 +161,7 @@
 <!-- check out section -->
 <div class="checkout-section mt-150 mb-150">
     <div class="container">
-        <form th:object="${user}">
+        <form>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="checkout-accordion-wrap">
@@ -168,47 +172,76 @@
                                         <button class="btn btn-link" type="button" data-toggle="collapse"
                                                 data-target="#collapseOne" aria-expanded="true"
                                                 aria-controls="collapseOne">
-                                            Thông tin khách hàng
+                                            Thông tin
                                         </button>
                                     </h5>
                                 </div>
 
+
                                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                      data-parent="#accordionExample">
-                                    <div class="card-body">
+                                    <div class="card-body" th:if="${tongSoLuongGioHang>0}">
+                                        <div class="address-body addressBodyCustom" >
+                                            <div class="address-body-list">
+                                                <th:block th:each="item :${listDiaChi}">
+                                                    <div class="address-body-item">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-8">
+                                                                <div class="info-user">
+                                                                    <div class="info-user-group">
+                                                                        <p class="info-user-name">[[${item.fullName}]]</p>
+                                                                        <span class="info-user-phone">[[${item.phone}]]</span>
+                                                                    </div>
+                                                                    <div class="info-user-address">
+                                                                        [[${item.address}]]
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 text-right">
+                                                                <div class="address-btn-group">
+                                                                    <div class="btn-group-first">
+                                                                        <div th:attr="data-shipid=${item.id},
+                                                                            data-shipname=${item.fullName},
+                                                                            data-shipphone=${item.phone},
+                                                                            data-shipaddress=${item.address}"
+                                                                             class="btnAddressCustom" th:classappend="${item.getDefault()} ? btnActive : btnDisable">
+                                                                            Chọn
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                </th:block>
+                                            </div>
+                                        </div>
                                         <div class="billing-address-form">
                                             <p><input name="total-money" type="hidden"
                                                       th:value="${tongTienGioHang+15000}"></p>
                                             <p><input name="cart-id" type="hidden" th:value="${cartId}"></p>
-                                            <p><input th:field="*{fullName}" required="required" type="text"
+                                            <p><input id="shipDetailId" type="hidden"
+                                                      name="ship-detail-id"
+                                                      th:value="${diaChiMacDinh.id}"
+                                                      placeholder="Ship detail Id"></p>
+                                            <p><input id="fullName" required="required" type="hidden"
+                                                      name="full-name"
+                                                      th:value="${diaChiMacDinh.fullName}"
                                                       placeholder="Họ và tên"></p>
-                                            <p><input th:field="*{email}" required="required" type="email"
-                                                      placeholder="Email"></p>
+
                                             <p><input pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                                      name="phone"
                                                       title="Số điện thoại Việt Nam bao gồm 10 chữ số"
                                                       required="required"
-                                                      th:field="*{phone}"
-                                                      type="text"
+                                                      th:value="${diaChiMacDinh.phone}"
+                                                      id="phone"
+                                                      type="hidden"
                                                       placeholder="Số điện thoại"></p>
+                                            <p><input id="address" required="required" type="hidden"
+                                                      name="address"
+                                                      th:value="${diaChiMacDinh.address}"
+                                                      placeholder="Địa chỉ"></p>
                                             <p><input name="note" type="text" placeholder="Ghi chú"></p>
-                                            <fieldset>
-                                                <legend>Địa chỉ</legend>
-                                                <h5 style="color:red;">[[${addressNull}]]</h5>
-                                                <div class="form__radios">
-                                                    <th:block th:each="item : ${listDiaChi}">
-                                                        <div class="form__radio">
-                                                            <label th:for="'diaChi' + ${item.id}"
-                                                                   th:text="${item.address}"></label>
-                                                            <input th:id="'diaChi' + ${item.id}"
-                                                                   th:value="${item.id}" name="ship-detail-id"
-                                                                   type="radio"/>
-                                                        </div>
-                                                    </th:block>
-                                                </div>
-                                                <legend style="font-size: 15px;">Thêm địa chỉ mới</legend>
-                                                <p><textarea cols="30" rows="10" name="address"
-                                                             placeholder="Địa chỉ giao hàng"></textarea></p>
-                                            </fieldset>
                                         </div>
                                     </div>
                                 </div>
@@ -326,7 +359,9 @@
                             <tbody class="checkout-details">
                             <tr>
                                 <td>Tạm tính</td>
-                                <td th:if="${tongSoLuongGioHang>0}" id="tongTien">[[${#numbers.formatDecimal(tongTienGioHang, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+                                <td th:if="${tongSoLuongGioHang>0}" id="tongTien">
+                                    [[${#numbers.formatDecimal(tongTienGioHang, 0, 'COMMA', 0, 'POINT')}]] đ
+                                </td>
                                 <td th:if="${tongSoLuongGioHang<=0}" id="tongTien">0</td>
                             </tr>
                             <tr>
@@ -336,12 +371,16 @@
                             </tr>
                             <tr>
                                 <td>Phải trả</td>
-                                <td th:if="${tongSoLuongGioHang>0}" id="phaiTra">[[${#numbers.formatDecimal(tongTienGioHang+15000, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+                                <td th:if="${tongSoLuongGioHang>0}" id="phaiTra">
+                                    [[${#numbers.formatDecimal(tongTienGioHang+15000, 0, 'COMMA', 0, 'POINT')}]] đ
+                                </td>
                                 <td th:if="${tongSoLuongGioHang<=0}" id="phaiTra">0</td>
                             </tr>
                             </tbody>
                         </table>
-                        <button th:if="${tongSoLuongGioHang>0}" formaction="/mvc/order/payment/pay" formmethod="post" type="submit" href="#" class="btn btn-success customBtn">Thanh toán</button>
+                        <button th:if="${tongSoLuongGioHang>0}" formaction="/mvc/order/payment/pay" formmethod="post"
+                                type="submit" href="#" class="btn btn-success customBtn">Thanh toán
+                        </button>
                     </div>
                 </div>
             </div>

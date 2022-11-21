@@ -2,12 +2,14 @@ package com.example.ecommerce.mvc.controller;
 
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.mvc.common.MESSAGE_CONSTANT;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.helper.RegisterHelper;
 import com.example.ecommerce.mvc.validate.AccountValidate;
 import com.example.ecommerce.repository.AccountRepo;
 import com.example.ecommerce.repository.CartRepo;
+import com.example.ecommerce.repository.ShipDetailRepo;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,9 @@ public class RegisterController {
 
     @Autowired
     CartRepo cartDAO;
+    @Autowired
+    ShipDetailRepo shipDetailRepo;
+
     @Autowired
     SessionDAO session;
 
@@ -65,7 +70,8 @@ public class RegisterController {
         return "customer/register";
     }
     @PostMapping("register")
-    public String register(@ModelAttribute("user") Account user) throws JSONException {
+    public String register(@ModelAttribute("user") Account user,
+                           @RequestParam("address") Optional<String> address) throws JSONException {
         List<String> listCheck=new ArrayList<>();
         listCheck.add(user.getUsername());
         listCheck.add(user.getPassword());
@@ -95,7 +101,15 @@ public class RegisterController {
             account.setDateOfBirth(user.getDateOfBirth());
             account.setDeleted(false);
             account.setCartId(cartSaved.getId());
-            accountDAO.save(account);
+            Account accountSaved=accountDAO.save(account);
+            ShipDetail shipDetail=new ShipDetail();
+            shipDetail.setFullName(accountSaved.getFullName());
+            shipDetail.setPhone(accountSaved.getPhone());
+            shipDetail.setAddress(address.get());
+            shipDetail.setAccountId(accountSaved.getId());
+            shipDetail.setDeleted(false);
+            shipDetail.setDefault(true);
+            shipDetailRepo.save(shipDetail);
             return "redirect:/mvc/register?registerStatus=true";
         }else {
             return "redirect:/mvc/register?registerStatus=infor_empty";

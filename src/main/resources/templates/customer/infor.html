@@ -323,6 +323,16 @@
                                                 <div class="info-user-address">
                                                     [[${item.address}]]
                                                 </div>
+                                                <div class="status-group" th:unless="${item.getDefault()}">
+                                                    <div hidden="true" th:id="'macDinh' + ${item.id}" class="status-defaule active">
+                                                        Mặc định
+                                                    </div>
+                                                </div>
+                                                <div class="status-group" th:if="${item.getDefault()}">
+                                                    <div th:id="'macDinh' + ${item.id}" class="status-defaule active">
+                                                        Mặc định
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-4 text-right">
@@ -336,6 +346,11 @@
                                                             th:attr="data-target='#modalDelete'+${item.id}"
                                                             class="btn btn-danger btnCustom">Xóa
                                                     </button>
+                                                </div>
+                                                <div class="btnAddressCustom"
+                                                     th:attr="data-shipid=${item.id}, data-accountid=${item.accountId}"
+                                                     th:classappend="${item.getDefault()} ? btnDisable : btnActive">
+                                                    Thiết lập mặc định
                                                 </div>
                                             </div>
                                             <!--Modal Cập nhật chỉ -->
@@ -593,9 +608,51 @@
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy"
+                                                        data-toggle="modal"
+                                                        th:attr="data-target='#modalHuyDonHang'+${item.orders.id}">
+                                                    Hủy đơn hàng
+                                                </button>
+                                                <button th:unless="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy">Đánh giá</button>
+                                                <button th:unless="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnMuaLai">Mua lại</button>
+                                            </td>
                                         </tr>
                                         </tbody>
+                                        <!--start modal Hủy đơn hàng-->
+                                        <div class="modal fade"
+                                             th:id="'modalHuyDonHang' + ${item.orders.id}"
+                                             tabindex="-1"
+                                             role="dialog"
+                                             aria-labelledby="exampleModalCenterTitle"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
+                                                        <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="billing-address-form">
+                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn muốn hủy đơn hàng #[[${item.orders.id}]] không?</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btnHuyDonHang" th:attr="data-orderid=${item.orders.id}">Có
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Không
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end modal-->
                                     </table>
                                 </div>
                             </th:block>
@@ -744,6 +801,37 @@
             </div>
         </div>
     </form>
+    <!--start modal Kết quả Hủy đơn hàng-->
+    <div class="modal fade"
+         th:id="modalKetQuaHuyDonHang"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+                    <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="billing-address-form">
+                            <p class="text-success confirmHuy">Đơn hàng đã được hủy thành công!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/mvc/information?tag=order" type="button" class="btn btn-primary">Đồng ý
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-->
     <!-- end modal địa chỉ -->
     <input type="hidden" id="clickElement" th:value="${clickElement}">
     <input type="hidden" id="changePassSuccess" th:value="${changePassSuccess}">

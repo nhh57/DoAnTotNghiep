@@ -59,60 +59,57 @@ public class PaymentController {
     CartHelper cartHelper = new CartHelper();
 
     @GetMapping("")
-    public String index(){
+    public String index() {
         return "customer/paypal/index";
     }
+
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
-                      @ModelAttribute("user") Account user,
+                      @RequestParam("full-name") Optional<String> fullName,
+                      @RequestParam("phone") Optional<String> phone,
                       @RequestParam("total-money") Optional<Double> totalMoney,
                       @RequestParam("cart-id") Optional<Integer> cartId,
                       @RequestParam("address") Optional<String> address,
                       @RequestParam("ship-detail-id") Optional<String> shipDetailId,
                       @RequestParam("payment-method") Optional<String> paymentMethod,
-                      @RequestParam("note") Optional<String> note ){
+                      @RequestParam("note") Optional<String> note) throws PayPalRESTException {
         if ((address.get().isEmpty() || address.get() == null) && (!shipDetailId.isPresent())) {
             return "redirect:/mvc/order?addressNull=true";
         }
         Account sessionLogin = (Account) session.get("user");
-        try {
-            Orders order = new Orders();
-            order.setOrderDate(new Timestamp(System.currentTimeMillis()));
-            order.setOrderStatus("Chờ xác nhận");
-            order.setTotalMoney(BigDecimal.valueOf(totalMoney.get()));
-            order.setNote(note.get());
-            order.setDeliveryDate(orderHelper.getDeliveryDate());
-            order.setPaymentMethod(paymentMethod.get());
-            order.setPaymentStatus("Chưa thanh toán");
-            order.setAccountId(sessionLogin.getId());
-            order.setIsDeleted(false);
-            if (shipDetailId.isPresent()) {
-                order.setShipDetailId(Integer.parseInt(shipDetailId.get()));
-            } else if (address.isPresent()) {
-                // Lưu địa chỉ
-                ShipDetail shipDetailSaved = shipDetailRepo.save(new ShipDetail(user.getPhone(), address.get(), user.getFullName(), sessionLogin.getId(), false));
-                order.setShipDetailId(shipDetailSaved.getId());
-            }
-            //Save đơn hàng
-            Orders orderSaved = orderDAO.save(order);
-            Integer orderId = orderSaved.getId();
-            //Chi tiết đơn hàng
-            List<CartDetail> listCartDetail = cartDetailRepo.getCartDetail(cartId.get());
-            for (CartDetail item : listCartDetail) {
-                OdersDetail ordersDetail = new OdersDetail();
-                ordersDetail.setOrderId(orderId);
-                ordersDetail.setProductId(item.getProductId());
-                ordersDetail.setAmount(item.getAmount());
-                Product product = productRepo.findById(item.getProductId()).get();
-                ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()));
-                ordersDetail.setDeleted(false);
-                //Save chi tiết đơn hàng
-                orderDetailDAO.save(ordersDetail);
-            }
-            cartDetailRepo.deleteAllByCartId(cartId.get());
-            String urlReturn = Utils.getBaseURL(request) + "/mvc/order/payment/" + PAYPAL_URL.URL_PAYPAL+"?orderId="+orderId;
-//            String successUrl = Utils.getBaseURL(request) + "/mvc/order/payment/" + PAYPAL_URL.URL_PAYPAL_SUCCESS+"?orderId="+orderId;
-            Double total=Utils.round(totalMoney.get()/24000, 2);
+        Orders order = new Orders();
+        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
+        order.setOrderStatus("Chờ xác nhận");
+        order.setTotalMoney(BigDecimal.valueOf(totalMoney.get()));
+        order.setNote(note.get());
+        order.setDeliveryDate(orderHelper.getDeliveryDate());
+        order.setPaymentMethod(paymentMethod.get());
+        order.setPaymentStatus("Chưa thanh toán");
+        order.setAccountId(sessionLogin.getId());
+        order.setIsDeleted(false);
+        if (shipDetailId.isPresent()) {
+            order.setShipDetailId(Integer.parseInt(shipDetailId.get()));
+        }
+        //Save đơn hàng
+        Orders orderSaved = orderDAO.save(order);
+        Integer orderId = orderSaved.getId();
+        //Chi tiết đơn hàng
+        List<CartDetail> listCartDetail = cartDetailRepo.getCartDetail(cartId.get());
+        for (CartDetail item : listCartDetail) {
+            OdersDetail ordersDetail = new OdersDetail();
+            ordersDetail.setOrderId(orderId);
+            ordersDetail.setProductId(item.getProductId());
+            ordersDetail.setAmount(item.getAmount());
+            Product product = productRepo.findById(item.getProductId()).get();
+            ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()));
+            ordersDetail.setDeleted(false);
+            //Save chi tiết đơn hàng
+            orderDetailDAO.save(ordersDetail);
+        }
+        cartDetailRepo.deleteAllByCartId(cartId.get());
+        if (paymentMethod.get().equalsIgnoreCase("Paypal")) {
+            String urlReturn = Utils.getBaseURL(request) + "/mvc/order/payment/" + PAYPAL_URL.URL_PAYPAL + "?orderId=" + orderId;
+            Double total = Utils.round(totalMoney.get() / 24000, 2);
             Payment payment = paypalService.createPayment(
                     total,
                     "USD",
@@ -121,40 +118,38 @@ public class PaymentController {
                     "payment description",
                     urlReturn,
                     urlReturn);
-            List<Links> list=payment.getLinks();
-            for(Links links : payment.getLinks()){
-                if(links.getRel().equals("approval_url")){
+            List<Links> list = payment.getLinks();
+            for (Links links : payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
                     return "redirect:" + links.getHref();
                 }
             }
-        } catch (PayPalRESTException e) {
-            log.error(e.getMessage());
         }
-        return "redirect:/mvc/order/payment";
+        return "redirect:/mvc/order/payment/pay/status?orderId="+orderId;
     }
+
     @GetMapping(PAYPAL_URL.URL_PAYPAL)
     public String successPay(Model model,
                              @RequestParam("paymentId") Optional<String> paymentId,
                              @RequestParam("PayerID") Optional<String> payerId,
-                             @RequestParam Integer orderId){
+                             @RequestParam Integer orderId) {
+        Account sessionLogin = (Account) session.get("user");
+        if(sessionLogin==null){
+            return "redirect:/mvc/login?error=errorNoLogin&urlReturn=order/payment/pay/status?orderId="+orderId;
+        }else if(orderDAO.existByAccountIdAndOrderId(sessionLogin.getId(),orderId)==null){
+            return "customer/404";
+        }
         try {
-            if(payerId.isPresent() && payerId.isPresent()){
+            if (payerId.isPresent() && payerId.isPresent()) {
                 Payment payment = paypalService.executePayment(paymentId.get(), payerId.get());
-                if(payment.getState().equals("approved")){
-                    Orders orders=orderDAO.findById(orderId).get();
+                if (payment.getState().equals("approved")) {
+                    Orders orders = orderDAO.findById(orderId).get();
                     orders.setPaymentStatus("Đã thanh toán");
                     orderDAO.save(orders);
-                    model.addAttribute("success",true);
-                }else{
-                    model.addAttribute("success",false);
                 }
-            }else{
-                model.addAttribute("success",false);
             }
-            Account sessionLogin = (Account) session.get("user");
-            model.addAttribute("users",sessionLogin);
-            model.addAttribute("order",orderDAO.findById(orderId).get());
-            model.addAttribute("orderDetail",orderDetailDAO.findAllByOrderId(orderId));
+            model.addAttribute("order", orderDAO.findById(orderId).get());
+            model.addAttribute("orderDetail", orderDetailDAO.findAllByOrderId(orderId));
             return "customer/paypal/status";
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
