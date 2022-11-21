@@ -66,4 +66,44 @@ $(document).ready(() => {
     }
     $("#modalNotify").modal('show');
     $("#modalNotify2").modal('show');
+
+    $(".btnAddressCustom").click(function () {
+        $(".btnAddressCustom").removeClass("btnDisable").addClass("btnActive");
+        $(this).removeClass("btnActive").addClass("btnDisable");
+        const shipDetailId=$(this).data('shipid');
+        const accountId=$(this).data('accountid');
+        $('.status-defaule').attr("hidden",true);
+        $('#macDinh'+shipDetailId).removeAttr('hidden');
+        console.log(shipDetailId);
+        $.ajax({
+            url: "/mvc/information/ship-detail/setDefault",
+            method: "POST",
+            data: {
+              	shipDetailId: shipDetailId,
+              	accountId: accountId
+            },
+            success: function(response) {
+              	const obj = JSON.parse(response);
+                console.log(obj);
+            }
+        });
+    });
+    $(".btnHuyDonHang").click(function () {
+        const orderId=$(this).data('orderid');
+        console.log(orderId);
+        $.ajax({
+            url: "/mvc/information/order/setOrderStatus",
+            method: "POST",
+            data: {
+              	orderStatus: 'Đã hủy',
+              	orderId: orderId
+            },
+            success: function(response) {
+              	const obj = JSON.parse(response);
+                console.log(obj);
+                $('#modalHuyDonHang'+orderId).modal('toggle');
+                $('#modalKetQuaHuyDonHang').modal('show');
+            }
+        });
+      });
 });

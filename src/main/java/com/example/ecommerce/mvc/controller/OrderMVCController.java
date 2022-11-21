@@ -26,13 +26,6 @@ import java.util.Optional;
 @RequestMapping("mvc/order")
 public class OrderMVCController {
     @Autowired
-    OrderRepo orderDAO;
-    @Autowired
-    OrderDetailRepo orderDetailDAO;
-
-    @Autowired
-    ProductRepo productRepo;
-    @Autowired
     SessionDAO session;
     @Autowired
     ShipDetailRepo shipDetailRepo;
@@ -45,16 +38,13 @@ public class OrderMVCController {
     @Autowired
     ProductRepo productDAO;
 
-    OrderHelper orderHelper = new OrderHelper();
     CartHelper cartHelper = new CartHelper();
 
 
     @GetMapping("")
     public String view(Model model,
-                       @RequestParam("orderSaved") Optional<String> orderSaved,
                        @RequestParam("addressNull") Optional<String> addressNull,
-                       @RequestParam("orderId") Optional<String> orderId,
-                       @ModelAttribute("user") Account user) {
+                       @RequestParam("orderId") Optional<String> orderId) {
         Account khachHang = session.get("user") != null ? (Account) session.get("user") : null;
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
         if (khachHang == null) {
@@ -62,14 +52,6 @@ public class OrderMVCController {
         }
         if (addressNull.isPresent()) {
             model.addAttribute("addressNull", "Chọn hoặc điền 1 địa chỉ!");
-        }
-        if (orderSaved.isPresent()) {
-            if (orderSaved.get().equals("true") && orderId.isPresent()) {
-                model.addAttribute("orderSaved", true);
-                model.addAttribute("orderIdSaved", orderId.get());
-            } else {
-                model.addAttribute("error", "Đặt hàng thất bại");
-            }
         }
         if (khachHang != null) {
             model.addAttribute("sessionUsername", khachHang.getUsername());
@@ -110,65 +92,10 @@ public class OrderMVCController {
             model.addAttribute("checkCart", true);
             model.addAttribute("listGioHangLogin", listCart);
             model.addAttribute("listDiaChi", shipDetailRepo.findByAccountId(khachHang.getId()));
+            model.addAttribute("diaChiMacDinh", shipDetailRepo.findByAccountIdAndIsDefault(khachHang.getId()));
             model.addAttribute("tongTienGioHang", cartHelper.getTotalMoneyCart(listCart));
             model.addAttribute("tongSoLuongGioHang", cartHelper.getNumberOfListCart(listCart));
         }
         return "customer/order";
-    }
-
-    //    @PostMapping("/payment/pay")
-//    public String pay(HttpServletRequest request, @RequestParam("price") double price ){
-//
-//    }
-    @PostMapping("/add")
-    public String add(@ModelAttribute("user") Account user,
-                      @RequestParam("total-money") Optional<Integer> totalMoney,
-                      @RequestParam("cart-id") Optional<Integer> cartId,
-                      @RequestParam("address") Optional<String> address,
-                      @RequestParam("ship-detail-id") Optional<String> shipDetailId,
-                      @RequestParam("payment-method") Optional<String> paymentMethod,
-                      @RequestParam("note") Optional<String> note) {
-        if ((address.get().isEmpty() || address.get() == null) && (!shipDetailId.isPresent())) {
-            return "redirect:/mvc/order?addressNull=true";
-        }
-        Account sessionLogin = (Account) session.get("user");
-        try {
-            Orders order = new Orders();
-            order.setOrderDate(new Timestamp(System.currentTimeMillis()));
-            order.setOrderStatus("Chờ xác nhận");
-            order.setTotalMoney(BigDecimal.valueOf(totalMoney.get()));
-            order.setNote(note.get());
-            order.setDeliveryDate(orderHelper.getDeliveryDate());
-            order.setPaymentMethod(paymentMethod.get());
-            order.setAccountId(sessionLogin.getId());
-            order.setIsDeleted(false);
-            if (shipDetailId.isPresent()) {
-                order.setShipDetailId(Integer.parseInt(shipDetailId.get()));
-            } else if (address.isPresent()) {
-                // Lưu địa chỉ
-                ShipDetail shipDetailSaved = shipDetailRepo.save(new ShipDetail(user.getPhone(), address.get(), user.getFullName(), sessionLogin.getId(), false));
-                order.setShipDetailId(shipDetailSaved.getId());
-            }
-            //Save đơn hàng
-            Orders orderSaved = orderDAO.save(order);
-            Integer orderId = orderSaved.getId();
-            //Chi tiết đơn hàng
-            List<CartDetail> listCartDetail = cartDetailRepo.getCartDetail(cartId.get());
-            for (CartDetail item : listCartDetail) {
-                OdersDetail ordersDetail = new OdersDetail();
-                ordersDetail.setOrderId(orderId);
-                ordersDetail.setProductId(item.getProductId());
-                ordersDetail.setAmount(item.getAmount());
-                Product product = productRepo.findById(item.getProductId()).get();
-                ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()));
-                ordersDetail.setDeleted(false);
-                //Save chi tiết đơn hàng
-                orderDetailDAO.save(ordersDetail);
-            }
-            cartDetailRepo.deleteAllByCartId(cartId.get());
-            return "redirect:/mvc/order?orderId=" + orderId + "&orderSaved=true";
-        } catch (Exception e) {
-            return "redirect:/mvc/order?orderSaved=false";
-        }
     }
 }

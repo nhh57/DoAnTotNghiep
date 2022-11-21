@@ -23,6 +23,10 @@ public class ShipDetail extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "account_id", nullable = true, length = -1)
     private int accountId;
+
+    @Basic
+    @Column(name = "is_default", nullable = true)
+    private Boolean isDefault;
     @Basic
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
@@ -83,6 +87,14 @@ public class ShipDetail extends BaseEntity implements Serializable {
 
     }
 
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -91,11 +103,12 @@ public class ShipDetail extends BaseEntity implements Serializable {
         this.fullName = fullName;
     }
 
-    public ShipDetail(String phone, String address, String fullName, int accountId, Boolean isDeleted) {
+    public ShipDetail(String phone, String address, String fullName, int accountId,Boolean isDefault , Boolean isDeleted) {
         this.phone = phone;
         this.address = address;
         this.fullName = fullName;
         this.accountId = accountId;
+        this.isDefault = isDefault;
         this.isDeleted = isDeleted;
     }
 }

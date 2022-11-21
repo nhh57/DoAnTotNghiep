@@ -11,7 +11,10 @@ import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.mvc.model.OrderResult;
 import com.example.ecommerce.mvc.model.OrderStatus;
 import com.example.ecommerce.repository.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -248,5 +251,31 @@ public class InforController {
         account.setPassword(passwordEncoder.encode(newPassword.get()));
         accountRepo.save(account);
         return "redirect:/mvc/information?success=changePass";
+    }
+
+    @PostMapping("/ship-detail/setDefault")
+    public ResponseEntity<String> setDefault(@RequestParam("shipDetailId") Integer shipDetailId,
+                                             @RequestParam("accountId") Integer accountId) throws JSONException {
+        List<ShipDetail> list=shipDetailRepo.findByAccountId(accountId);
+        for(ShipDetail item:list){
+            item.setDefault(false);
+            shipDetailRepo.save(item);
+        }
+        ShipDetail shipDetail=shipDetailRepo.findById(shipDetailId).get();
+        shipDetail.setDefault(true);
+        shipDetailRepo.save(shipDetail);
+        JSONObject json = new JSONObject();
+        json.put("status", "Thành công");
+        return ResponseEntity.ok(String.valueOf(json));
+    }
+    @PostMapping("/order/setOrderStatus")
+    public ResponseEntity<String> setOrderStatus(@RequestParam("orderStatus") String orderStatus,
+                                             @RequestParam("orderId") Integer orderId) throws JSONException {
+        Orders orders=orderRepo.findById(orderId).get();
+        orders.setOrderStatus(orderStatus);
+        orderRepo.save(orders);
+        JSONObject json = new JSONObject();
+        json.put("status", "Thành công");
+        return ResponseEntity.ok(String.valueOf(json));
     }
 }

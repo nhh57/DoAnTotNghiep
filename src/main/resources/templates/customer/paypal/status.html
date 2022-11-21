@@ -17,7 +17,7 @@
         <div class="col-sm-10 col-sm-offset-1">
             <div class="widget-box">
                 <div style="height: 97px; line-height:97px;" class="widget-header widget-header-large">
-                    <img th:src="@{/assets/logo/logo.png}" width="120" height="60">
+                    <a href="/mvc/index"><img th:src="@{/assets/logo/logo.png}" width="120" height="60"></a>
                     <h3 style="margin-left: 10px; font-weight: 700;" class="widget-title grey lighter">
                         HÓA ĐƠN
                     </h3>
@@ -40,13 +40,13 @@
                     <div class="widget-main padding-24">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="row" th:if="${success}">
+                                <div class="row" th:if="${order.getPaymentStatus()=='Đã thanh toán'}">
                                     <div style="width: 98%;"
                                          class="col-xs-12 label label-lg label-success arrowed-in arrowed-right">
                                         <b>[[${order.paymentStatus}]]</b>
                                     </div>
                                 </div>
-                                <div class="row" th:unless="${success}">
+                                <div class="row" th:if="${order.getPaymentStatus()=='Chưa thanh toán'}">
                                     <div style="width: 98%;"
                                          class="col-xs-12 label label-lg label-danger arrowed-in arrowed-right">
                                         <b>[[${order.paymentStatus}]]</b>
@@ -59,7 +59,7 @@
                                         </li>
                                         <li>
                                             <i class="ace-icon fa fa-caret-right blue"></i>
-                                            Tài khoản: <b class="red">[[${users.username}]]</b>
+                                            Tài khoản: <b class="red">[[${order.accountByAccountId.username}]]</b>
                                         </li>
                                         <li>
                                             <i class="ace-icon fa fa-caret-right blue"></i> Họ và tên: [[${order.shipDetailByShipDetailId.fullName}]]
