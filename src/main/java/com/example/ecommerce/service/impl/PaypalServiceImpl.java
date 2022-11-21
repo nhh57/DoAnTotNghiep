@@ -1,5 +1,6 @@
 package com.example.ecommerce.service.impl;
 
+import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.enums.PaypalPaymentIntent;
 import com.example.ecommerce.enums.PaypalPaymentMethod;
 import com.example.ecommerce.service.PaypalService;
@@ -9,6 +10,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,13 @@ public class PaypalServiceImpl implements PaypalService {
                                  String successUrl) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency(currency);
-        amount.setTotal(String.valueOf(total));
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
+        String totalString=df.format(total);
+        if (!totalString.contains(".")) {
+            totalString=totalString+".00";
+        }
+        amount.setTotal(totalString);
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
         transaction.setAmount(amount);

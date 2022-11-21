@@ -48,6 +48,9 @@ public class Orders extends BaseEntity implements Serializable {
     @Column(name = "payment_method", nullable = true, length = -1)
     private String paymentMethod;
 
+    @Column(name = "payment_status", nullable = true, length = -1)
+    private String paymentStatus;
+
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account accountByAccountId;
