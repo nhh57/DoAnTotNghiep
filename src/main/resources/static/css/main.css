@@ -2765,3 +2765,35 @@ table.order-details tbody td {
     padding:8px;
     float: right;
 }
+.widget-title{
+  text-transform: uppercase;
+}
+.footer-social{
+  display: flex;
+ justify-content: flex-start;
+}
+.footer-social li{
+list-style-type: none;
+padding: 0 20px 0 0;
+font-size: 25px;
+}
+.footer-social i{
+  color: #fff;
+opacity: 0.7;
+line-height: 1.8;
+}
+.footer-social i:hover{
+  color:#F28123 ;
+}
+.footer-hotline p{
+  color: #fff;
+  opacity: 0.7;
+  line-height: 1.8;
+}
+.footer-box img{
+  width: 170px;
+  padding: 10px 0;
+}
+.copyright{
+  text-align: center;
+}

@@ -12,10 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.Normalizer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -445,5 +442,13 @@ public class Utils {
             url.append("/");
         }
         return url.toString();
+    }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }
