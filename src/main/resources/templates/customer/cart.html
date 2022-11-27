@@ -243,19 +243,19 @@
 			<div class="col-lg-12">
 				<div class="logo-carousel-inner">
 					<div class="single-logo-item">
-						<img src="assets/img/company-logos/1.png" alt="">
+						<img th:src="@{/assets/img/company-logos/1.png}" alt="" width="150px;" height="100px;">
 					</div>
 					<div class="single-logo-item">
-						<img src="assets/img/company-logos/2.png" alt="">
+						<img th:src="@{/assets/img/company-logos/2.png}" alt="" width="150px;" height="100px;">
 					</div>
 					<div class="single-logo-item">
-						<img src="assets/img/company-logos/3.png" alt="">
+						<img th:src="@{/assets/img/company-logos/3.png}" alt="" width="150px;" height="100px;">
 					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/4.png" alt="">
+					<div class="single-logo-item" >
+						<img th:src="@{/assets/img/company-logos/4.png}" alt="" width="150px;" height="100px;">
 					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/5.png" alt="">
+					<div class="single-logo-item" style="margin-top: 25px;">
+						<img th:src="@{/assets/img/company-logos/5.png}" alt="">
 					</div>
 				</div>
 			</div>
@@ -270,40 +270,47 @@
 		<div class="row">
 			<div class="col-lg-3 col-md-6">
 				<div class="footer-box about-widget">
-					<h2 class="widget-title">About us</h2>
-					<p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+					<h2 class="widget-title">Về chúng tôi</h2>
+					<p>SHOP Đồng Hồ Nam Nữ Chính Hãng Từ Năm 2022</p>
+				</div>
+				<div class="footer-social">
+					<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+					<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+					<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+				</div>
+				<div class="footer-hotline">
+					<p>HOTLINE: 0909.009.090</p>
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-6">
-				<div class="footer-box get-in-touch">
-					<h2 class="widget-title">Get in Touch</h2>
+				<div class="footer-box pages">
+					<h2 class="widget-title">Hướng dẫn</h2>
 					<ul>
-						<li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-						<li>support@fruitkha.com</li>
-						<li>+00 111 222 3333</li>
+						<li><a href="#">Thông Tin Liên Hệ</a></li>
+						<li><a href="#">Hỏi Đáp - Góp Ý</a></li>
+						<li><a href="#">Chính Sách Đổi Hàng</a></li>
+						<li><a href="#">Thanh Toán & Trả Góp</a></li>
+						<li><a href="#">Vận Chuyển & Giao Nhận</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-6">
 				<div class="footer-box pages">
-					<h2 class="widget-title">Pages</h2>
+					<h2 class="widget-title">Tham khảo</h2>
 					<ul>
-						<li><a href="/mvc/index">Home</a></li>
-						<li><a href="mvc/about">About</a></li>
-						<li><a href="/services">Shop</a></li>
-						<li><a href="/news">News</a></li>
-						<li><a href="/contact">Contact</a></li>
+						<li><a >Thông Báo Mới</a></li>
+						<li><a>Điêu Khoản Sử Dụng</a></li>
+						<li><a >Bảo Mật Thông Tin</a></li>
 					</ul>
+
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-6">
 				<div class="footer-box subscribe">
-					<h2 class="widget-title">Subscribe</h2>
-					<p>Subscribe to our mailing list to get the latest updates.</p>
-					<form action="/index">
-						<input type="email" placeholder="Email">
-						<button type="submit"><i class="fas fa-paper-plane"></i></button>
-					</form>
+					<h2 class="widget-title">chứng nhận</h2>
+					<img th:src="@{/assets/img/company-logos/noi-khong-voi-hang-gia.png}" alt="">
+					<img th:src="@{/assets/img/company-logos/bocongthuong.png}" alt="">
+
 				</div>
 			</div>
 		</div>
@@ -314,24 +321,10 @@
 <!-- copyright -->
 <div class="copyright">
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 col-md-12">
-				<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
-					Distributed By - <a href="https://themewagon.com/">Themewagon</a>
-				</p>
-			</div>
-			<div class="col-lg-6 text-right col-md-12">
-				<div class="social-icons">
-					<ul>
-						<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+
+		<p>2022 &copy; <a href="index.html">TIME SHOP</a>
+		</p>
+
 	</div>
 </div>
 <!-- end copyright -->

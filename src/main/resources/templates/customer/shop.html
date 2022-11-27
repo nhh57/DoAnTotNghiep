@@ -178,7 +178,7 @@
                     <div class="col-lg-4 col-md-6 text-center" th:classappend="'filter'+${item.categoriesByCategoryId.id}">
                         <div class="single-product-item">
                             <div class="product-image">
-                                <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
+                                <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img id="product_img" class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}"
                                                                                           alt=""></a>
                             </div>
@@ -384,7 +384,7 @@
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-<script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
+<script th:src="@{/fly_to_cart/js/flyto2.min.js}"></script>
 <script th:src="@{/js/index_custom.js}"></script>
 
 </body>

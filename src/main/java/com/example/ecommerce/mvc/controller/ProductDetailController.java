@@ -9,6 +9,9 @@ import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.repository.CartDetailRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +44,10 @@ public class ProductDetailController {
             int productId=Integer.parseInt(productIdParam.get());
             Product product=productDAO.findById(productId).get();
             model.addAttribute("product",product);
-            model.addAttribute("category",product.getCategoriesByCategoryId());
+            Pageable pageable = PageRequest.of(0, 4);
+            Page<Product> pageProduct = productDAO.findByBrandIdAndCategoryId(pageable,product.getCategoryId(),product.getBrandId());
+            List<Product> list = pageProduct.getContent();
+            model.addAttribute("listProductLienQuan",list);
             //Set số lượng giỏ hàng
             Account khachHang=(Account) session.get("user");
             if(khachHang!=null) {

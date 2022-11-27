@@ -44,13 +44,17 @@ public class IndexMVCController {
 
     @GetMapping("/index")
     public String index(Model model, @RequestParam Optional<String> message) {
-        Pageable pageable = PageRequest.of(0, 4);
-        Page<Product> pageProduct = productDAO.findAll(pageable);
-        List<Product> list = pageProduct.getContent();
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
         }
-        model.addAttribute("listProduct", list);
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<Product> pageProduct = productDAO.findByBrandId(pageable,1);
+        List<Product> list1 = pageProduct.getContent();
+        List<Product> list2 = productDAO.findByBrandId(pageable,2).getContent();
+        List<Product> list3 = productDAO.findByBrandId(pageable,3).getContent();
+        model.addAttribute("listProductByBrandId1", list1);
+        model.addAttribute("listProductByBrandId2", list2);
+        model.addAttribute("listProductByBrandId3", list2);
         model.addAttribute("listBestSelling", productDAO.findByBestSellingProducts(10));
         //Set số lượng giỏ hàng
         Account khachHang = (Account) session.get("user");

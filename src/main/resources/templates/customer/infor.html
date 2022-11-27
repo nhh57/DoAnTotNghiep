@@ -555,29 +555,51 @@
                             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact4" role="tab"
                                aria-controls="contact" aria-selected="false">Đã hủy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact5" role="tab"
-                               aria-controls="contact" aria-selected="false">Trả tiền/Hoàn tiền</a>
-                        </li>
                     </ol>
-                    <div class="orderSearch">
-                        <i class="fas fa-search"></i><input autocomplete="off"
-                                                            placeholder="Tìm kiếm theo ID đơn hàng" value="">
-                    </div>
+                    <form action="/mvc/information" method="get">
+                        <div class="orderSearch">
+                            <input type="hidden" name="tag" value="order" >
+                            <button class="btn"><i class="fas fa-search"></i></button><input autocomplete="off" name="orderId"
+                                                                                 placeholder="Tìm kiếm theo ID đơn hàng" value="">
+                        </div>
+                    </form>
                     <div class="tab-content tab-content-design tab-content-custom" id="myTabContent">
                         <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
                             <th:block th:each="item : ${listTatCa}">
                                 <div class="idHomeCustom">
                                     <table class="table table-hover">
-                                        <div class="row">
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Đang giao'">
                                             <div class="col-7"></div>
-                                            <div class="col-5 col5Custom">
+                                            <div class="col-5 customDangGiao">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
                                                     <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                                                 </svg>
-                                                Đơn hàng đã xuất kho<span class="spanCustom1">  | </span> <span
-                                                    class="spanCustom2">[[${item.orders.orderStatus}]]</span>
+                                                Đang giao
+                                            </div>
+                                        </div>
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Đã hủy'">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customDaHuy">
+                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã hủy
+                                            </div>
+                                        </div>
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Chờ xác nhận'">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customChoXacNhan">
+                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ xác nhận
+                                            </div>
+                                        </div>
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Đã giao'">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customDaGiao">
+                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã giao
+                                            </div>
+                                        </div>
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Chờ lấy hàng'">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customChoLayHang">
+                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ lấy hàng
                                             </div>
                                         </div>
                                         <tbody>
@@ -614,8 +636,8 @@
                                                         th:attr="data-target='#modalHuyDonHang'+${item.orders.id}">
                                                     Hủy đơn hàng
                                                 </button>
-                                                <button th:unless="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy">Đánh giá</button>
-                                                <button th:unless="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnMuaLai">Mua lại</button>
+                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" class="customBtnHuy">Đánh giá</button>
+                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" class="customBtnMuaLai">Mua lại</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -661,15 +683,10 @@
                             <th:block th:each="item : ${listChoXacNhan}">
                                 <div class="idHomeCustom">
                                     <table class="table table-hover">
-                                        <div class="row">
+                                        <div class="row" th:if="${item.orders.orderStatus}=='Chờ xác nhận'">
                                             <div class="col-7"></div>
-                                            <div class="col-5 col5Custom">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                     fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-                                                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                                                </svg>
-                                                Đơn hàng đã xuất kho<span class="spanCustom1">  | </span> <span
-                                                    class="spanCustom2">[[${item.orders.orderStatus}]]</span>
+                                            <div class="col-5 customChoXacNhan">
+                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ xác nhận
                                             </div>
                                         </div>
                                         <tbody>
@@ -700,27 +717,242 @@
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy"
+                                                        data-toggle="modal"
+                                                        th:attr="data-target='#modalHuyDonHang1'+${item.orders.id}">
+                                                    Hủy đơn hàng
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <!--start modal Hủy đơn hàng-->
+                                        <div class="modal fade"
+                                             th:id="'modalHuyDonHang1' + ${item.orders.id}"
+                                             tabindex="-1"
+                                             role="dialog"
+                                             aria-labelledby="exampleModalCenterTitle"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
+                                                        <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="billing-address-form">
+                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn muốn hủy đơn hàng #[[${item.orders.id}]] không?</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btnHuyDonHang1" th:attr="data-orderid=${item.orders.id}">Có
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Không
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end modal-->
+                                    </table>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                            <th:block th:each="item : ${listChoLayHang}">
+                                <div class="idHomeCustom">
+                                    <table class="table table-hover">
+                                        <div class="row">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customChoLayHang">
+                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ lấy hàng
+                                            </div>
+                                        </div>
+                                        <tbody>
+                                        <th:block th:each="orderDetail : ${item.listOrderDetail}">
+                                            <tr>
+                                                <td class="col-8">
+                                                    <div class="media">
+                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                            <img class="media-object"
+                                                                 th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
+                                                                 width="72" height="72"> </a>
+                                                        <div class="media-body">
+                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>x[[${orderDetail.amount}]]</div>
+                                                            <span>Đơn giá: </span><span>
+                                                        <strong>
+                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </strong></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                    <strong class="text-primary">
+                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        <tr style="text-align:right;">
+                                            <td></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </th:block>
                         </div>
-                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Chờ
-                            lấy hàng
+                        <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab">
+                            <th:block th:each="item : ${listDangGiao}">
+                                <div class="idHomeCustom">
+                                    <table class="table table-hover">
+                                        <div class="row">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customDangGiao">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                                                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                                </svg>
+                                                Đang giao
+                                            </div>
+                                        </div>
+                                        <tbody>
+                                        <th:block th:each="orderDetail : ${item.listOrderDetail}">
+                                            <tr>
+                                                <td class="col-8">
+                                                    <div class="media">
+                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                            <img class="media-object"
+                                                                 th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
+                                                                 width="72" height="72"> </a>
+                                                        <div class="media-body">
+                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>x[[${orderDetail.amount}]]</div>
+                                                            <span>Đơn giá: </span><span>
+                                                        <strong>
+                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </strong></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                    <strong class="text-primary">
+                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        <tr style="text-align:right;">
+                                            <td></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </th:block>
                         </div>
-                        <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab">Đang
-                            giao
+                        <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab">
+                            <th:block th:each="item : ${listTatCa}">
+                                <div class="idHomeCustom">
+                                    <table class="table table-hover">
+                                        <div class="row">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customDaGiao">
+                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã giao
+                                            </div>
+                                        </div>
+                                        <tbody>
+                                        <th:block th:each="orderDetail : ${item.listOrderDetail}">
+                                            <tr>
+                                                <td class="col-8">
+                                                    <div class="media">
+                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                            <img class="media-object"
+                                                                 th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
+                                                                 width="72" height="72"> </a>
+                                                        <div class="media-body">
+                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>x[[${orderDetail.amount}]]</div>
+                                                            <span>Đơn giá: </span><span>
+                                                        <strong>
+                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </strong></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                    <strong class="text-primary">
+                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        <tr style="text-align:right;">
+                                            <td></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                                <button class="customBtnHuy">Đánh giá</button>
+                                                <button class="customBtnMuaLai">Mua lại</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </th:block>
                         </div>
-                        <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab">Đã
-                            giao
-                        </div>
-                        <div class="tab-pane fade" id="contact4" role="tabpanel" aria-labelledby="contact-tab">Đã
-                            hủy
-                        </div>
-                        <div class="tab-pane fade" id="contact5" role="tabpanel" aria-labelledby="contact-tab">Trả
-                            tiền/Hoàn tiền
+                        <div class="tab-pane fade" id="contact4" role="tabpanel" aria-labelledby="contact-tab">
+                            <th:block th:each="item : ${listTatCa}">
+                                <div class="idHomeCustom">
+                                    <table class="table table-hover">
+                                        <div class="row">
+                                            <div class="col-7"></div>
+                                            <div class="col-5 customDaHuy">
+                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã hủy
+                                            </div>
+                                        </div>
+                                        <tbody>
+                                        <th:block th:each="orderDetail : ${item.listOrderDetail}">
+                                            <tr>
+                                                <td class="col-8">
+                                                    <div class="media">
+                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                            <img class="media-object"
+                                                                 th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
+                                                                 width="72" height="72"> </a>
+                                                        <div class="media-body">
+                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>x[[${orderDetail.amount}]]</div>
+                                                            <span>Đơn giá: </span><span>
+                                                        <strong>
+                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </strong></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                    <strong class="text-primary">
+                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        <tr style="text-align:right;">
+                                            <td></td>
+                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
                 </div>
