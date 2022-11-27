@@ -25,6 +25,7 @@ public class OrderHelper {
         orderDataModel.setAccountId(orders.getAccountId());
         orderDataModel.setShipDetailId(orders.getShipDetailId());
         orderDataModel.setPaymentMethod(orders.getPaymentMethod());
+        orderDataModel.setPaymentStatus(orders.getPaymentStatus());
         orderDataModel.setIsDeleted(orders.getIsDeleted());
         orderDataModel.setAccount(orders.getAccountByAccountId()!=null?accountHelper.getAccountInforModel(orders.getAccountByAccountId()):null);
         orderDataModel.setShipDetail(orders.getShipDetailByShipDetailId()!=null?shipDetailHelper.getShipDetailDataModel(orders.getShipDetailByShipDetailId()):null);
@@ -49,6 +50,7 @@ public class OrderHelper {
         orders.setAccountId(orderDataModel.getAccountId());
         orders.setShipDetailId(orderDataModel.getShipDetailId());
         orders.setPaymentMethod(orderDataModel.getPaymentMethod());
+        orders.setPaymentStatus(orderDataModel.getPaymentStatus());
         orders.setIsDeleted(orderDataModel.getIsDeleted());
         return  orders;
     }
