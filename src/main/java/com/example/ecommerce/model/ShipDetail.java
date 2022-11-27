@@ -31,7 +31,7 @@ public class ShipDetail extends BaseEntity implements Serializable {
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account accountByAccountId;
 
