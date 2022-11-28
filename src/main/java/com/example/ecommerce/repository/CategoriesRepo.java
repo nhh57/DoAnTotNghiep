@@ -14,4 +14,10 @@ public interface CategoriesRepo extends JpaRepository<Categories,Integer> {
     Page<Categories> findCategoriesExist(Pageable pageable);
     @Query("SELECT c FROM Categories c WHERE c.isDeleted = 0")
     List<Categories> findCategoriesExist();
+
+    @Query("SELECT c FROM Categories c WHERE c.categoryName like %?1%")
+    List<Categories> findByCategoryName(String categoryName);
+
+    @Query("SELECT c FROM Categories c WHERE c.categoryName like %?1%")
+    Page<Categories> findByCategoryNamePage(Pageable pageable, String categoryName);
 }
