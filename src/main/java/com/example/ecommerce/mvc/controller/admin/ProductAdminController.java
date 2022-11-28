@@ -108,6 +108,7 @@ public class ProductAdminController {
                        @RequestParam("note") Optional<String> note,
                        @RequestParam("categoryId") Optional<String> categoryId,
                        @RequestParam("brandId") Optional<String> brandId,
+                       @RequestParam("isDeleted") Optional<Boolean> isDeleted,
                        @RequestParam("images") MultipartFile fileImages,
                        @RequestParam("imagesOld") Optional<String> imagesOld,HttpServletRequest req){
         try{
@@ -122,6 +123,11 @@ public class ProductAdminController {
             product.setDiscount(discount.isPresent()?Integer.parseInt(discount.get()):null);
             product.setNote(note.isPresent()?note.get():null);
             product.setNumberOfSale(0);
+            if (isDeleted.isPresent()) {
+                product.setDeleted(isDeleted.get());
+            } else {
+                product.setDeleted(false);
+            }
             product.setCategoryId(categoryId.isPresent()?Integer.parseInt(categoryId.get()):null);
             product.setBrandId(brandId.isPresent()?Integer.parseInt(brandId.get()):null);
             product.setImages(imagesNameSaved==null || imagesNameSaved.isEmpty()?imagesOld.get():imagesNameSaved);

@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class OrderHelper {
@@ -64,5 +63,18 @@ public class OrderHelper {
         ts.setTime(cal.getTime().getTime()); // or
         ts = new Timestamp(cal.getTime().getTime());
         return ts;
+    }
+
+    public int getTotalPage(int soSanPham, List<Orders> list) {
+        int tongSoSanPham = list.size();
+        int tongSoTrang = 1;
+        float tempFloat = (float) tongSoSanPham / soSanPham;
+        int tempInt = (int) tempFloat;
+        if (tempFloat - tempInt > 0) {
+            tongSoTrang = tempInt + 1;
+        } else {
+            tongSoTrang = tempInt;
+        }
+        return tongSoTrang;
     }
 }

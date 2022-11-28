@@ -97,7 +97,8 @@ public class CategoryAdminController {
 
     @PostMapping("save")
     public String update(@RequestParam("categoryName") Optional<String> categoryName,
-                         @RequestParam("categoryId") Optional<String> categoryId) {
+                         @RequestParam("categoryId") Optional<String> categoryId,
+                         @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
         Categories category = new Categories();
         if (categoryId.isPresent()) {
             category.setId(Integer.parseInt(categoryId.get()));
@@ -105,8 +106,13 @@ public class CategoryAdminController {
         if (categoryName.isPresent()) {
             category.setCategoryName(categoryName.get());
             category.setDeleted(false);
-            categoryDAO.save(category);
         }
+        if(isDeleted.isPresent()){
+            category.setDeleted(isDeleted.get());
+        }else{
+            category.setDeleted(false);
+        }
+        categoryDAO.save(category);
         return "redirect:/mvc/admin/category?message=saved";
     }
 

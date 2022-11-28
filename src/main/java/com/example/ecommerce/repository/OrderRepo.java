@@ -30,4 +30,9 @@ public interface OrderRepo extends JpaRepository<Orders,Integer> {
             "AND od.id=?2")
     Orders existByAccountIdAndOrderId(Integer accountId, Integer orderId);
 
+    @Query("SELECT o FROM Orders o WHERE o.id=?1")
+    List<Orders> findByOrderId(Integer orderId);
+    @Query("SELECT o FROM Orders o WHERE o.id=?1")
+    Page<Orders> findByOrderId(Pageable page, Integer orderId);
+
 }
