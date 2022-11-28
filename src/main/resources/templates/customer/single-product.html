@@ -159,7 +159,7 @@
 				<div class="row ">
 					<div class="col-md-5 product_img">
 						<div class="single-product-img">
-							<img class="" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
+							<img id="product_img" class="product_img" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
 						</div>
 					</div>
 					<div class="col-md-7">
@@ -336,7 +336,7 @@
 
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-		<script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
+		<script th:src="@{/fly_to_cart/js/flyto2.js}"></script>
 		<script th:src="@{/js/single_product_custom.js}"></script>
 </body>
 </html>
