@@ -93,7 +93,8 @@ public class BrandAdminController {
 
     @PostMapping("save")
     public String update(@RequestParam("brandName") Optional<String> brandName,
-                         @RequestParam("brandId") Optional<String> brandId) {
+                         @RequestParam("brandId") Optional<String> brandId,
+                         @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
         Brand brand = new Brand();
         if (brandId.isPresent()) {
             brand.setId(Integer.parseInt(brandId.get()));
@@ -101,8 +102,13 @@ public class BrandAdminController {
         if (brandName.isPresent()) {
             brand.setBrandName(brandName.get());
             brand.setDeleted(false);
-            brandDAO.save(brand);
         }
+        if(isDeleted.isPresent()){
+            brand.setDeleted(isDeleted.get());
+        }else{
+            brand.setDeleted(false);
+        }
+        brandDAO.save(brand);
         return "redirect:/mvc/admin/brand?message=saved";
     }
 

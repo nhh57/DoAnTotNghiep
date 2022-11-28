@@ -302,7 +302,7 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Thông tin loại sản phẩm</h5>
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Thông tin hãng</h5>
                                                             <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -316,7 +316,7 @@
                                                                             type="text"
                                                                             name="brandId"
                                                                             required="required"
-                                                                            placeholder="Mã loại sản phẩm"
+                                                                            placeholder="Mã hãng"
                                                                             th:value="${item.id}">
                                                                     </p>
                                                                     <p><input
@@ -326,8 +326,16 @@
                                                                             name="brandName"
                                                                             required="required"
                                                                             title="Không được bỏ trống!"
-                                                                            placeholder="Tên loại sản phẩm"
+                                                                            placeholder="Tên hãng"
                                                                             th:value="${item.brandName}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="isDeleted"
+                                                                            placeholder="Trạng thái xóa"
+                                                                            th:value="${item.getDeleted()}">
                                                                     </p>
                                                                 </div>
                                                             </div>

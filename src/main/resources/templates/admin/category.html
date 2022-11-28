@@ -330,6 +330,14 @@
                                                                             placeholder="Tên loại sản phẩm"
                                                                             th:value="${item.categoryName}">
                                                                     </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="isDeleted"
+                                                                            placeholder="Trạng thái xóa"
+                                                                            th:value="${item.getDeleted()}">
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -462,4 +462,12 @@ public class Utils {
         }
         return check;
     }
+    public static boolean checkIsNumber(String numberString){
+        try{
+            Integer.parseInt(numberString);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
