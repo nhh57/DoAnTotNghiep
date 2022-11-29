@@ -17,7 +17,7 @@ public interface OrderRepo extends JpaRepository<Orders,Integer> {
 
     @Query("SELECT od FROM Orders od WHERE od.accountId=?1 " +
             "AND od.isDeleted=0 " +
-            "AND od.id=?2" +
+            "AND od.id=?2 " +
             "AND od.orderStatus like %?3%")
     List<Orders> findAllByAccountIdAndOrderIdAndOrderStatus(Integer accountId, Integer orderId, String orderStatus);
     @Query("SELECT od FROM Orders od WHERE od.accountId=?1 " +
@@ -29,5 +29,10 @@ public interface OrderRepo extends JpaRepository<Orders,Integer> {
             "AND od.isDeleted=0 " +
             "AND od.id=?2")
     Orders existByAccountIdAndOrderId(Integer accountId, Integer orderId);
+
+    @Query("SELECT o FROM Orders o WHERE o.id=?1")
+    List<Orders> findByOrderId(Integer orderId);
+    @Query("SELECT o FROM Orders o WHERE o.id=?1")
+    Page<Orders> findByOrderId(Pageable page, Integer orderId);
 
 }

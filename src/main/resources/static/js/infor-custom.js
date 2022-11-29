@@ -106,4 +106,22 @@ $(document).ready(() => {
             }
         });
       });
+    $(".btnHuyDonHang1").click(function () {
+            const orderId=$(this).data('orderid');
+            console.log(orderId);
+            $.ajax({
+                url: "/mvc/information/order/setOrderStatus",
+                method: "POST",
+                data: {
+                  	orderStatus: 'Đã hủy',
+                  	orderId: orderId
+                },
+                success: function(response) {
+                  	const obj = JSON.parse(response);
+                    console.log(obj);
+                    $('#modalHuyDonHang1'+orderId).modal('toggle');
+                    $('#modalKetQuaHuyDonHang').modal('show');
+                }
+            });
+          });
 });

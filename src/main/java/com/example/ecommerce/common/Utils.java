@@ -1,4 +1,5 @@
 package com.example.ecommerce.common;
+import com.example.ecommerce.model.RolesDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Strings;
@@ -450,5 +451,23 @@ public class Utils {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+    public static boolean checkRole(List<RolesDetail> rolesDetailList){
+        boolean check=false;
+        for(RolesDetail rolesDetail:rolesDetailList){
+            if(rolesDetail.getRoleId()==1 || rolesDetail.getRoleId()==2){
+                check=true;
+                break;
+            }
+        }
+        return check;
+    }
+    public static boolean checkIsNumber(String numberString){
+        try{
+            Integer.parseInt(numberString);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

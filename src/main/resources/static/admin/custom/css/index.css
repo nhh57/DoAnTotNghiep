@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+.numberPage {
+	background-color: #e4e4e4;
+	color: #000;
+	padding: 0;
+	min-width: 2.5rem;
+	text-align: center;
+	height: 1.875rem;
+	font-size: 1.25rem;
+	margin-left: 0.9375rem;
+	margin-right: 0.9375rem;
+	border-radius: 45%;
+}
+
+.numberPage:hover {
+	background-color: rgb(238, 77, 45);
+}
+
+.activeCustom {
+	background-color: rgb(230, 77, 45);
+}
+.btnCustom{
+    color: #fff;
+    border: 0;
+    margin-bottom: 1rem;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    background-size: 150%;
+    background-position-x: 25%;
+    position: relative;
+    background-color: #e91e63;
+    display: inline-block;
+    font-weight: 700;
+    line-height: 1.667;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+}
+.btnCustom::after{
+    border:0;
+}
+

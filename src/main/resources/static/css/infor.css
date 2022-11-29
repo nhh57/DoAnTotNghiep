@@ -419,15 +419,30 @@ path.two {
     .tableCustom{
         margin-bottom: 20px;
     }
-    .col5Custom{
+    .customDangGiao{
         color: #26aa99;
         text-align:right;
+        margin-bottom: 15px;
     }
-    .spanCustom1{
-        color:rgb(146, 144, 144);
-    }
-    .spanCustom2{
+    .customDaHuy{
         color: #ee4d2d;
+        text-align:right;
+        margin-bottom: 15px;
+    }
+    .customChoXacNhan{
+        color: #29F29C;
+        text-align:right;
+        margin-bottom: 15px;
+    }
+    .customDaGiao{
+        color: #3EB655;
+        text-align:right;
+        margin-bottom: 15px;
+    }
+    .customChoLayHang{
+        color: #168DE2;
+        text-align:right;
+        margin-bottom: 15px;
     }
     #user-cart #myTab a{
         color: #1c1c1c;

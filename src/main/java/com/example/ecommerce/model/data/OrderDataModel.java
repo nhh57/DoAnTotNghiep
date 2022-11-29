@@ -15,6 +15,7 @@ public class OrderDataModel {
     private Integer accountId;
     private Integer shipDetailId;
     private String paymentMethod;
+    private String paymentStatus;
     private Boolean isDeleted;
     private AccountInforModel account;
     private ShipDetailDataModel shipDetail;

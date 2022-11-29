@@ -10,6 +10,4 @@ public interface OrderService {
     OrderDataModel findById(Integer orderId);
     boolean existsById(Integer id);
     OrderDataModel save(OrderDataModel orderDataModel);
-
-
 }

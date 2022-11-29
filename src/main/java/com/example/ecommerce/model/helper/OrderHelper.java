@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class OrderHelper {
@@ -25,6 +24,7 @@ public class OrderHelper {
         orderDataModel.setAccountId(orders.getAccountId());
         orderDataModel.setShipDetailId(orders.getShipDetailId());
         orderDataModel.setPaymentMethod(orders.getPaymentMethod());
+        orderDataModel.setPaymentStatus(orders.getPaymentStatus());
         orderDataModel.setIsDeleted(orders.getIsDeleted());
         orderDataModel.setAccount(orders.getAccountByAccountId()!=null?accountHelper.getAccountInforModel(orders.getAccountByAccountId()):null);
         orderDataModel.setShipDetail(orders.getShipDetailByShipDetailId()!=null?shipDetailHelper.getShipDetailDataModel(orders.getShipDetailByShipDetailId()):null);
@@ -49,6 +49,7 @@ public class OrderHelper {
         orders.setAccountId(orderDataModel.getAccountId());
         orders.setShipDetailId(orderDataModel.getShipDetailId());
         orders.setPaymentMethod(orderDataModel.getPaymentMethod());
+        orders.setPaymentStatus(orderDataModel.getPaymentStatus());
         orders.setIsDeleted(orderDataModel.getIsDeleted());
         return  orders;
     }
@@ -62,5 +63,18 @@ public class OrderHelper {
         ts.setTime(cal.getTime().getTime()); // or
         ts = new Timestamp(cal.getTime().getTime());
         return ts;
+    }
+
+    public int getTotalPage(int soSanPham, List<Orders> list) {
+        int tongSoSanPham = list.size();
+        int tongSoTrang = 1;
+        float tempFloat = (float) tongSoSanPham / soSanPham;
+        int tempInt = (int) tempFloat;
+        if (tempFloat - tempInt > 0) {
+            tongSoTrang = tempInt + 1;
+        } else {
+            tongSoTrang = tempInt;
+        }
+        return tongSoTrang;
     }
 }
