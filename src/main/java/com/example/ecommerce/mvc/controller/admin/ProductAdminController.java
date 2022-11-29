@@ -69,6 +69,11 @@ public class ProductAdminController {
         model.addAttribute("soTrangHienTai", soTrang);
         model.addAttribute("soSanPhamHienTai", soSanPham);
         model.addAttribute("tongSoTrang", tongSoTrang);
+        if(txtSearch.isPresent() && txtSearch.get()!=null){
+            model.addAttribute("timKiemHienTai", txtSearch.get());
+        }else{
+            model.addAttribute("timKiemHienTai", "");
+        }
         Pageable pageable = PageRequest.of(soTrang-1, soSanPham);
         Page<Product> pageProduct=txtSearch.isPresent()
                 ? productDAO.findByName(pageable,txtSearch.get())

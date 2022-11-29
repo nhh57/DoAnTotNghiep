@@ -19,5 +19,5 @@ public interface CategoriesRepo extends JpaRepository<Categories,Integer> {
     List<Categories> findByCategoryName(String categoryName);
 
     @Query("SELECT c FROM Categories c WHERE c.categoryName like %?1%")
-    Page<Categories> findByCategoryNamePage(Pageable pageable, String categoryName);
+    Page<Categories> findByCategoryName(Pageable pageable, String categoryName);
 }
