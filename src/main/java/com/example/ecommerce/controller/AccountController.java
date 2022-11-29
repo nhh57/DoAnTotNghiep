@@ -162,6 +162,7 @@ public class AccountController {
         account.setDateOfBirth(Utils.convertStringToDate(request.getDateOfBirth()));
         accountService.editProfile(account);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+
     }
 
     /**

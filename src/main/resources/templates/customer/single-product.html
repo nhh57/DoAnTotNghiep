@@ -1,122 +1,467 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
-	<!-- title -->
-	<title>Single News</title>
+    <!-- title -->
+    <title>Single News</title>
 
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
-	<!-- google font -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" th:href="@{/css/all.min.css}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
-	<!-- animate css -->
-	<link rel="stylesheet" th:href="@{/css/animate.css}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" th:href="@{/css/meanmenu.min.css}">
-	<!-- main style -->
-	<link rel="stylesheet" th:href="@{/css/main.css}">
-	<!-- responsive -->
-	<link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <!-- bootstrap -->
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <!-- owl carousel -->
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+    <!-- magnific popup -->
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <!-- animate css -->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <!-- mean menu css -->
+    <link rel="stylesheet" th:href="@{/css/meanmenu.min.css}">
+    <!-- main style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- responsive -->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
 
-	<link rel="stylesheet" th:href="@{/css/menu_custom.css}">
+    <link rel="stylesheet" th:href="@{/css/menu_custom.css}">
+
 
 </head>
 <body>
 
-
-
-
-
-
-
 <!--PreLoader-->
 <div class="loader">
-	<div class="loader-inner">
-		<div class="circle"></div>
-	</div>
+    <div class="loader-inner">
+        <div class="circle"></div>
+    </div>
 </div>
 <!--PreLoader Ends-->
 
 <!-- header -->
 <div class="top-header-area" id="sticker">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 col-sm-12 text-center">
-				<div class="main-menu-wrap">
-					<!-- logo -->
-					<div class="site-logo">
-						<a href="/mvc/index">
-							<img th:src="@{/assets/logo/logo.png}"/>
-						</a>
-					</div>
-					<!-- logo -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-center">
+                <div class="main-menu-wrap">
+                    <!-- logo -->
+                    <div class="site-logo">
+                        <a href="/mvc/index">
+                            <img th:src="@{/assets/logo/logo.png}"/>
+                        </a>
+                    </div>
+                    <!-- logo -->
 
-					<!-- menu start -->
-					<nav class="main-menu">
-						<ul>
-							<li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
-							</li>
-							<li><a href="/mvc/shop">Mua sắm</a></li>
-							<li><a href="">Liên hệ</a>
-							</li>
-							<li>
-								<div class="header-icons">
-									<a class="shopping-cart" href="/mvc/shopping-cart">
-										<i class="fas fa-shopping-cart checkout" aria-hidden="true"></i>
-										<span id="checkout_items"
-											  class="checkout_items">[[${tongSoLuongGioHang}]]</span>
-									</a>
-									<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-									<div th:if="${sessionUsername}!=null" class="dropdown dropdownCustom">
-										<div class="dropdown-toggle customUser" id="dropdownMenuButton"
-											 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
-											<i class="fas fa-user">
-												Xin chào, [[${sessionUsername}]]</i>
-										</div>
-										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<a class="dropdown-item dropdownCustom" href="/mvc/information?tag=information">Thông tin</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{'/mvc/logout?urlReturn=single-product?id='+${productIdParam}}">Đăng xuất</a>
-										</div>
-									</div>
+                    <!-- menu start -->
+                    <nav class="main-menu">
+                        <ul>
+                            <li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
+                            </li>
+                            <li><a href="/mvc/shop">Mua sắm</a></li>
+                            <li><a href="">Liên hệ</a>
+                            </li>
+                            <li>
+                                <div class="header-icons">
+                                    <a class="shopping-cart" href="/mvc/shopping-cart">
+                                        <i class="fas fa-shopping-cart checkout" aria-hidden="true"></i>
+                                        <span id="checkout_items"
+                                              class="checkout_items">[[${tongSoLuongGioHang}]]</span>
+                                    </a>
+                                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                    <div th:if="${sessionUsername}!=null" class="dropdown dropdownCustom">
+                                        <div class="dropdown-toggle customUser" id="dropdownMenuButton"
+                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                                            <i class="fas fa-user">
+                                                Xin chào, [[${sessionUsername}]]</i>
+                                        </div>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item dropdownCustom"
+                                               href="/mvc/information?tag=information">Thông tin</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{'/mvc/logout?urlReturn=single-product?id='+${productIdParam}}">Đăng
+                                                xuất</a>
+                                        </div>
+                                    </div>
 
-									<div th:if="${sessionUsername}==null" class="dropdown dropdownCustom">
-										<div class="dropdown-toggle customUser" id="dropdownMenuButton"
-											 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-											 href="#">
-											<i class="fas fa-user"></i>
-										</div>
-										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<a class="dropdown-item dropdownCustom" th:href="@{'/mvc/login?urlReturn=single-product?id='+${productIdParam}}">Đăng nhập</a>
-											<a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng ký</a>
-										</div>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</nav>
-					<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-					<div class="mobile-menu"></div>
-					<!-- menu end -->
-				</div>
-			</div>
-		</div>
-	</div>
+                                    <div th:if="${sessionUsername}==null" class="dropdown dropdownCustom">
+                                        <div class="dropdown-toggle customUser" id="dropdownMenuButton"
+                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                             href="#">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{'/mvc/login?urlReturn=single-product?id='+${productIdParam}}">Đăng
+                                                nhập</a>
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng
+                                                ký</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                    <div class="mobile-menu"></div>
+                    <!-- menu end -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- end header -->
+
+
+<!-- search area -->
+<div class="search-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Search For:</h3>
+                        <input type="text" placeholder="Keywords">
+                        <button type="submit">Search <i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end search arewa -->
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>See more Details</p>
+                    <h1>Single Product</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+
+<!-- single product -->
+<div class="single-product mt-150 mb-150">
+    <div class="container">
+        <section class="items">
+            <div class="row ">
+                <div class="col-md-5 product_img">
+                    <div class="single-product-img">
+                        <img class="" th:data-id="${product.id}" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="single-product-content">
+                        <h3>[[${product.productName}]]</h3>
+                        <p class="single-product-pricing">[[${#numbers.formatDecimal(product.price, 0, 'COMMA', 0,
+                            'POINT')}]] đ</p>
+                        <p>[[${product.note}]]</p>
+                        <div class="single-product-form">
+                            <form action="/index">
+                                <input class="inputSoLuong" value="1" id="soLuong" type="number" placeholder="1" min="1"
+                                       max="1000">
+                            </form>
+                            <a th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
+                                    class="fas fa-shopping-cart"></i> Add to Cart</a>
+                            <p><strong>Categories: </strong>[[${category.categoryName}]]</p>
+                        </div>
+                        <h4>Share:</h4>
+                        <ul class="product-share">
+                            <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                            <li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+                            <li><a href=""><i class="fab fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--			more review-->
+                <div>
+                    <h2>Reviews</h2>
+                <div class="container-reviews mt-3" id="list_product_random" name="list_product_random">
+
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- end single product -->
+
+<!-- more products -->
+<div class="more-products mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="section-title">
+                    <h3><span class="orange-text">Related</span> Products</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet
+                        beatae optio.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="/single-product"><img src="assets/img/products/product-img-1.jpg" alt=""></a>
+                    </div>
+                    <h3>Strawberry</h3>
+                    <p class="product-price"><span>Per Kg</span> 80$ </p>
+                    <a href="/cart" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="/single-product"><img src="assets/img/products/product-img-2.jpg" alt=""></a>
+                    </div>
+                    <h3>Berry</h3>
+                    <p class="product-price"><span>Per Kg</span> 70$ </p>
+                    <a href="/cart" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="/single-product"><img src="assets/img/products/product-img-3.jpg" alt=""></a>
+                    </div>
+                    <h3>Lemon</h3>
+                    <p class="product-price"><span>Per Kg</span> 35$ </p>
+                    <a href="/cart" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end more products -->
+
+<!-- logo carousel -->
+<div class="logo-carousel-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="logo-carousel-inner">
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/1.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/2.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/3.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/4.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="assets/img/company-logos/5.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end logo carousel -->
+
+<!-- footer -->
+<div class="footer-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box about-widget">
+                    <h2 class="widget-title">About us</h2>
+                    <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                        doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box get-in-touch">
+                    <h2 class="widget-title">Get in Touch</h2>
+                    <ul>
+                        <li>34/8, East Hukupara, Gifirtok, Sadan.</li>
+                        <li>support@fruitkha.com</li>
+                        <li>+00 111 222 3333</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box pages">
+                    <h2 class="widget-title">Pages</h2>
+                    <ul>
+                        <li><a href="/index">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/services">Shop</a></li>
+                        <li><a href="/news">News</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box subscribe">
+                    <h2 class="widget-title">Subscribe</h2>
+                    <p>Subscribe to our mailing list to get the latest updates.</p>
+                    <form action="/index">
+                        <input type="email" placeholder="Email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end footer -->
+
+<!-- copyright -->
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>, All Rights
+                    Reserved.<br>
+                    Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+                </p>
+            </div>
+            <div class="col-lg-6 text-right col-md-12">
+                <div class="social-icons">
+                    <ul>
+                        <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end copyright -->
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- jquery -->
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<!-- bootstrap -->
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<!-- count down -->
+<script th:src="@{/js/jquery.countdown.js}"></script>
+<!-- isotope -->
+<script th:src="@{/js/jquery.isotope-3.0.6.min.js}"></script>
+<!-- waypoints -->
+<script th:src="@{/js/waypoints.js}"></script>
+<!-- owl carousel -->
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<!-- magnific popup -->
+<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<!-- mean menu -->
+<script th:src="@{/js/jquery.meanmenu.min.js}"></script>
+<!-- sticker js -->
+<script th:src="@{/js/sticker.js}"></script>
+<!-- main js -->
+<script th:src="@{/js/main.js}"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
+<script th:src="@{/js/single_product_custom.js}"></script>
+
+<script>
+    // $(document).ready(function () {
+    //     LoadReview();
+    //     loadAllProductRandomByCategoryId();
+    //
+    // });
+    $(function() {
+        loadAllProductRandomByCategoryId();
+    })
+
+    function LoadReview() {
+        $.ajax({
+            url: 'http://localhost:8080/api/review/get-all-review-by-product_id/' + 24 + '',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data[1].comment)
+                $('#reviews').text(data.data[1].comment);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+
+
+    async function axiosTemplate(method, url, params, data) {
+        let res = await axios({
+            method: method, url: url, params: params, data: data
+        });
+        console.log(res);
+        if (res.data.status == 200) {
+            // sweatAlert(res.data.message, "success")
+        }
+        return res;
+    }
+    var productIds = parseInt($('.single-product-img img').data('id'));
+    async function loadAllProductRandomByCategoryId(productId) {
+        productId = productIds;
+        var randomHTML = ``;
+        let method = 'get',
+            url = 'http://localhost:8080/api/review/get-all-review-by-product_id/' + productId ,
+            params ,
+            data = {};
+        let res = await axiosTemplate(method, url, params, data);
+        console.log("ress ne", res);
+        for (let i = 0; i < res.data.data.length; i++) { //   <img class="" th:data-id="${product.id}" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
+            let rating = res.data.data[i].rate;
+            let rateHtml = "";
+            for (let i = 0; i < rating; i++) {
+                rateHtml += `<span class="float-right"><i class="text-warning fa fa-star"></i></span>`;
+            }
+            randomHTML += `
+			<div class="card">
+				<div class="card-body" style="width: 1138px">
+					<div class="row" id="reviews">
+						<div class="col-md-2">
+							<img src="@{'/assets/img/products/'+${res.data.data[i].images}" class="img img-rounded img-fluid"/>
+							<p class="text-secondary text-center">${res.data.data[i].createdAt}</p>
+						</div>
+						<div class="col-md-10">
+							<p>
+								<a class="float-left"   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong id="review-user-name" name="review-user-name"></strong></a>
+			                    ${rateHtml}
+
+							</p>
+							<div class="clearfix"></div>
+							<p>${res.data.data[i].comment}</p>
+							<p>
+								<a class="float-right btn btn-outline-primary ml-2"> <i
+										class="fa fa-reply"></i> Reply</a>
+								<a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div> `;
+        }
+        $('#list_product_random').html(randomHTML);
+    }
 
 	<!-- search area -->
 	<div class="search-area">
@@ -334,7 +679,9 @@
 	<!-- main js -->
 	<script th:src="@{/js/main.js}"></script>
 
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+</script>
+
 
 		<script th:src="@{/fly_to_cart/js/flyto2.js}"></script>
 		<script th:src="@{/js/single_product_custom.js}"></script>
