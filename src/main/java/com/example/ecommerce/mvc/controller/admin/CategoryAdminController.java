@@ -48,10 +48,10 @@ public class CategoryAdminController {
 
     @GetMapping("")
     public String index(Model model,
-                        @RequestParam("isDeleted") Optional<String> isDeleted,
                         @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
-                        @RequestParam("soSanPham") Optional<String> soSanPhamString) {
+                        @RequestParam("soSanPham") Optional<String> soSanPhamString,
+                        @RequestParam("txtSearch") Optional<String> txtSearch) {
 //        Account account=(Account) session.get("user");
 //        if(account!=null){
 //            List<RolesDetail> rolesDetailList=rolesDetailDAO.findByAccountId(account.getId());
@@ -61,7 +61,9 @@ public class CategoryAdminController {
 //        }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
-        int tongSoTrang =categoryHelper.getTotalPage(soSanPham, categoryDAO.findAll());
+        int tongSoTrang = txtSearch.isPresent()
+                ? categoryHelper.getTotalPage(soSanPham, categoryDAO.findByCategoryName(txtSearch.get()))
+                : categoryHelper.getTotalPage(soSanPham, categoryDAO.findAll());
         if (soTrang < 1) {
             soTrang = 1;
         } else if (soTrang > tongSoTrang && tongSoTrang > 0) {
@@ -70,8 +72,15 @@ public class CategoryAdminController {
         model.addAttribute("soTrangHienTai", soTrang);
         model.addAttribute("soSanPhamHienTai", soSanPham);
         model.addAttribute("tongSoTrang", tongSoTrang);
+        if(txtSearch.isPresent() && txtSearch.get()!=null){
+            model.addAttribute("timKiemHienTai", txtSearch.get());
+        }else{
+            model.addAttribute("timKiemHienTai", "");
+        }
         Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
-        Page<Categories> pageCategory = categoryDAO.findAll(pageable);
+        Page<Categories> pageCategory = txtSearch.isPresent()
+                ? categoryDAO.findByCategoryName(pageable, txtSearch.get())
+                : categoryDAO.findAll(pageable);
         List<Categories> list = pageCategory.getContent();
         if (message.isPresent()) {
             if (message.get().equals("saved")) {

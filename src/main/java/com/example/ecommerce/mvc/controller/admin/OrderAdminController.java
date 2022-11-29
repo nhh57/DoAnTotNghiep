@@ -78,8 +78,10 @@ public class OrderAdminController {
             model.addAttribute("soTrangHienTai", soTrang);
             model.addAttribute("soSanPhamHienTai", soSanPham);
             model.addAttribute("tongSoTrang", tongSoTrang);
-            if(txtSearch.isPresent()){
+            if(txtSearch.isPresent() && txtSearch.get()!=null){
                 model.addAttribute("timKiemHienTai", txtSearch.get());
+            }else{
+                model.addAttribute("timKiemHienTai", "");
             }
             if(save.isPresent()) {
                 if(save.get().equals("true")){

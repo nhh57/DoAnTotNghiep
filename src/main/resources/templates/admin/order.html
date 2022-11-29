@@ -572,25 +572,12 @@
                 </div>
                 <div id="numberPageID">
                     <th:block th:if="${tongSoTrang} > 0" th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
-                        <th:block th:switch="${timKiemHienTai}">
-                            <div th:case="null">
-                                <a th:if="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}"
-                                   class="btn btn-success numberPage activeCustom">[[${i}]]</a>
-                                <a th:unless="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}"
-                                   class="btn btn-success numberPage">[[${i}]]</a>
-                            </div>
-                            <div th:case="*">
-                                <a th:if="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/admin/order?soTrang='+${i}}"
-                                   class="btn btn-success numberPage activeCustom">[[${i}]]</a>
-                                <a th:unless="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}}"
-                                   class="btn btn-success numberPage">[[${i}]]</a>
-                            </div>
-                        </th:block>
-
+                        <a th:if="${soTrangHienTai==i}"
+                           th:href="@{'/mvc/admin/order?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}"
+                           class="btn btn-success numberPage activeCustom">[[${i}]]</a>
+                        <a th:unless="${soTrangHienTai==i}"
+                           th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}"
+                           class="btn btn-success numberPage">[[${i}]]</a>
                     </th:block>
                 </div>
             </div>

@@ -44,7 +44,7 @@ public class BrandAdminController {
 
     @GetMapping("")
     public String index(Model model,
-                        @RequestParam("isDeleted") Optional<String> isDeleted,
+                        @RequestParam("txtSearch") Optional<String> txtSearch,
                         @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString) {
@@ -57,7 +57,9 @@ public class BrandAdminController {
 //        }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
-        int tongSoTrang = brandHelper.getTotalPage(soSanPham, brandDAO.findAll());
+        int tongSoTrang = txtSearch.isPresent()
+                ? brandHelper.getTotalPage(soSanPham, brandDAO.findByBrandName(txtSearch.get()))
+                : brandHelper.getTotalPage(soSanPham, brandDAO.findAll());
         if (soTrang < 1) {
             soTrang = 1;
         } else if (soTrang > tongSoTrang && tongSoTrang > 0) {
@@ -66,8 +68,15 @@ public class BrandAdminController {
         model.addAttribute("soTrangHienTai", soTrang);
         model.addAttribute("soSanPhamHienTai", soSanPham);
         model.addAttribute("tongSoTrang", tongSoTrang);
+        if(txtSearch.isPresent() && txtSearch.get()!=null){
+            model.addAttribute("timKiemHienTai", txtSearch.get());
+        }else{
+            model.addAttribute("timKiemHienTai", "");
+        }
         Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
-        Page<Brand> pageBrand = brandDAO.findAll(pageable);
+        Page<Brand> pageBrand = txtSearch.isPresent()
+                ? brandDAO.findByBrandName(pageable, txtSearch.get())
+                : brandDAO.findAll(pageable);
         List<Brand> list = pageBrand.getContent();
         if (message.isPresent()) {
             if (message.get().equals("saved")) {

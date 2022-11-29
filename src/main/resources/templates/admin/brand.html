@@ -127,9 +127,9 @@
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
                  id="navbar">
-                <form class="ms-md-auto pe-md-3 d-flex align-items-center">
+                <form action="/mvc/admin/brand" method="get" class="ms-md-auto pe-md-3 d-flex align-items-center">
                     <div class="input-group input-group-outline">
-                        <label class="form-label">Tìm kiếm...</label> <input id="myInput" type="text" class="form-control">
+                        <label class="form-label">Tìm kiếm...</label> <input name="txtSearch" id="myInput" type="text" class="form-control">
                     </div>
                     <button style="margin-top: 20px;" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -359,10 +359,10 @@
                 <div id="numberPageID">
                     <th:block th:if="${tongSoTrang} > 0" th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
                         <a th:if="${soTrangHienTai==i}"
-                           th:href="@{'/mvc/admin/brand?soTrang='+${i}}"
+                           th:href="@{'/mvc/admin/brand?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}"
                            class="btn btn-success numberPage activeCustom">[[${i}]]</a>
                         <a th:unless="${soTrangHienTai==i}"
-                           th:href="@{'/mvc/admin/brand?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}}"
+                           th:href="@{'/mvc/admin/brand?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}"
                            class="btn btn-success numberPage">[[${i}]]</a>
                     </th:block>
                 </div>

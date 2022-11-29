@@ -1,7 +1,6 @@
 package com.example.ecommerce.repository;
 
 import com.example.ecommerce.model.Brand;
-import com.example.ecommerce.model.Categories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +15,8 @@ public interface BrandRepo extends JpaRepository<Brand,Integer> {
     List<Brand> findBrandExist();
 
     @Query("SELECT c FROM Brand c WHERE c.brandName like %?1%")
-    List<Categories> findByBrandName(String brandName);
+    List<Brand> findByBrandName(String brandName);
 
     @Query("SELECT c FROM Brand c WHERE c.brandName like %?1%")
-    Page<Categories> findByBrandName(Pageable pageable, String brandName);
+    Page<Brand> findByBrandName(Pageable pageable, String brandName);
 }
