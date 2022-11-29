@@ -7,9 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -22,7 +20,8 @@ public class Orders extends BaseEntity implements Serializable {
     private int id;
 
     @Column(name = "order_date")
-    private Timestamp orderDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date orderDate;
 
     @Column(name = "note", nullable = true, length = -1)
     private String note;
@@ -34,7 +33,8 @@ public class Orders extends BaseEntity implements Serializable {
     private BigDecimal totalMoney;
 
     @Column(name = "delivery_date", nullable = true)
-    private Timestamp deliveryDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deliveryDate;
 
     @Column(name = "account_id", nullable = true)
     private Integer accountId;

@@ -87,6 +87,12 @@ public class ShipDetail extends BaseEntity implements Serializable {
 
     }
 
+    public ShipDetail(String phone, String address, String fullName) {
+        this.phone = phone;
+        this.address = address;
+        this.fullName = fullName;
+    }
+
     public Boolean getDefault() {
         return isDefault;
     }

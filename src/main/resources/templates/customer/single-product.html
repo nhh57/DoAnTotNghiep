@@ -179,7 +179,7 @@
                             </form>
                             <a th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
                                     class="fas fa-shopping-cart"></i> Add to Cart</a>
-                            <p><strong>Categories: </strong>[[${category.categoryName}]]</p>
+                            <p><strong>Categories: </strong>[[${product.categoriesByCategoryId.categoryName}]]</p>
                         </div>
                         <h4>Share:</h4>
                         <ul class="product-share">

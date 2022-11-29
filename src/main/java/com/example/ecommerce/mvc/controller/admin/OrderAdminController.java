@@ -3,9 +3,11 @@ package com.example.ecommerce.mvc.controller.admin;
 import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.OdersDetail;
 import com.example.ecommerce.model.Orders;
+import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.model.helper.OrderHelper;
 import com.example.ecommerce.repository.OrderDetailRepo;
 import com.example.ecommerce.repository.OrderRepo;
+import com.example.ecommerce.repository.ShipDetailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,9 @@ public class OrderAdminController {
     @Autowired
     OrderRepo orderDAO;
 
+    @Autowired
+    ShipDetailRepo shipDetailDAO;
+
 //    @Autowired
 //    HttpServletRequest request;
 
@@ -44,52 +50,63 @@ public class OrderAdminController {
                         @RequestParam("delete") Optional<String> delete,
                         @RequestParam("revert") Optional<String> revert,
                         @RequestParam("soTrang") Optional<String> soTrangString,
-                        @RequestParam("soSanPham") Optional<String> soSanPhamString){
+                        @RequestParam("soSanPham") Optional<String> soSanPhamString,
+                        @RequestParam("txtSearch") Optional<Integer> txtSearch){
 //        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
 //            return "redirect:/auth/access/denied";
 //        }
+        try{
+            int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
+            int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
+            int tongSoTrang = txtSearch.isPresent()
+                    ? orderHelper.getTotalPage(soSanPham,orderDAO.findByOrderId(txtSearch.get()))
+                    : orderHelper.getTotalPage(soSanPham, orderDAO.findAll());
+            if (soTrang < 1) {
+                soTrang = 1;
+            } else if (soTrang > tongSoTrang && tongSoTrang > 0) {
+                soTrang = tongSoTrang;
+            }
+            model.addAttribute("soTrangHienTai", soTrang);
+            model.addAttribute("soSanPhamHienTai", soSanPham);
+            model.addAttribute("tongSoTrang", tongSoTrang);
+            Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
+            Page<Orders> pageOrders = txtSearch.isPresent()
+                    ? orderDAO.findByOrderId(pageable,txtSearch.get())
+                    : orderDAO.findAll(pageable);
+            List<Orders> list = pageOrders.getContent();
+            model.addAttribute("listOrder",list);
+            model.addAttribute("soTrangHienTai", soTrang);
+            model.addAttribute("soSanPhamHienTai", soSanPham);
+            model.addAttribute("tongSoTrang", tongSoTrang);
+            if(txtSearch.isPresent()){
+                model.addAttribute("timKiemHienTai", txtSearch.get());
+            }
+            if(save.isPresent()) {
+                if(save.get().equals("true")){
+                    model.addAttribute("message","Lưu lại thành công!");
+                }else{
+                    model.addAttribute("message","Lưu lại thất bại!");
+                }
+            }
+            if(delete.isPresent()) {
+                if(delete.get().equals("true")){
+                    model.addAttribute("message","Xóa thành công!");
+                }else{
+                    model.addAttribute("message","Xóa thất bại!");
+                }
+            }
+            if(revert.isPresent()) {
+                if(revert.get().equals("true")){
+                    model.addAttribute("message","Khôi phục thành công!");
+                }else{
+                    model.addAttribute("message","Khôi phục thất bại!");
+                }
+            }
+            return "admin/order";
+        }catch (Exception e){
+            return "customer/404";
+        }
 
-        Timestamp a=orderDAO.findAll().get(0).getOrderDate();
-        int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
-        int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
-        int tongSoTrang = orderHelper.getTotalPage(soSanPham, orderDAO.findAll());
-        if (soTrang < 1) {
-            soTrang = 1;
-        } else if (soTrang > tongSoTrang) {
-            soTrang = tongSoTrang;
-        }
-        model.addAttribute("soTrangHienTai", soTrang);
-        model.addAttribute("soSanPhamHienTai", soSanPham);
-        model.addAttribute("tongSoTrang", tongSoTrang);
-        Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
-        Page<Orders> pageOrders = orderDAO.findAll(pageable);
-        List<Orders> list = pageOrders.getContent();
-        model.addAttribute("listOrder",list);
-        model.addAttribute("soTrangHienTai", soTrang);
-        model.addAttribute("soSanPhamHienTai", soSanPham);
-        model.addAttribute("tongSoTrang", tongSoTrang);
-        if(save.isPresent()) {
-            if(save.get().equals("true")){
-                model.addAttribute("message","Lưu lại thành công!");
-            }else{
-                model.addAttribute("message","Lưu lại thất bại!");
-            }
-        }
-        if(delete.isPresent()) {
-            if(delete.get().equals("true")){
-                model.addAttribute("message","Xóa thành công!");
-            }else{
-                model.addAttribute("message","Xóa thất bại!");
-            }
-        }
-        if(revert.isPresent()) {
-            if(revert.get().equals("true")){
-                model.addAttribute("message","Khôi phục thành công!");
-            }else{
-                model.addAttribute("message","Khôi phục thất bại!");
-            }
-        }
-        return "admin/order";
     }
 
     @GetMapping("detail")
@@ -99,46 +116,56 @@ public class OrderAdminController {
         return "admin/order-detail";
     }
 
-//    @PostMapping("save")
-//    public String save(@RequestParam("orderId") Optional<Integer> id,
-//                       @RequestParam("orderDate") Optional<String> orderDate,
-//                       @RequestParam("deliveryDate") Optional<String> deliveryDate,
-//                       @RequestParam("orderStatus") Optional<String> orderStatus,
-//                       @RequestParam("totalMoney") Optional<Integer> totalMoney,
-//                       @RequestParam("payment") Optional<String> payment,
-//                       @RequestParam("paymentStatus") Optional<String> paymentStatus,
-//                       @RequestParam("accountId") Optional<Integer> accountId,
-//                       @RequestParam("shipDetailId") Optional<Integer> shipDetailId,
-//                       @RequestParam("note") Optional<String> note,
-//                       @RequestParam("isDeleted") Optional<Boolean> isDeleted,
-//                       HttpServletRequest req){
-////        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
-////            return "redirect:/auth/access/denied";
-////        }
-//        try{
-//            Orders order = new Orders();
-//            order.setId(id.get());
-//            order.setOrderDate(Utils.convertStringTo(orderDate.get()));
-//            order.setDeliveryDate(Utils.converStringToDate(deliveryDate.get()));
-//            order.setOrderStatus(orderStatus.get());
-//            order.setTotalMoney(totalMoney.get());
-//            order.setPaymentMethod(payment.get());
-//            order.setPaymentStatus(paymentStatus.get());
-//            order.setAccountId(accountId.get());
-//            if(isDeleted.isPresent()){
-//                order.setIsDeleted(isDeleted.get());
-//            }else{
-//                order.setIsDeleted(false);
-//            }
-//            order.setShipDetailId(shipDetailId.get());
-//            order.setNote(note.get());
-//            return "redirect:/mvc/admin/order?save=true";
-//        }catch (Exception e){
-//            return "redirect:/mvc/admin/order?save=false";
+    @PostMapping("save")
+    public String save(@RequestParam("orderId") Optional<Integer> id,
+                       @RequestParam("orderDate") Optional<String> orderDate,
+                       @RequestParam("deliveryDate") Optional<String> deliveryDate,
+                       @RequestParam("orderStatus") Optional<String> orderStatus,
+                       @RequestParam("totalMoney") Optional<Integer> totalMoney,
+                       @RequestParam("payment") Optional<String> payment,
+                       @RequestParam("paymentStatus") Optional<String> paymentStatus,
+                       @RequestParam("accountId") Optional<Integer> accountId,
+                       @RequestParam("shipDetailId") Optional<Integer> shipDetailId,
+                       @RequestParam("fullName") Optional<String> fullName,
+                       @RequestParam("phone") Optional<String> phone,
+                       @RequestParam("address") Optional<String> address,
+                       @RequestParam("note") Optional<String> note,
+                       @RequestParam("isDeleted") Optional<Boolean> isDeleted,
+                       HttpServletRequest req){
+//        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
+//            return "redirect:/auth/access/denied";
 //        }
-//
-//    }
+        try{
+            Orders order = new Orders();
+            order.setId(id.get());
+            order.setOrderDate(Utils.converStringToDate(orderDate.get()));
+            order.setDeliveryDate(Utils.converStringToDate(deliveryDate.get()));
+            order.setOrderStatus(orderStatus.get());
+            order.setTotalMoney(new BigDecimal(totalMoney.get()));
+            order.setPaymentMethod(payment.get());
+            order.setPaymentStatus(paymentStatus.get());
+            order.setAccountId(accountId.get());
+            if(isDeleted.isPresent()){
+                order.setIsDeleted(isDeleted.get());
+            }else{
+                order.setIsDeleted(false);
+            }
+            ShipDetail shipDetail=shipDetailDAO.findByFullNameAndPhoneAndAddress(fullName.get(),phone.get(),address.get());
+            if(shipDetail!=null){
+                order.setShipDetailId(shipDetailId.get());
+            }else{
+                ShipDetail shipDetailSaved=shipDetailDAO.save(new ShipDetail(phone.get(),address.get(),fullName.get(),accountId.get(),false,false));
+                order.setShipDetailId(shipDetailSaved.getId());
+            }
+            order.setNote(note.get());
+            orderDAO.save(order);
+            return "redirect:/mvc/admin/order?save=true";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/mvc/admin/order?save=false";
+        }
 
+    }
     @GetMapping("delete")
     public String delete(@RequestParam("orderId") Optional<String> orderId){
         try{

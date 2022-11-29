@@ -127,7 +127,7 @@
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
                  id="navbar">
-                <form
+                <form action="/mvc/admin/order" method="get"
                         class="ms-md-auto pe-md-3 d-flex align-items-center">
                     <div class="input-group input-group-outline">
                         <label class="form-label">Mã hóa đơn...</label> <input
@@ -174,6 +174,15 @@
                 [[${message}]]
             </div>
             <div class="col-12">
+                <div class="card my-4" >
+                    <div class="position-relative mt-n4 mx-3 ">
+                        <select id="filterCustom" class="btnCustom" data-style='btn-primary'>
+                            <option>Tất cả</option>
+                            <option>Chưa xóa</option>
+                            <option>Đã xóa</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="card my-4">
                     <div
                             class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -223,12 +232,15 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Ghi chú
                                     </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Trạng thái deleted
+                                    </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Thao tác
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableFilter">
                                 <th:block th:each="item : ${listOrder}">
                                     <tr>
                                         <td class="align-middle text-center text-sm">
@@ -313,6 +325,14 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 th:if="${item.getIsDeleted()}" class="mb-0 text-sm">Đã xóa</h6>
+                                                    <h6 th:unless="${item.getIsDeleted()}" class="mb-0 text-sm">Chưa xóa</h6>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td class="align-middle text-center">
                                             <a style="cursor: pointer;"
                                                class="text-secondary font-weight-bold text-xs"
@@ -386,15 +406,31 @@
                                                                             title="Không được bỏ trống!"
                                                                             th:value="${#dates.format(item.deliveryDate, 'yyyy-MM-dd')}">
                                                                     </p>
-                                                                    <p><input
-                                                                            style="border: solid; padding: 10px 15px;"
-                                                                            class="form-control"
-                                                                            type="text"
-                                                                            name="orderStatus"
-                                                                            required="required"
-                                                                            title="Không được bỏ trống!"
-                                                                            placeholder="Trạng thái"
-                                                                            th:value="${item.orderStatus}">
+                                                                    <p>
+                                                                        <select style="border: solid; padding: 10px 15px;"
+                                                                                class="form-control"
+                                                                                th:name="orderStatus">
+                                                                            <option
+                                                                                    value="Chờ xác nhận"
+                                                                                    th:selected="${item.orderStatus} == 'Chờ xác nhận'">Chờ xác nhận
+                                                                            </option>
+                                                                            <option
+                                                                                    value="Chờ lấy hàng"
+                                                                                    th:selected="${item.orderStatus} == 'Chờ lấy hàng'">Chờ lấy hàng
+                                                                            </option>
+                                                                            <option
+                                                                                    value="Đang giao"
+                                                                                    th:selected="${item.orderStatus} == 'Đang giao'">Đang giao
+                                                                            </option>
+                                                                            <option
+                                                                                    value="Đã giao"
+                                                                                    th:selected="${item.orderStatus} == 'Đã giao'">Đã giao
+                                                                            </option>
+                                                                            <option
+                                                                                    value="Đã hủy"
+                                                                                    th:selected="${item.orderStatus} == 'Đã hủy'">Đã hủy
+                                                                            </option>
+                                                                        </select>
                                                                     </p>
                                                                     <p><input
                                                                             style="border: solid; padding: 10px 15px;"
@@ -444,6 +480,22 @@
                                                                             type="hidden"
                                                                             name="accountId"
                                                                             th:value="${item.accountId}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            readonly
+                                                                            type="hidden"
+                                                                            name="shipDetailId"
+                                                                            th:value="${item.shipDetailId}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="isDeleted"
+                                                                            placeholder="Trạng thái xóa"
+                                                                            th:value="${item.getIsDeleted()}">
                                                                     </p>
                                                                     <p><input
                                                                             style="border: solid; padding: 10px 15px;"
@@ -519,13 +571,26 @@
                     </div>
                 </div>
                 <div id="numberPageID">
-                    <th:block th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
-                        <a th:if="${soTrangHienTai==i}"
-                           th:href="@{'/mvc/admin/order?soTrang='+${i}}"
-                           class="btn btn-success numberPage activeCustom">[[${i}]]</a>
-                        <a th:unless="${soTrangHienTai==i}"
-                           th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}}"
-                           class="btn btn-success numberPage">[[${i}]]</a>
+                    <th:block th:if="${tongSoTrang} > 0" th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
+                        <th:block th:switch="${timKiemHienTai}">
+                            <div th:case="null">
+                                <a th:if="${soTrangHienTai==i}"
+                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}"
+                                   class="btn btn-success numberPage activeCustom">[[${i}]]</a>
+                                <a th:unless="${soTrangHienTai==i}"
+                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}"
+                                   class="btn btn-success numberPage">[[${i}]]</a>
+                            </div>
+                            <div th:case="*">
+                                <a th:if="${soTrangHienTai==i}"
+                                   th:href="@{'/mvc/admin/order?soTrang='+${i}}"
+                                   class="btn btn-success numberPage activeCustom">[[${i}]]</a>
+                                <a th:unless="${soTrangHienTai==i}"
+                                   th:href="@{'/mvc/admin/order?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}}"
+                                   class="btn btn-success numberPage">[[${i}]]</a>
+                            </div>
+                        </th:block>
+
                     </th:block>
                 </div>
             </div>
@@ -672,255 +737,6 @@
 <script
         th:src="@{/admin/assets/js/plugins/chartjs.min.js}"></script>
 <script>
-		new Chart(ctx, {
-			type : "bar",
-			data : {
-				labels : [ "M", "T", "W", "T", "F", "S", "S" ],
-				datasets : [ {
-					label : "Sales",
-					tension : 0.4,
-					borderWidth : 0,
-					borderRadius : 4,
-					borderSkipped : false,
-					backgroundColor : "rgba(255, 255, 255, .8)",
-					data : [ 50, 20, 10, 22, 50, 10, 40 ],
-					maxBarThickness : 6
-				}, ],
-			},
-			options : {
-				responsive : true,
-				maintainAspectRatio : false,
-				plugins : {
-					legend : {
-						display : false,
-					}
-				},
-				interaction : {
-					intersect : false,
-					mode : 'index',
-				},
-				scales : {
-					y : {
-						grid : {
-							drawBorder : false,
-							display : true,
-							drawOnChartArea : true,
-							drawTicks : false,
-							borderDash : [ 5, 5 ],
-							color : 'rgba(255, 255, 255, .2)'
-						},
-						ticks : {
-							suggestedMin : 0,
-							suggestedMax : 500,
-							beginAtZero : true,
-							padding : 10,
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-							color : "#fff"
-						},
-					},
-					x : {
-						grid : {
-							drawBorder : false,
-							display : true,
-							drawOnChartArea : true,
-							drawTicks : false,
-							borderDash : [ 5, 5 ],
-							color : 'rgba(255, 255, 255, .2)'
-						},
-						ticks : {
-							display : true,
-							color : '#f8f9fa',
-							padding : 10,
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-						}
-					},
-				},
-			},
-		});
-
-		var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-		new Chart(ctx2, {
-			type : "line",
-			data : {
-				labels : [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-						"Nov", "Dec" ],
-				datasets : [ {
-					label : "Mobile apps",
-					tension : 0,
-					borderWidth : 0,
-					pointRadius : 5,
-					pointBackgroundColor : "rgba(255, 255, 255, .8)",
-					pointBorderColor : "transparent",
-					borderColor : "rgba(255, 255, 255, .8)",
-					borderColor : "rgba(255, 255, 255, .8)",
-					borderWidth : 4,
-					backgroundColor : "transparent",
-					fill : true,
-					data : [ 50, 40, 300, 320, 500, 350, 200, 230, 500 ],
-					maxBarThickness : 6
-
-				} ],
-			},
-			options : {
-				responsive : true,
-				maintainAspectRatio : false,
-				plugins : {
-					legend : {
-						display : false,
-					}
-				},
-				interaction : {
-					intersect : false,
-					mode : 'index',
-				},
-				scales : {
-					y : {
-						grid : {
-							drawBorder : false,
-							display : true,
-							drawOnChartArea : true,
-							drawTicks : false,
-							borderDash : [ 5, 5 ],
-							color : 'rgba(255, 255, 255, .2)'
-						},
-						ticks : {
-							display : true,
-							color : '#f8f9fa',
-							padding : 10,
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-						}
-					},
-					x : {
-						grid : {
-							drawBorder : false,
-							display : false,
-							drawOnChartArea : false,
-							drawTicks : false,
-							borderDash : [ 5, 5 ]
-						},
-						ticks : {
-							display : true,
-							color : '#f8f9fa',
-							padding : 10,
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-						}
-					},
-				},
-			},
-		});
-
-		var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-
-		new Chart(ctx3, {
-			type : "line",
-			data : {
-				labels : [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-						"Nov", "Dec" ],
-				datasets : [ {
-					label : "Mobile apps",
-					tension : 0,
-					borderWidth : 0,
-					pointRadius : 5,
-					pointBackgroundColor : "rgba(255, 255, 255, .8)",
-					pointBorderColor : "transparent",
-					borderColor : "rgba(255, 255, 255, .8)",
-					borderWidth : 4,
-					backgroundColor : "transparent",
-					fill : true,
-					data : [ 50, 40, 300, 220, 500, 250, 400, 230, 500 ],
-					maxBarThickness : 6
-
-				} ],
-			},
-			options : {
-				responsive : true,
-				maintainAspectRatio : false,
-				plugins : {
-					legend : {
-						display : false,
-					}
-				},
-				interaction : {
-					intersect : false,
-					mode : 'index',
-				},
-				scales : {
-					y : {
-						grid : {
-							drawBorder : false,
-							display : true,
-							drawOnChartArea : true,
-							drawTicks : false,
-							borderDash : [ 5, 5 ],
-							color : 'rgba(255, 255, 255, .2)'
-						},
-						ticks : {
-							display : true,
-							padding : 10,
-							color : '#f8f9fa',
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-						}
-					},
-					x : {
-						grid : {
-							drawBorder : false,
-							display : false,
-							drawOnChartArea : false,
-							drawTicks : false,
-							borderDash : [ 5, 5 ]
-						},
-						ticks : {
-							display : true,
-							color : '#f8f9fa',
-							padding : 10,
-							font : {
-								size : 14,
-								weight : 300,
-								family : "Roboto",
-								style : 'normal',
-								lineHeight : 2
-							},
-						}
-					},
-				},
-			},
-		});
-
-
-
-</script>
-<script>
 		var win = navigator.platform.indexOf('Win') > -1;
 		if (win && document.querySelector('#sidenav-scrollbar')) {
 			var options = {
@@ -951,6 +767,8 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script
+        th:src="@{/admin/custom/js/order.js}"></script>
 </body>
 
 </html>
