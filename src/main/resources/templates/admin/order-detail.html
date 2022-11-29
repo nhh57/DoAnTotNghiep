@@ -59,21 +59,21 @@
                                         </li>
                                         <li>
                                             <i class="ace-icon fa fa-caret-right blue"></i>
-                                            Tài khoản: <b class="red">[[${order.account.userName}]]</b>
+                                            Tài khoản: <b class="red">[[${order.accountByAccountId.username}]]</b>
                                         </li>
                                         <li>
-                                            <i class="ace-icon fa fa-caret-right blue"></i> Họ và tên: [[${order.fullname}]]
-                                        </li>
-
-                                        <li>
-                                            <i class="ace-icon fa fa-caret-right blue"></i> Số điện thoại: [[${order.phone}]]
-                                        </li>
-                                        <li>
-                                            <i class="ace-icon fa fa-caret-right blue"></i> Phương thức thanh toán: [[${order.payment}]]
+                                            <i class="ace-icon fa fa-caret-right blue"></i> Họ và tên: [[${order.shipDetailByShipDetailId.fullName}]]
                                         </li>
 
                                         <li>
-                                            <i class="ace-icon fa fa-caret-right blue"></i> Địa chỉ: [[${order.address}]]
+                                            <i class="ace-icon fa fa-caret-right blue"></i> Số điện thoại: [[${order.shipDetailByShipDetailId.phone}]]
+                                        </li>
+                                        <li>
+                                            <i class="ace-icon fa fa-caret-right blue"></i> Phương thức thanh toán: [[${order.paymentMethod}]]
+                                        </li>
+
+                                        <li>
+                                            <i class="ace-icon fa fa-caret-right blue"></i> Địa chỉ: [[${order.shipDetailByShipDetailId.address}]]
                                         </li>
 
                                         <li class="divider"></li>
@@ -101,7 +101,7 @@
                                 <tr th:each="item : ${orderDetail}">
                                     <td class="center">1</td>
                                     <td>
-                                        [[${item.product.productName}]]
+                                        [[${item.productByProductId.productName}]]
                                     </td>
                                     <th class="hidden-480">
                                         [[${#numbers.formatDecimal(item.price,

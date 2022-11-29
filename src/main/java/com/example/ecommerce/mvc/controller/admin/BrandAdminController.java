@@ -60,7 +60,7 @@ public class BrandAdminController {
         int tongSoTrang = brandHelper.getTotalPage(soSanPham, brandDAO.findAll());
         if (soTrang < 1) {
             soTrang = 1;
-        } else if (soTrang > tongSoTrang) {
+        } else if (soTrang > tongSoTrang && tongSoTrang > 0) {
             soTrang = tongSoTrang;
         }
         model.addAttribute("soTrangHienTai", soTrang);

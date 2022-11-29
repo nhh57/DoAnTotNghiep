@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +79,7 @@ public class PaymentController {
         }
         Account sessionLogin = (Account) session.get("user");
         Orders order = new Orders();
-        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
+        order.setOrderDate(new Date());
         order.setOrderStatus("Chờ xác nhận");
         order.setTotalMoney(BigDecimal.valueOf(totalMoney.get()));
         order.setNote(note.get());

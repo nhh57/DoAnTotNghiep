@@ -542,7 +542,7 @@
 				</div>
 			</div>
 			<div id="numberPageID">
-				<th:block th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
+				<th:block th:if="${tongSoTrang} > 0" th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
 					<a th:if="${soTrangHienTai==i}"
 					   th:href="@{'/mvc/admin/product?soTrang='+${i}}"
 					   class="btn btn-success numberPage activeCustom">[[${i}]]</a>

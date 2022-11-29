@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OrderHelper {
@@ -55,14 +56,13 @@ public class OrderHelper {
     }
 
     // Sau 5 ngày đặt hàng
-    public Timestamp getDeliveryDate(){
-        Timestamp ts=new Timestamp(System.currentTimeMillis());
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(ts);
-        cal.add(Calendar.DAY_OF_WEEK, 5);
-        ts.setTime(cal.getTime().getTime()); // or
-        ts = new Timestamp(cal.getTime().getTime());
-        return ts;
+    public Date getDeliveryDate(){
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, 5);
+        dt = c.getTime();
+        return dt;
     }
 
     public int getTotalPage(int soSanPham, List<Orders> list) {
