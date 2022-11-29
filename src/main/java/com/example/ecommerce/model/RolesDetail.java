@@ -18,6 +18,9 @@ public class RolesDetail extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "role_id", nullable = true)
     private Integer roleId;
+
+    @Column(name = "is_deleted", nullable = true)
+    private Boolean isDeleted;
     @Basic
     @Column(name = "created_at", nullable = true)
     private Timestamp createdAt;
@@ -74,5 +77,13 @@ public class RolesDetail extends BaseEntity implements Serializable {
 
     public void setRolesByRoleId(Roles rolesByRoleId) {
         this.rolesByRoleId = rolesByRoleId;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
