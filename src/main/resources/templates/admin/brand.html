@@ -255,7 +255,7 @@
                                 </thead>
                                 <tbody id="tableFilter">
                                 <th:block th:each="item : ${listBrand}">
-                                    <tr>
+                                    <tr th:class="${item.getDeleted()} ? isDeleted : ''">
                                         <td class="align-middle text-center text-sm">
                                             <p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
                                         </td>
@@ -263,14 +263,6 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">[[${item.brandName}]]</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 th:if="${item.getDeleted()}" class="mb-0 text-sm">Đã xóa</h6>
-                                                    <h6 th:unless="${item.getDeleted()}" class="mb-0 text-sm">Chưa xóa</h6>
                                                 </div>
                                             </div>
                                         </td>

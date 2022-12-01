@@ -193,6 +193,12 @@ public class InforController {
             return "redirect:/mvc/login?urlReturn=information";
         }
         if(shipDetail!=null){
+            List<ShipDetail> list=shipDetailRepo.findByAccountId(account.getId());
+            if(list.isEmpty() || list ==null){
+                shipDetail.setDefault(true);
+            }else{
+                shipDetail.setDefault(false);
+            }
             shipDetail.setDeleted(false);
             shipDetail.setAccountId(account.getId());
             shipDetailRepo.save(shipDetail);

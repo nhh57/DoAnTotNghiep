@@ -45,7 +45,7 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1 AND p.categoryId=?2")
     List<Product> findByBrandIdAndCategoryId(Integer brandId,Integer categoryId);
 
-    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1 AND p.categoryId=?2")
-    Page<Product> findByBrandIdAndCategoryId(Pageable pageable,Integer brandId,Integer categoryId);
+    @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1 AND p.categoryId=?2 AND id!=?3")
+    Page<Product> findByBrandIdAndCategoryId(Pageable pageable,Integer brandId,Integer categoryId,Integer oldProductId);
 
 }

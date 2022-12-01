@@ -232,9 +232,6 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Ghi chú
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Trạng thái deleted
-                                    </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Thao tác
                                     </th>
@@ -242,7 +239,7 @@
                                 </thead>
                                 <tbody id="tableFilter">
                                 <th:block th:each="item : ${listOrder}">
-                                    <tr>
+                                    <tr th:class="${item.getIsDeleted()} ? isDeleted : ''">
                                         <td class="align-middle text-center text-sm">
                                             <p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
                                         </td>
@@ -322,14 +319,6 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">[[${item.note}]]</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 th:if="${item.getIsDeleted()}" class="mb-0 text-sm">Đã xóa</h6>
-                                                    <h6 th:unless="${item.getIsDeleted()}" class="mb-0 text-sm">Chưa xóa</h6>
                                                 </div>
                                             </div>
                                         </td>
