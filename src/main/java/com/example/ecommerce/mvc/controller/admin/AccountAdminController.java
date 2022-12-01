@@ -121,7 +121,6 @@ public class AccountAdminController {
         List<Roles> listRoles=rolesDAO.findAll();
         model.addAttribute("listRole",listRoles);
         model.addAttribute("listAccount", getListAccountResult(list,listRoles));
-
         return "admin/account";
     }
 
