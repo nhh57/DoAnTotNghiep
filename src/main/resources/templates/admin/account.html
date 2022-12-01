@@ -340,9 +340,11 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Giới tính
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Trạng thái xóa
-                                    </th>
+                                    <th:block th:each="role :${listRole}">
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            [[${role.roleName}]]
+                                        </th>
+                                    </th:block>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Thao tác
                                     </th>
@@ -350,49 +352,94 @@
                                 </thead>
                                 <tbody id="tableFilter">
                                 <th:block th:each="item : ${listAccount}">
-                                    <tr>
+                                    <tr th:class="${item.account.getDeleted} ? isDeleted : ''">
                                         <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
+                                            <p class="text-xs font-weight-bold mb-0">[[${item.account.id}]]</p>
                                         </td>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">[[${item.username}]]</h6>
+                                                    <h6 class="mb-0 text-sm">[[${item.account.username}]]</h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 th:if="${item.getDeleted()}" class="mb-0 text-sm">Đã xóa</h6>
-                                                    <h6 th:unless="${item.getDeleted()}" class="mb-0 text-sm">Chưa
-                                                        xóa</h6>
+                                                    <h6 class="mb-0 text-sm">[[${item.account.password}]]</h6>
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">[[${item.account.email}]]</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">[[${item.account.fullName}]]</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">[[${item.account.phone}]]</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm" th:text="${#dates.format(item.account.dateOfBirth, 'dd-MM-yyyy')}"></h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">[[${item.account.gender}]]</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <th:block th:each ="role : ${item.roleCustom}">
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <input class="checkRole"
+                                                               th:attr="data-roleid=${role.roles.id}, data-accountid=${item.account.id}"
+                                                               type="checkbox" name="roleDetail"
+                                                               th:checked="${role.status}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </th:block>
                                         <td class="align-middle text-center">
                                             <a style="cursor: pointer;"
                                                class="text-secondary font-weight-bold text-xs"
                                                data-toggle="modal"
-                                               th:attr="data-target='#modelChiTiet'+${item.id}"
+                                               th:attr="data-target='#modelChiTiet'+${item.account.id}"
                                             > Chi tiết
                                             </a>
-                                            <a th:if="${item.getDeleted()}"
-                                               th:href="@{'/mvc/admin/account/revert?brandId='+${item.id}}"
-                                               th:attr="onclick=|return confirm('Bạn có muốn khôi phục ${item.username} không?')|"
+                                            <a th:if="${item.account.getDeleted()}"
+                                               th:href="@{'/mvc/admin/account/revert?accountId='+${item.account.id}}"
+                                               th:attr="onclick=|return confirm('Bạn có muốn khôi phục ${item.account.username} không?')|"
                                                class="text-secondary font-weight-bold text-xs"
                                                style="margin-left: 10px; cursor: pointer;"> Khôi phục
                                             </a>
-                                            <a th:unless="${item.getDeleted()}"
-                                               th:href="@{'/mvc/admin/account/delete?brandId='+${item.id}}"
-                                               th:attr="onclick=|return confirm('Thao tác này sẽ làm cho tất cả những gì liên quan đến tài khoản ${item.username} đều bị xóa. Bạn có chắc chắn muốn xóa ${item.username} không?')|"
+                                            <a th:unless="${item.account.getDeleted()}"
+                                               th:href="@{'/mvc/admin/account/delete?accountId='+${item.account.id}}"
+                                               th:attr="onclick=|return confirm('Thao tác này sẽ làm cho tất cả những gì liên quan đến tài khoản ${item.account.username} đều bị xóa. Bạn có chắc chắn muốn xóa ${item.account.username} không?')|"
                                                class="text-secondary font-weight-bold text-xs"
                                                style="margin-left: 10px; cursor: pointer;"> Xóa
                                             </a>
                                         </td>
                                         <form>
                                             <div class="modal fade"
-                                                 th:id="'modelChiTiet' + ${item.id}"
+                                                 th:id="'modelChiTiet' + ${item.account.id}"
                                                  tabindex="-1"
                                                  role="dialog"
                                                  aria-labelledby="exampleModalCenterTitle"
@@ -417,17 +464,7 @@
                                                                             type="hidden"
                                                                             name="accountId"
                                                                             required="required"
-                                                                            th:value="${item.id}">
-                                                                    </p>
-                                                                    <p><input
-                                                                            style="border: solid; padding: 10px 15px;"
-                                                                            class="form-control"
-                                                                            type="text"
-                                                                            name="username"
-                                                                            required="required"
-                                                                            title="Không được bỏ trống!"
-                                                                            placeholder="Tài khoản..."
-                                                                            th:value="${item.username}">
+                                                                            th:value="${item.account.id}">
                                                                     </p>
                                                                     <p><input
                                                                             style="border: solid; padding: 10px 15px;"
@@ -435,7 +472,107 @@
                                                                             type="hidden"
                                                                             name="isDeleted"
                                                                             placeholder="Trạng thái xóa"
-                                                                            th:value="${item.getDeleted()}">
+                                                                            th:value="${item.account.getDeleted()}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            readonly
+                                                                            type="hidden"
+                                                                            name="cartId"
+                                                                            th:value="${item.account.cartId}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            readonly
+                                                                            type="hidden"
+                                                                            name="username"
+                                                                            th:value="${item.account.username}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            readonly
+                                                                            type="text"
+                                                                            name="username2"
+                                                                            required="required"
+                                                                            title="Không được bỏ trống!"
+                                                                            placeholder="Tài khoản..."
+                                                                            th:value="${item.account.username}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="old-password"
+                                                                            th:value="${item.account.password}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="password"
+                                                                            name="password"
+                                                                            required="required"
+                                                                            title="Mật khẩu không được bỏ trống!"
+                                                                            value="passwordDefault">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="email"
+                                                                            name="email"
+                                                                            required="required"
+                                                                            title="Không được bỏ trống!"
+                                                                            placeholder="Email..."
+                                                                            th:value="${item.account.email}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="text"
+                                                                            name="fullName"
+                                                                            required="required"
+                                                                            title="Không được bỏ trống!"
+                                                                            placeholder="Họ và tên..."
+                                                                            th:value="${item.account.fullName}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="text"
+                                                                            name="phone"
+                                                                            required="required"
+                                                                            title="Không được bỏ trống!"
+                                                                            placeholder="Số điện thoại..."
+                                                                            th:value="${item.account.phone}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="date"
+                                                                            name="dateOfBirth"
+                                                                            required="required"
+                                                                            title="Không được bỏ trống!"
+                                                                            th:value="${#dates.format(item.account.dateOfBirth, 'YYYY-MM-dd')}">
+                                                                    </p>
+                                                                    <p>
+                                                                        <select style="border: solid; padding: 10px 15px;"
+                                                                                class="form-control"
+                                                                                th:name="gender">
+                                                                            <option
+                                                                                    th:value="Nam"
+                                                                                    th:text="Nam"
+                                                                                    th:selected="${item.account.gender}=='Nam'"
+                                                                            >
+                                                                            </option>
+                                                                            <option
+                                                                                    th:value="Nữ"
+                                                                                    th:text="Nữ"
+                                                                                    th:selected="${item.account.gender}=='Nữ'"
+                                                                            >
+                                                                            </option>
+                                                                        </select>
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -632,9 +769,10 @@
         th:src="@{/admin/assets/js/material-dashboard.min.js?v=3.0.0}"></script>
 <script
         th:src="@{/admin/assets/js/customAdmin.js}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+<!-- jquery -->
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<!-- isotope -->
+<script th:src="@{/js/jquery.isotope-3.0.6.min.js}"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

@@ -6,11 +6,16 @@ import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.AccountHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
+import com.example.ecommerce.mvc.model.AccountResult;
+import com.example.ecommerce.mvc.model.RoleCustom;
 import com.example.ecommerce.repository.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +50,9 @@ public class AccountAdminController {
 
     @Autowired
     RolesDetailRepo rolesDetailDAO;
+
+    @Autowired
+    RolesRepo rolesDAO;
 
     @Autowired
     SessionDAO session;
@@ -109,26 +118,59 @@ public class AccountAdminController {
                 model.addAttribute("message", "Khôi phục thất bại!");
             }
         }
-        model.addAttribute("listAccount", list);
+        List<Roles> listRoles=rolesDAO.findAll();
+        model.addAttribute("listRole",listRoles);
+        model.addAttribute("listAccount", getListAccountResult(list,listRoles));
 
         return "admin/account";
     }
 
+    private List<AccountResult> getListAccountResult(List<Account> listAccount, List<Roles> listRoles){
+        List<AccountResult> listAccountResult=new ArrayList<>();
+        for (Account item : listAccount) {
+            AccountResult accountResult = new AccountResult();
+            accountResult.setAccount(item);
+            List<RoleCustom> listRoleCustom=new ArrayList<>();
+            List<RolesDetail> listRolesDetail=rolesDetailDAO.findByAccountId(item.getId());
+            for(Roles roles : listRoles){
+                RoleCustom roleCustom=new RoleCustom();
+                roleCustom.setRoles(roles);
+                roleCustom.setStatus(false);
+                for(RolesDetail rolesDetail:listRolesDetail){
+                    if(roles.getId()==rolesDetail.getRoleId()){
+                        roleCustom.setStatus(true);
+                        break;
+                    }
+                }
+                listRoleCustom.add(roleCustom);
+            }
+            accountResult.setRoleCustom(listRoleCustom);
+            listAccountResult.add(accountResult);
+        }
+        return listAccountResult;
+    }
     @PostMapping("save")
     public String update(@RequestParam("accountId") Optional<Integer> accountId,
-                        @RequestParam("username") Optional<String> username,
+                         @RequestParam("username") Optional<String> username,
+                         @RequestParam("old-password") Optional<String> oldPassword,
                          @RequestParam("password") Optional<String> password,
                          @RequestParam("email") Optional<String> email,
                          @RequestParam("fullName") Optional<String> fullName,
                          @RequestParam("phone") Optional<String> phone,
                          @RequestParam("dateOfBirth") Optional<String> dateOfBirth,
                          @RequestParam("gender") Optional<String> gender,
+                         @RequestParam("cartId") Optional<Integer> cartId,
                          @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
         try{
             Account account = new Account();
             account.setId(accountId.isPresent() ? accountId.get() : null);
+            account.setCartId(cartId.get());
             account.setUsername(username.get());
-            account.setPassword(passwordEncoder.encode(password.get()));
+            if(!password.get().equals("passwordDefault")){
+                account.setPassword(passwordEncoder.encode(password.get()));
+            }else{
+                account.setPassword(oldPassword.get());
+            }
             account.setEmail(email.get());
             account.setFullName(fullName.get());
             account.setPhone(phone.get());
@@ -221,5 +263,26 @@ public class AccountAdminController {
         } catch (Exception e) {
             return "redirect:/mvc/admin/account?message=revertFail";
         }
+    }
+
+    @PostMapping("set-role")
+    public ResponseEntity<String> setRole(@RequestParam("accountId") String accountIdString,
+                                         @RequestParam("roleId") String roleIdString) throws JSONException {
+        Integer accountId=Integer.parseInt(accountIdString);
+        Integer roleId=Integer.parseInt(roleIdString);
+        RolesDetail rolesDetail=rolesDetailDAO.findByAccountIdAndRoleId(accountId,roleId);
+        JSONObject json = new JSONObject();
+        if(rolesDetail!=null){
+            rolesDetailDAO.delete(rolesDetail);
+            json.put("status", "Xóa thành công!");
+        }else{
+            RolesDetail rd=new RolesDetail();
+            rd.setDeleted(false);
+            rd.setAccountId(accountId);
+            rd.setRoleId(roleId);
+            rolesDetailDAO.save(rd);
+            json.put("status", "Lưu thành công!");
+        }
+        return ResponseEntity.ok(String.valueOf(json));
     }
 }

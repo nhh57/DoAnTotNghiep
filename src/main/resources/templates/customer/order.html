@@ -92,6 +92,8 @@
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/information?tag=order}">Đơn hàng</a>
+                                            <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/logout?urlReturn=shopping-cart}">Đăng xuất</a>
                                         </div>
                                     </div>
@@ -167,6 +169,7 @@
                     <div class="checkout-accordion-wrap">
                         <div class="accordion" id="accordionExample">
                             <div class="card single-accordion">
+                                <h6 style="color:red;">[[${addressNull}]]</h6>
                                 <div class="card-header" id="headingOne">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link" type="button" data-toggle="collapse"
@@ -216,7 +219,15 @@
                                                 </th:block>
                                             </div>
                                         </div>
-                                        <div class="billing-address-form">
+                                        <div class="billing-address-form" th:if="${diaChiMacDinh} == null">
+                                            <div data-toggle="modal"
+                                                    data-target="#modalShipDetail"
+                                                    style="float:right; margin-bottom:10px;"
+                                                    class="btn btn-primary" >
+                                                <i class="fa fa-plus"></i> Thêm địa chỉ mới</div>
+                                            <p><input name="note" type="text" placeholder="Ghi chú"></p>
+                                        </div>
+                                        <div class="billing-address-form" th:unless="${diaChiMacDinh} == null">
                                             <p><input name="total-money" type="hidden"
                                                       th:value="${tongTienGioHang+15000}"></p>
                                             <p><input name="cart-id" type="hidden" th:value="${cartId}"></p>
@@ -241,6 +252,11 @@
                                                       name="address"
                                                       th:value="${diaChiMacDinh.address}"
                                                       placeholder="Địa chỉ"></p>
+                                            <div data-toggle="modal"
+                                                 data-target="#modalShipDetail"
+                                                 style="float:right; margin-bottom:10px;"
+                                                 class="btn btn-primary" >
+                                                <i class="fa fa-plus"></i> Thêm địa chỉ mới</div>
                                             <p><input name="note" type="text" placeholder="Ghi chú"></p>
                                         </div>
                                     </div>
@@ -290,6 +306,7 @@
                                 </div>
                             </div>
                             <div class="card single-accordion">
+                                <h6 style="color:red;">[[${paymentNull}]]</h6>
                                 <div class="card-header" id="headingTwo">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
@@ -368,8 +385,9 @@
         </form>
     </div>
 </div>
+
 <!--start modal-->
-<div th:if="${orderSaved}" class="modal fade"
+<div th:if="${success!=null}" class="modal fade"
      id="modalNotify"
      tabindex="-1"
      role="dialog"
@@ -378,7 +396,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Đơn hàng</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
                 <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -387,48 +405,62 @@
             <div class="modal-body">
                 <div class="card-body">
                     <div class="billing-address-form">
-                        <p class="pDonHang">Đơn hàng của bạn đã được đặt thành công! Mã đơn hàng của bạn
-                            là:[[${orderIdSaved}]]</p>
+                        <p class="pThongBao">[[${success}]]</p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="/mvc/shop" class="btn btn-primary">Đồng ý</a>
+                <button type="button" class="btn btn-primary"
+                        data-dismiss="modal">Đồng ý
+                </button>
             </div>
         </div>
     </div>
 </div>
 <!--end modal-->
-</div>
-<!-- end order -->
 
-<!-- logo carousel -->
-<div class="logo-carousel-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="logo-carousel-inner">
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/1.png}" alt="" width="150px;" height="100px;">
+<!--Modal thêm địa chỉ -->
+<form th:object="${shipDetail}">
+    <div class="modal fade" id="modalShipDetail" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Địa chỉ mới</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="billing-address-form">
+                            <p><input th:field="*{fullName}" type="text" placeholder="Họ và tên"
+                                      required="required"></p>
+                            <p><input th:field="*{phone}" type="text"
+                                      pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                      title="Số điện thoại Việt Nam bao gồm 10 chữ số"
+                                      required="required"
+                                      placeholder="Số điện thoại"></p>
+                            <p><textarea th:field="*{address}" cols="30" rows="10" required="required"
+                                         placeholder="Địa chỉ giao hàng"></textarea></p>
+                        </div>
                     </div>
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/2.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/3.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item" >
-                        <img th:src="@{/assets/img/company-logos/4.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item" style="margin-top: 25px;">
-                        <img th:src="@{/assets/img/company-logos/5.png}" alt="">
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button formaction="/mvc/order/ship-detail/add" formmethod="post" type="submit"
+                            class="btn btn-primary">Hoàn thành
+                    </button>
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Đóng
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+</form>
+<!--end modal-->
 </div>
-<!-- end logo carousel -->
+<!-- end order -->
 
 <!-- footer -->
 <div class="footer-area">

@@ -45,7 +45,7 @@ public class ProductDetailController {
             Product product=productDAO.findById(productId).get();
             model.addAttribute("product",product);
             Pageable pageable = PageRequest.of(0, 4);
-            Page<Product> pageProduct = productDAO.findByBrandIdAndCategoryId(pageable,product.getCategoryId(),product.getBrandId());
+            Page<Product> pageProduct = productDAO.findByBrandIdAndCategoryId(pageable,product.getCategoryId(),product.getBrandId(),productId);
             List<Product> list = pageProduct.getContent();
             model.addAttribute("listProductLienQuan",list);
             //Set số lượng giỏ hàng

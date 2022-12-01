@@ -21,9 +21,6 @@ public class RolesDetail extends BaseEntity implements Serializable {
 
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
-    @Basic
-    @Column(name = "created_at", nullable = true)
-    private Timestamp createdAt;
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account accountByAccountId;
@@ -53,14 +50,6 @@ public class RolesDetail extends BaseEntity implements Serializable {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Account getAccountByAccountId() {

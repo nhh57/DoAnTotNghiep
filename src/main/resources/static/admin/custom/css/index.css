@@ -43,4 +43,7 @@
 .btnCustom::after{
     border:0;
 }
+.isDeleted{
+    background-color: #f3be66;
+}
 

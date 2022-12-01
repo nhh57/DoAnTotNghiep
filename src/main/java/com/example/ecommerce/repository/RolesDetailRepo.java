@@ -9,4 +9,7 @@ import java.util.List;
 public interface RolesDetailRepo extends JpaRepository<RolesDetail,Integer> {
     @Query("SELECT r FROM RolesDetail r WHERE r.accountId=?1")
     List<RolesDetail> findByAccountId(Integer accountId);
+
+    @Query("SELECT r FROM RolesDetail r WHERE r.accountId=?1 AND r.roleId=?2")
+    RolesDetail findByAccountIdAndRoleId(Integer accountId,Integer roleId);
 }

@@ -60,7 +60,7 @@ public class OrderAdminController {
             int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
             int tongSoTrang = txtSearch.isPresent()
                     ? orderHelper.getTotalPage(soSanPham,orderDAO.findByOrderId(txtSearch.get()))
-                    : orderHelper.getTotalPage(soSanPham, orderDAO.findAll());
+                    : orderHelper.getTotalPage(soSanPham, orderDAO.findAllCustom());
             if (soTrang < 1) {
                 soTrang = 1;
             } else if (soTrang > tongSoTrang && tongSoTrang > 0) {
@@ -72,7 +72,7 @@ public class OrderAdminController {
             Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
             Page<Orders> pageOrders = txtSearch.isPresent()
                     ? orderDAO.findByOrderId(pageable,txtSearch.get())
-                    : orderDAO.findAll(pageable);
+                    : orderDAO.findAllCustom(pageable);
             List<Orders> list = pageOrders.getContent();
             model.addAttribute("listOrder",list);
             model.addAttribute("soTrangHienTai", soTrang);

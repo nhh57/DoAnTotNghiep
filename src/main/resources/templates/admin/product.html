@@ -328,15 +328,13 @@
 										class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hãng
 									sản phẩm</th>
 								<th
-										class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
-								<th
 										class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao
 									tác</th>
 							</tr>
 							</thead>
 							<tbody id="tableFilter">
 							<th:block th:each="item : ${listProduct}">
-								<tr>
+								<tr th:class="${item.getDeleted} ? isDeleted : ''">
 									<td class="align-middle text-center text-sm">
 										<p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
 									</td>
@@ -345,8 +343,7 @@
 											<div>
 												<img
 														th:src="@{'/assets/img/products/'+${item.images}}"
-														class="avatar avatar-sm me-3 border-radius-lg"
-														alt="user1">
+														class="avatar avatar-sm me-3 border-radius-lg">
 											</div>
 											<div class="d-flex flex-column justify-content-center">
 												<h6 class="mb-0 text-sm">[[${item.productName}]]</h6>
@@ -375,12 +372,6 @@
 											class="text-secondary text-xs font-weight-bold">[[${item.brandByBrandId.brandName}]]</span>
 									</td>
 									<td class="align-middle text-center">
-										<span th:if="${item.getDeleted()}"
-											  class="text-secondary text-xs font-weight-bold">Đã xóa</span>
-										<span th:unless="${item.getDeleted()}"
-											  class="text-secondary text-xs font-weight-bold">Chưa xóa</span>
-									</td>
-									<td class="align-middle text-center">
 										<a style="cursor: pointer;"
 										   class="text-secondary font-weight-bold text-xs"
 										   data-toggle="modal"
@@ -394,7 +385,7 @@
 										   style="margin-left: 10px; cursor: pointer;"> Xóa
 										</a>
 										<a th:if="${item.getDeleted()}"
-										   th:href="@{'/mvc/admin/product/delete?productId='+${item.id}}"
+										   th:href="@{'/mvc/admin/product/revert?productId='+${item.id}}"
 										   th:attr="onclick=|return confirm('Bạn có muốn khôi phục sản phẩm ${item.productName} không?')|"
 										   class="text-secondary font-weight-bold text-xs"
 										   style="margin-left: 10px; cursor: pointer;"> Khôi phục

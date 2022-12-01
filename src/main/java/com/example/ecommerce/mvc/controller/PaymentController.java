@@ -66,16 +66,16 @@ public class PaymentController {
 
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
-                      @RequestParam("full-name") Optional<String> fullName,
-                      @RequestParam("phone") Optional<String> phone,
                       @RequestParam("total-money") Optional<Double> totalMoney,
                       @RequestParam("cart-id") Optional<Integer> cartId,
-                      @RequestParam("address") Optional<String> address,
                       @RequestParam("ship-detail-id") Optional<String> shipDetailId,
                       @RequestParam("payment-method") Optional<String> paymentMethod,
                       @RequestParam("note") Optional<String> note) throws PayPalRESTException {
-        if ((address.get().isEmpty() || address.get() == null) && (!shipDetailId.isPresent())) {
+        if (!shipDetailId.isPresent()) {
             return "redirect:/mvc/order?addressNull=true";
+        }
+        if (!paymentMethod.isPresent()) {
+            return "redirect:/mvc/order?paymentNull=true";
         }
         Account sessionLogin = (Account) session.get("user");
         Orders order = new Orders();
