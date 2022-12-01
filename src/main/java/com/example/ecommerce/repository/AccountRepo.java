@@ -69,10 +69,10 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     @Query("SELECT a FROM Account a WHERE a.email=?2 OR a.phone=?2 AND a.username=?1")
     Account findByEmailOrPhone(String username,String emailOrPhone);
 
-    @Query("SELECT a FROM Account a WHERE a.username=?1 or a.fullName like %?1% or a.email like %?1% OR a.phone like %?1%")
-    List<Account> findByUsernameOrFullNameOrEmailOrPhone(String keySearch);
+    @Query("SELECT ac FROM Account ac WHERE ac.username=?1 OR ac.fullName like %?2% OR ac.email like %?2% OR ac.phone like %?2%")
+    List<Account> findByUsernameOrFullNameOrEmailOrPhone(String keySearch1,String keySearch2);
 
-    @Query("SELECT a FROM Account a WHERE a.username=?1 or a.fullName like %?1% or a.email like %?1% OR a.phone like %?1%")
-    Page<Account> findByUsernameOrFullNameOrEmailOrPhone(Pageable pageable, String keySearch);
+    @Query("SELECT ac FROM Account ac WHERE ac.username=?1 OR ac.fullName like %?2% OR ac.email like %?2% OR ac.phone like %?2%")
+    Page<Account> findByUsernameOrFullNameOrEmailOrPhone(Pageable pageable, String keySearch1,String keySearch2);
 
 }
