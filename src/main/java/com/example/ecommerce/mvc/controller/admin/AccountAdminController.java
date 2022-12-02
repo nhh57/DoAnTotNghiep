@@ -31,8 +31,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("mvc/admin/account")
 public class AccountAdminController {
-    //    @Autowired
-//    HttpServletRequest request;
     @Autowired
     AccountRepo accountDAO;
 
@@ -55,9 +53,6 @@ public class AccountAdminController {
     RolesRepo rolesDAO;
 
     @Autowired
-    SessionDAO session;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     AccountHelper accountHelper = new AccountHelper();
@@ -68,16 +63,8 @@ public class AccountAdminController {
                         @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString) {
-//        Account account=(Account) session.get("user");
-//        if(account!=null){
-//            List<RolesDetail> rolesDetailList=rolesDetailDAO.findByAccountId(account.getId());
-//            if(!Utils.checkRole(rolesDetailList)){
-//                return "redirect:/mvc/loginAdmin";
-//            }
-//        }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
-        List<Account> list1=accountDAO.findByUsernameOrFullNameOrEmailOrPhone(txtSearch.get(),txtSearch.get());
         int tongSoTrang = txtSearch.isPresent()
                 ? accountHelper.getTotalPage(soSanPham, accountDAO.findByUsernameOrFullNameOrEmailOrPhone(txtSearch.get(),txtSearch.get()))
                 : accountHelper.getTotalPage(soSanPham, accountDAO.findAll());
