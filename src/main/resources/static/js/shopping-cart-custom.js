@@ -41,25 +41,25 @@ $(document).ready(() => {
       let soLuongSanPham=thisBtn.val();
       const maSp=thisBtn.data("masp");
       $.ajax({
-      			url: "/mvc/shopping-cart/changeCount",
-      			method: "POST",
-      			// type: "application/json",
-      			data: {
-      				maSanPham: maSp,
-      				soLuongSanPham: soLuongSanPham
-      			},
-      			success: function(response) {
-      				const obj = JSON.parse(response);
-                    console.log(obj)
-                    $('#checkout_items').html(obj.soLuong);
-                    const tongTienResult=obj.tongTien.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
-                    $('#tongTien').html(tongTienResult);
-                    const phaiTraResult=(obj.tongTien+15000).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
-                    $('#phaiTra').html(phaiTraResult);
-                    const tongTienItem=obj.tongTienItem.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
-      				thisBtn.closest('.table-body-row').find('.productTotal').html(tongTienItem);
-      			}
-      		});
+        url: "/mvc/shopping-cart/changeCount",
+        method: "POST",
+        // type: "application/json",
+        data: {
+            maSanPham: maSp,
+            soLuongSanPham: soLuongSanPham
+        },
+        success: function(response) {
+            const obj = JSON.parse(response);
+            console.log(obj)
+            $('#checkout_items').html(obj.soLuong);
+            const tongTienResult=obj.tongTien.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
+            $('#tongTien').html(tongTienResult);
+            const phaiTraResult=(obj.tongTien+15000).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
+            $('#phaiTra').html(phaiTraResult);
+            const tongTienItem=obj.tongTienItem.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ ' đ'
+            thisBtn.closest('.table-body-row').find('.productTotal').html(tongTienItem);
+        }
+    });
     });
     $(".btnAddressCustom").click(function () {
        $(".btnAddressCustom").removeClass("btnActive").addClass("btnDisable");

@@ -123,4 +123,24 @@ public class MailerHelper {
                 + " </table>";
         return htmlMail;
     }
+
+    public String getContact(String message,String fullName,String email, String phone){
+        String contact="<div>\n" +
+                "    <div style=\"font-size: 20px;\">\n" +message+
+                "    </div>\n" +
+                "    <span style=\"color:#547efe\">--------------------------------------</span>\n" +
+                "    <br>\n" +
+                "    <span style=\"font-size: 20px; font-weight: 700;color:#547efe\">THÔNG TIN LIÊN HỆ</span>\n" +
+                "    <br>\n" +
+                "    <span style=\"color:#547efe\">--------------------------------------</span>\n" +
+                "    <div style=\"font-size: 20px;color:#547efe\">\n" +
+                "        Họ và tên: " + fullName+
+                "        <br>\n" +
+                "        Email: " + email+
+                "        <br>\n" +
+                "        Số điện thoại: " +phone+
+                "    </div>\n" +
+                "</div>";
+        return contact;
+    }
 }
