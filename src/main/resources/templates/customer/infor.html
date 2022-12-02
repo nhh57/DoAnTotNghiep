@@ -70,7 +70,7 @@
                             <li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
                             </li>
                             <li><a href="/mvc/shop">Mua sắm</a></li>
-                            <li><a href="">Liên hệ</a>
+                            <li><a href="/mvc/contact">Liên hệ</a>
                             </li>
                             <li>
                                 <div class="header-icons">
@@ -637,7 +637,7 @@
                                                     Hủy đơn hàng
                                                 </button>
                                                 <button th:if="${item.orders.orderStatus=='Đã giao'}" class="customBtnHuy">Đánh giá</button>
-                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" class="customBtnMuaLai">Mua lại</button>
+                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" th:attr="data-maorder=${item.orders.id}" class="customBtnMuaLai">Mua lại</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -900,7 +900,7 @@
                                             <td></td>
                                             <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
                                                 <button class="customBtnHuy">Đánh giá</button>
-                                                <button class="customBtnMuaLai">Mua lại</button>
+                                                <button th:attr="data-maorder=${item.orders.id}" class="customBtnMuaLai">Mua lại</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -1092,8 +1092,8 @@
                 <div class="footer-box pages">
                     <h2 class="widget-title">Hướng dẫn</h2>
                     <ul>
-                        <li><a href="#">Thông Tin Liên Hệ</a></li>
-                        <li><a href="#">Hỏi Đáp - Góp Ý</a></li>
+                        <li><a href="/mvc/contact">Thông Tin Liên Hệ</a></li>
+                        <li><a href="/mvc/contact">Hỏi Đáp - Góp Ý</a></li>
                         <li><a href="#">Chính Sách Đổi Hàng</a></li>
                         <li><a href="#">Thanh Toán & Trả Góp</a></li>
                         <li><a href="#">Vận Chuyển & Giao Nhận</a></li>

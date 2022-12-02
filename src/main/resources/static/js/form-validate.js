@@ -1,35 +1,43 @@
 function valid_datas( f ){
 	
 	if( f.name.value == '' ){
-		jQuery('#form_status').html('<span class="wrong">Your name must not be empty!</span>');
-		notice( f.name );
+		jQuery('#form_status').html('<span class="wrong">Họ và tên không được để trống!</span>');
+		notice( f.fullName );
 	}else if( f.email.value == '' ){
-		jQuery('#form_status').html('<span class="wrong">Your email must not be empty and correct format!</span>');
+		jQuery('#form_status').html('<span class="wrong">Email không được để trống!</span>');
 		notice( f.email );
-	//}else if( f.phone.value == '' ){
-		//jQuery('#form_status').html('<span class="wrong">Your phone must not be empty and correct format!</span>');
-		//notice( f.phone );
-	}else if( f.subject.value == '' ){
-		jQuery('#form_status').html('<span class="wrong">Your subject must not be empty!</span>');
-		notice( f.subject );
+	}else if( f.phone.value == '' ){
+        jQuery('#form_status').html('<span class="wrong">Số điện thoại không được để trống!</span>');
+        notice( f.phone );
+    }else if( f.subject.value == '' ){
+        jQuery('#form_status').html('<span class="wrong">Tiêu đề không được để trống!</span>');
+        notice( f.subject );
 	}else if( f.message.value == '' ){
-		jQuery('#form_status').html('<span class="wrong">Your message must not be empty!</span>');
+		jQuery('#form_status').html('<span class="wrong">Nội dung không được để trống!</span>');
 		notice( f.message );
 	}else{
-		 jQuery.ajax({
-			url: 'mail.php',
-			type: 'post',
-			data: jQuery('form#fruitkha-contact').serialize(),
-			complete: function(data) {
-				jQuery('#form_status').html(data.responseText);
-				jQuery('#fruitkha-contact').find('input,textarea').attr({value:''});
-				jQuery('#fruitkha-contact').css({opacity:1});
-				jQuery('#fruitkha-contact').remove();
-			}
-		});
-		jQuery('#form_status').html('<span class="loading">Sending your message...</span>');
-		jQuery('#fruitkha-contact').animate({opacity:0.3});
-		jQuery('#fruitkha-contact').find('input,textarea,button').css('border','none').attr({'disabled':''});
+        $.ajax({
+            url: "/mvc/contact",
+            method: "POST",
+            // type: "application/json",
+            data: {
+                fullName: f.fullName.value,
+                email: f.email.value,
+                phone: f.phone.value,
+                subject: f.subject.value,
+                message: f.message.value
+            },
+            success: function(response) {
+                const obj = JSON.parse(response);
+                console.log(obj);
+                unNotice(f.fullName);
+                unNotice(f.email);
+                unNotice(f.phone);
+                unNotice(f.subject);
+                unNotice(f.message);
+                $("#modalNotify").modal('show');
+            }
+        });
 	}
 	
 	return false;
@@ -39,4 +47,10 @@ function notice( f ){
 	jQuery('#fruitkha-contact').find('input,textarea').css('border','none');
 	f.style.border = '1px solid red';
 	f.focus();
+}
+function unNotice( f ){
+    jQuery('#form_status').html('');
+	jQuery('#fruitkha-contact').find('input,textarea').css('border');
+	f.style.border = '1px solid #ddd';
+	f.blur();
 }

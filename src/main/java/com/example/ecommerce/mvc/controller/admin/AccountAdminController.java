@@ -77,8 +77,9 @@ public class AccountAdminController {
 //        }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
+        List<Account> list1=accountDAO.findByUsernameOrFullNameOrEmailOrPhone(txtSearch.get(),txtSearch.get());
         int tongSoTrang = txtSearch.isPresent()
-                ? accountHelper.getTotalPage(soSanPham, accountDAO.findByUsernameOrFullNameOrEmailOrPhone(txtSearch.get()))
+                ? accountHelper.getTotalPage(soSanPham, accountDAO.findByUsernameOrFullNameOrEmailOrPhone(txtSearch.get(),txtSearch.get()))
                 : accountHelper.getTotalPage(soSanPham, accountDAO.findAll());
         if (soTrang < 1) {
             soTrang = 1;
@@ -95,7 +96,7 @@ public class AccountAdminController {
         }
         Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
         Page<Account> pageAccount = txtSearch.isPresent()
-                ? accountDAO.findByUsernameOrFullNameOrEmailOrPhone(pageable, txtSearch.get())
+                ? accountDAO.findByUsernameOrFullNameOrEmailOrPhone(pageable, txtSearch.get(),txtSearch.get())
                 : accountDAO.findAll(pageable);
         List<Account> list = pageAccount.getContent();
         if (message.isPresent()) {
@@ -121,7 +122,6 @@ public class AccountAdminController {
         List<Roles> listRoles=rolesDAO.findAll();
         model.addAttribute("listRole",listRoles);
         model.addAttribute("listAccount", getListAccountResult(list,listRoles));
-
         return "admin/account";
     }
 

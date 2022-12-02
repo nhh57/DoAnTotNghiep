@@ -124,4 +124,22 @@ $(document).ready(() => {
             }
         });
       });
+
+    $('.customBtnMuaLai').on('click', (element) => {
+        const thisBtn = $(element.currentTarget);
+        const orderId = thisBtn.data("maorder");
+        $.ajax({
+            url: "/mvc/information/order/repurchase",
+            method: "POST",
+            // type: "application/json",
+            data: {
+                orderId: orderId
+            },
+            success: function(response) {
+                const obj = JSON.parse(response);
+                console.log(obj)
+                $('#checkout_items').html(obj.soLuong);
+            }
+        });
+    });
 });

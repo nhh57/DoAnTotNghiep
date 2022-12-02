@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,7 @@
           content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
     <!-- title -->
-    <title>Single News</title>
+    <title>Cart</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
@@ -32,9 +33,11 @@
     <!-- responsive -->
     <link rel="stylesheet" th:href="@{/css/responsive.css}">
 
+    <!-- custom giỏ hàng -->
     <link rel="stylesheet" th:href="@{/css/menu_custom.css}">
 
-
+    <!-- custom open modal -->
+    <link rel="stylesheet" th:href="@{/css/cart_custom.css}">
 </head>
 <body>
 
@@ -63,10 +66,10 @@
                     <!-- menu start -->
                     <nav class="main-menu">
                         <ul>
-                            <li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
+                            <li><a href="/mvc/index">Trang chủ</a>
                             </li>
                             <li><a href="/mvc/shop">Mua sắm</a></li>
-                            <li><a href="/mvc/contact">Liên hệ</a>
+                            <li class="current-list-item"><a href="/mvc/contact">Liên hệ</a>
                             </li>
                             <li>
                                 <div class="header-icons">
@@ -90,8 +93,7 @@
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/information?tag=order}">Đơn hàng</a>
                                             <a class="dropdown-item dropdownCustom"
-                                               th:href="@{'/mvc/logout?urlReturn=single-product?id='+${productIdParam}}">Đăng
-                                                xuất</a>
+                                               th:href="@{/mvc/logout?urlReturn=contact}">Đăng xuất</a>
                                         </div>
                                     </div>
 
@@ -103,8 +105,7 @@
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item dropdownCustom"
-                                               th:href="@{'/mvc/login?urlReturn=single-product?id='+${productIdParam}}">Đăng
-                                                nhập</a>
+                                               th:href="@{/mvc/login?urlReturn=contact}">Đăng nhập</a>
                                             <a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng
                                                 ký</a>
                                         </div>
@@ -122,7 +123,6 @@
     </div>
 </div>
 <!-- end header -->
-
 
 <!-- search area -->
 <div class="search-area">
@@ -149,8 +149,8 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
-                    <p>See more Details</p>
-                    <h1>Single Product</h1>
+                    <p>Hỗ trợ 24/7</p>
+                    <h1>Contact us</h1>
                 </div>
             </div>
         </div>
@@ -158,111 +158,103 @@
 </div>
 <!-- end breadcrumb section -->
 
-<!-- single product -->
-<div class="single-product mt-150 mb-150">
+<!-- contact form -->
+<div class="contact-from-section mt-150 mb-150">
     <div class="container">
-        <section class="items">
-            <div class="row ">
-                <div class="col-md-5 product_img">
-                    <div class="single-product-img">
-                        <img class="" th:data-id="${product.id}" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
-                    </div>
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="form-title">
+                    <h2>Bạn có câu hỏi nào muốn gửi đến chúng tôi?</h2>
+                    <p>Hãy đặt câu hỏi hoặc vấn đề bạn gặp phải, chúng tôi sẽ giải đáp mọi thắc mắc của bạn!</p>
                 </div>
-                <div class="col-md-7">
-                    <div class="single-product-content">
-                        <h3>[[${product.productName}]]</h3>
-                        <p class="single-product-pricing">[[${#numbers.formatDecimal(product.price, 0, 'COMMA', 0,
-                            'POINT')}]] đ</p>
-                        <p>[[${product.note}]]</p>
-                        <div class="single-product-form">
-                            <form action="/index">
-                                <input class="inputSoLuong" value="1" id="soLuong" type="number" placeholder="1" min="1"
-                                       max="1000">
-                            </form>
-                            <a th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
-                                    class="fas fa-shopping-cart"></i> Add to Cart</a>
-                            <p><strong>Categories: </strong>[[${product.categoriesByCategoryId.categoryName}]]</p>
+                <div id="form_status"></div>
+                <div class="contact-form">
+                    <form type="POST" id="fruitkha-contact" onSubmit="return valid_datas( this );">
+                        <p>
+                            <input type="text" placeholder="Họ và tên" name="fullName" id="name">
+                            <input type="email" placeholder="Email" name="email" id="email">
+                        </p>
+                        <p>
+                            <input type="tel" placeholder="Số điện thoại" name="phone" id="phone">
+                            <input type="text" placeholder="Tiêu đề" name="subject" id="subject">
+                        </p>
+                        <p><textarea name="message" id="message" cols="30" rows="10" placeholder="Nội dung"></textarea>
+                        </p>
+                        <input type="hidden" name="token" value="FsWga4&@f6aw"/>
+                        <p><input type="submit" value="Gửi"></p>
+                    </form>
+                    <!--start modal-->
+                    <div class="modal fade"
+                         id="modalNotify"
+                         tabindex="-1"
+                         role="dialog"
+                         aria-labelledby="exampleModalCenterTitle"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+                                    <button style="display: inline-block;border: none;" type="button" class="close"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-body">
+                                        <div class="billing-address-form">
+                                            <p style="font-size:20px;" class="text-success text-justify">Vấn đề của bạn đã được gửi đi!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary"
+                                            data-dismiss="modal">Đồng ý</button>
+                                </div>
+                            </div>
                         </div>
-                        <h4>Share:</h4>
-                        <ul class="product-share">
-                            <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href=""><i class="fab fa-twitter"></i></a></li>
-                            <li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
-                            <li><a href=""><i class="fab fa-linkedin"></i></a></li>
-                        </ul>
                     </div>
-                </div>
-                <!--			more review-->
-                <div>
-                    <h2>Reviews</h2>
-                <div class="container-reviews mt-3" id="list_product_random" name="list_product_random">
-
-                </div>
+                    <!--end modal-->
                 </div>
             </div>
-        </section>
+            <div class="col-lg-4">
+                <div class="contact-form-wrap">
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-map"></i> Vị trí</h4>
+                        <p>Lô 24, Toà nhà Innovation, <br> Công viên phần mềm Quang Trung <br> Quận 12, Thành phố Hồ Chí Minh.</p>
+                    </div>
+                    <div class="contact-form-box">
+                        <h4><i class="far fa-clock"></i> Giờ mở cửa</h4>
+                        <p>THỨ 2 - THỨ 6: 7:00 - 21:00 <br> THỨ 7 - CN: 7:00 - 11:00 </p>
+                    </div>
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-address-book"></i> Liên hệ</h4>
+                        <p>Số điện thoại: 0909 009 090<br> Email: timeshop@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<!-- end single product -->
+<!-- end contact form -->
 
-<!-- more products -->
-<div class="more-products mb-150" th:if="${not #lists.isEmpty(listProductLienQuan)}">
+<!-- find our location -->
+<div class="find-location blue-bg">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 offset-lg-2 text-center">
-                <div class="section-title">
-                    <h3><span class="orange-text">Sản phẩm</span> tương tự</h3>
-                </div>
+            <div class="col-lg-12 text-center">
+                <p><i class="fas fa-map-marker-alt"></i> Vị trí của chúng tôi</p>
             </div>
-        </div>
-        <div class="row">
-            <th:block th:each="item : ${listProductLienQuan}">
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="single-product-item" style="min-height:462px;">
-                        <div class="product-image">
-                            <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
-                                                                                      th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
-                        </div>
-                        <h3 th:text="${item.productName}"></h3>
-                        <p class="product-price">
-                            [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
-                        <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
-                                class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                    </div>
-                </div>
-            </th:block>
         </div>
     </div>
 </div>
-<!-- end more products -->
+<!-- end find our location -->
 
-<!-- logo carousel -->
-<div class="logo-carousel-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="logo-carousel-inner">
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/1.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/2.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item">
-                        <img th:src="@{/assets/img/company-logos/3.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item" >
-                        <img th:src="@{/assets/img/company-logos/4.png}" alt="" width="150px;" height="100px;">
-                    </div>
-                    <div class="single-logo-item" style="margin-top: 25px;">
-                        <img th:src="@{/assets/img/company-logos/5.png}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- google map section -->
+<div class="embed-responsive embed-responsive-21by9">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1037.8652764296507!2d106.62890868483842!3d10.852749387385037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x330151d20b455376!2zUGjhu5UgVGjDtG5nIENhbyDEkOG6s25nIEZQVCBQb2x5dGVjaG5pYyBIQ00!5e0!3m2!1svi!2s!4v1669978371360!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
-<!-- end logo carousel -->
+<!-- end google map section -->
+
 
 <!-- footer -->
 <div class="footer-area">
@@ -329,9 +321,6 @@
 </div>
 <!-- end copyright -->
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <!-- jquery -->
 <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <!-- bootstrap -->
@@ -350,98 +339,10 @@
 <script th:src="@{/js/jquery.meanmenu.min.js}"></script>
 <!-- sticker js -->
 <script th:src="@{/js/sticker.js}"></script>
+<!-- form validation js -->
+<script th:src="@{/js/form-validate.js}"></script>
 <!-- main js -->
 <script th:src="@{/js/main.js}"></script>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-<script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
-<script th:src="@{/js/single_product_custom.js}"></script>
-
-<script>
-    // $(document).ready(function () {
-    //     LoadReview();
-    //     loadAllProductRandomByCategoryId();
-    //
-    // });
-    $(function() {
-        loadAllProductRandomByCategoryId();
-    })
-
-    function LoadReview() {
-        $.ajax({
-            url: 'http://localhost:8080/api/review/get-all-review-by-product_id/' + 24 + '',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.data[1].comment)
-                $('#reviews').text(data.data[1].comment);
-            },
-            error: function (data) {
-
-            }
-        });
-    }
-
-
-    async function axiosTemplate(method, url, params, data) {
-        let res = await axios({
-            method: method, url: url, params: params, data: data
-        });
-        console.log(res);
-        if (res.data.status == 200) {
-            // sweatAlert(res.data.message, "success")
-        }
-        return res;
-    }
-    var productIds = parseInt($('.single-product-img img').data('id'));
-    async function loadAllProductRandomByCategoryId(productId) {
-        productId = productIds;
-        var randomHTML = ``;
-        let method = 'get',
-            url = 'http://localhost:8080/api/review/get-all-review-by-product_id/' + productId ,
-            params ,
-            data = {};
-        let res = await axiosTemplate(method, url, params, data);
-        console.log("ress ne", res);
-        for (let i = 0; i < res.data.data.length; i++) { //   <img class="" th:data-id="${product.id}" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
-            let rating = res.data.data[i].rate;
-            let rateHtml = "";
-            for (let i = 0; i < rating; i++) {
-                rateHtml += `<span class="float-right"><i class="text-warning fa fa-star"></i></span>`;
-            }
-            randomHTML += `
-			<div class="card">
-				<div class="card-body" style="width: 1138px">
-					<div class="row" id="reviews">
-						<div class="col-md-2">
-							<img src="@{'/assets/img/products/'+${res.data.data[i].images}" class="img img-rounded img-fluid"/>
-							<p class="text-secondary text-center">${res.data.data[i].createdAt}</p>
-						</div>
-						<div class="col-md-10">
-							<p>
-								<a class="float-left"   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong id="review-user-name" name="review-user-name"></strong></a>
-			                    ${rateHtml}
-
-							</p>
-							<div class="clearfix"></div>
-							<p>${res.data.data[i].comment}</p>
-							<p>
-								<a class="float-right btn btn-outline-primary ml-2"> <i
-										class="fa fa-reply"></i> Reply</a>
-								<a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div> `;
-        }
-        $('#list_product_random').html(randomHTML);
-    }
-</script>
-
-
-		<script th:src="@{/fly_to_cart/js/flyto2.js}"></script>
-		<script th:src="@{/js/single_product_custom.js}"></script>
 </body>
 </html>
