@@ -24,6 +24,8 @@
     <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
     <!-- animate css -->
     <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <!-- jquery-ui css -->
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}">
     <!-- mean menu css -->
     <link rel="stylesheet" th:href="@{/css/meanmenu.min.css}">
     <!-- main style -->
@@ -31,7 +33,8 @@
     <!-- responsive -->
     <link rel="stylesheet" th:href="@{/css/responsive.css}">
     <link rel="stylesheet" th:href="@{/css/menu_custom.css}">
-
+    <!-- shop_custom css -->
+    <link rel="stylesheet" th:href="@{/css/shop_custom.css}">
 </head>
 <body>
 
@@ -60,7 +63,7 @@
                     <!-- menu start -->
                     <nav class="main-menu">
                         <ul>
-                            <li ><a href="/mvc/index">Trang chủ</a>
+                            <li><a href="/mvc/index">Trang chủ</a>
                             </li>
                             <li class="current-list-item"><a href="/mvc/shop">Mua sắm</a></li>
                             <li><a href="/mvc/contact">Liên hệ</a>
@@ -80,12 +83,15 @@
                                                 Xin chào, [[${sessionUsername}]]</i>
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information?urlReturn=shop}">Thông tin</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/information/change-password}">Đổi mật
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/information?urlReturn=shop}">Thông tin</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/information/change-password}">Đổi mật
                                                 khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/information?tag=order}">Đơn hàng</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout?urlReturn=shop}">Đăng xuất</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/logout?urlReturn=shop}">Đăng xuất</a>
                                         </div>
                                     </div>
 
@@ -96,8 +102,10 @@
                                             <i class="fas fa-user"></i>
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/login?urlReturn=shop}">Đăng nhập</a>
-                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng ký</a>
+                                            <a class="dropdown-item dropdownCustom"
+                                               th:href="@{/mvc/login?urlReturn=shop}">Đăng nhập</a>
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/register}">Đăng
+                                                ký</a>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +160,7 @@
 
 <!-- products -->
 <div class="product-section mt-150 mb-150">
-    <div class="container" style="padding-bottom: 20px">
+    <div class="containerCustom" style="padding-bottom: 20px">
         <div class="row">
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="section-title">
@@ -161,55 +169,153 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="product-filters">
-                    <ul>
-                        <li class="active" data-filter="*">Tất cả</li>
-                        <th:block th:each="item : ${listCategory}">
-                            <li th:attr="data-filter='.filter'+${item.id}">[[${item.categoryName}]]</li>
+            <div class="col-3">
+                <section class="sectionCustom" id="filters">
+                    <h3>Bộ lọc</h3>
+                    <!-- Section: Condition -->
+                    <section class="mb-4">
+                        <h4 class="font-weight-bold mb-3">Hãng</h4>
+                        <th:block th:each="brand : ${listBrand}">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input mt-2 checkboxCustom"
+                                       type="checkbox"
+                                       th:value="'.brand'+${brand.id}"
+                                       th:id="'brand' + ${brand.id}">
+                                <label class="form-check-label text-uppercase text-muted"
+                                       th:attr="for='brand'+${brand.id}">
+                                   [[${brand.brandName}]]
+                                </label>
+                            </div>
                         </th:block>
+                    </section>
+                    <!-- Section: Condition -->
+                    <!-- Section: Condition -->
+                    <section class="mb-4">
+                        <h4 class="font-weight-bold mb-3">Danh mục</h4>
+                        <th:block th:each="category : ${listCategory}">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input mt-2 checkboxCustom"
+                                       type="checkbox"
+                                       th:value="'.category'+${category.id}"
+                                       th:id="'category' + ${category.id}">
+                                <label class="form-check-label text-uppercase text-muted"
+                                       th:attr="for='category'+${category.id}">
+                                    [[${category.categoryName}]]
+                                </label>
+                            </div>
+                        </th:block>
+                    </section>
+                    <!-- Section: Condition -->
+
+                    <!-- Giá -->
+                    <section class="mb-4">
+                        <h4 class="font-weight-bold mb-3">Giá</h4>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input mt-2 checkboxCustom" value=".price1" type="radio"
+                                   name="flexRadioDefault" id="price-radio">
+                            <label class="form-check-label text-uppercase text-muted" for="price-radio">
+                                0 - 2,000,000 đ
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input mt-2 checkboxCustom" value=".price2" type="radio"
+                                   name="flexRadioDefault" id="price-radio2">
+                            <label class="form-check-label text-uppercase text-muted" for="price-radio2">
+                                2,000,001 - 3,000,000 đ
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input mt-2 checkboxCustom" value=".price3" type="radio"
+                                   name="flexRadioDefault" id="price-radio3">
+                            <label class="form-check-label text-uppercase text-muted" for="price-radio3">
+                                3,000,001 - 4,000,000 đ
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input mt-2 checkboxCustom" value=".price4" type="radio"
+                                   name="flexRadioDefault" id="price-radio4">
+                            <label class="form-check-label text-uppercase text-muted" for="price-radio4">
+                                Từ 4,000,001 đ trở lên
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <a th:href="@{/mvc/shop}"
+                               class="btn btn-danger">Xóa bộ lọc</a>
+                        </div>
+                    </section>
+                    <!-- giá -->
+                </section>
+            </div>
+            <div class="col-9">
+                <div class="product_sorting_container product_sorting_container_top">
+                    <ul class="product_sorting">
+                        <li>
+                            <span>Số sản phẩm</span>
+                            <span class="num_sorting_text">[[${soSanPhamHienTai}]]</span>
+                            <i class="fa fa-angle-down"></i>
+                            <ul class="sorting_num">
+                                <a th:href="@{'/mvc/shop?soSanPham=6&txtSearch='+${timKiemHienTai}}">
+                                    <li class="num_sorting_btn">
+                                        <span>6</span>
+                                    </li>
+                                </a>
+                                <a th:href="@{'/mvc/shop?soSanPham=12&txtSearch='+${timKiemHienTai}}">
+                                    <li class="num_sorting_btn">
+                                        <span>12</span>
+                                    </li>
+                                </a>
+                                <a th:href="@{'/mvc/shop?soSanPham=24&txtSearch='+${timKiemHienTai}}">
+                                    <li class="num_sorting_btn">
+                                        <span>24</span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
+                <section class="items">
+                    <div class="row product-lists">
+                        <th:block th:each="item : ${listProduct}">
+                            <div class="col-lg-4 col-md-6 text-center"
+                                 th:classappend="'category'+${item.product.categoriesByCategoryId.id}+' brand'+${item.product.brandByBrandId.id}+' '+${item.classPrice}">
+                                <div class="single-product-item">
+                                    <div class="product-image">
+                                        <a th:href="@{'/mvc/single-product?id='+${item.product.id}}"><img id="product_img" class="product_img"
+                                                                                                          th:src="@{'/assets/img/products/'+${item.product.images}}" alt=""></a>
+                                    </div>
+                                    <h3 th:text="${item.product.productName}"></h3>
+                                    <p class="product-price">
+                                        [[${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                    <a th:attr="data-masanpham=${item.product.id}" class="cart-btn btnAddToCart"><i class="fas fa-shopping-cart"></i>
+                                        Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </section>
             </div>
         </div>
-        <section class="items">
-            <div class="row product-lists">
-                <th:block th:each="item : ${listProduct}">
-                    <div class="col-lg-4 col-md-6 text-center" th:classappend="'filter'+${item.categoriesByCategoryId.id}">
-                        <div class="single-product-item">
-                            <div class="product-image">
-                                <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img id="product_img" class="product_img"
-                                                                                          th:src="@{'/assets/img/products/'+${item.images}}"
-                                                                                          alt=""></a>
-                            </div>
-                            <h3 th:text="${item.productName}"></h3>
-                            <p class="product-price">
-                                [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
-                            <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
-                                    class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                        </div>
-                    </div>
-                </th:block>
-            </div>
-        </section>
+
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="pagination-wrap">
                     <ul>
                         <li>
-                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai-1}+'&soSanPham='+${soSanPhamHienTai}}">Prev</a>
+                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai-1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Prev</a>
                         </li>
                         <th:block th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
-                            <li><a class="active" th:if="${soTrangHienTai==i}" th:href="@{'/mvc/shop?soTrang='+${i}}">[[${i}]]</a>
+                            <li><a class="active" th:if="${soTrangHienTai==i}" th:href="@{'/mvc/shop?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}">[[${i}]]</a>
                             </li>
                             <li><a th:unless="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/shop?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}}">[[${i}]]</a>
+                                   th:href="@{'/mvc/shop?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">[[${i}]]</a>
                             </li>
                         </th:block>
                         <li>
-                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai+1}+'&soSanPham='+${soSanPhamHienTai}}">Next</a>
+                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai+1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -278,7 +384,7 @@
                     <div class="single-logo-item">
                         <img th:src="@{/assets/img/company-logos/3.png}" alt="" width="150px;" height="100px;">
                     </div>
-                    <div class="single-logo-item" >
+                    <div class="single-logo-item">
                         <img th:src="@{/assets/img/company-logos/4.png}" alt="" width="150px;" height="100px;">
                     </div>
                     <div class="single-logo-item" style="margin-top: 25px;">
@@ -325,9 +431,9 @@
                 <div class="footer-box pages">
                     <h2 class="widget-title">Tham khảo</h2>
                     <ul>
-                        <li><a >Thông Báo Mới</a></li>
+                        <li><a>Thông Báo Mới</a></li>
                         <li><a>Điêu Khoản Sử Dụng</a></li>
-                        <li><a >Bảo Mật Thông Tin</a></li>
+                        <li><a>Bảo Mật Thông Tin</a></li>
                     </ul>
 
                 </div>
@@ -377,10 +483,11 @@
 <!-- main js -->
 <script th:src="@{/js/main.js}"></script>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script th:src="@{/js/jquery-ui.js}"></script>
 
 <script th:src="@{/fly_to_cart/js/flyto2.min.js}"></script>
 <script th:src="@{/js/index_custom.js}"></script>
+<script th:src="@{/js/isotopCustom.js}"></script>
 
 </body>
 </html>

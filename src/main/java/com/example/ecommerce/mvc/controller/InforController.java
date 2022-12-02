@@ -39,8 +39,6 @@ public class InforController {
     OrderRepo orderRepo;
 
     @Autowired
-    ProductRepo productDAO;
-    @Autowired
     AccountRepo accountRepo;
 
     CartHelper cartHelper = new CartHelper();
