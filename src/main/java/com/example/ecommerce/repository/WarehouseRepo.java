@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>WarehouseRepo</p>
@@ -43,5 +44,8 @@ public interface WarehouseRepo extends JpaRepository<Warehouse, Integer> {
                                                         @Param("totalPrice") BigDecimal totalPrice,
                                                         @Param("note") String note,
                                                         @Param("amount") int amount) ;
+
+    @Query("SELECT w FROM Warehouse w WHERE w.productId=?1")
+    Warehouse findByProductId(Integer productId);
 
 }
