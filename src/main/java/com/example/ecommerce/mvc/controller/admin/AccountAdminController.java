@@ -150,7 +150,9 @@ public class AccountAdminController {
                          @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
         try{
             Account account = new Account();
-            account.setId(accountId.isPresent() ? accountId.get() : null);
+            if(accountId.isPresent()){
+                account.setId(accountId.get());
+            }
             account.setCartId(cartId.get());
             account.setUsername(username.get());
             if(!password.get().equals("passwordDefault")){
