@@ -171,9 +171,9 @@
                 <div class="col-md-7">
                     <div class="single-product-content">
                         <h3>[[${product.productName}]]</h3>
-                        <p class="single-product-pricing" th:classappend="${product.discount} > 0 ? 'discountCustom' : ''">[[${#numbers.formatDecimal(product.price, 0, 'COMMA', 0,
+                        <p class="single-product-pricing" th:classappend="${product.discount} > 0 ? 'discountCustom' : ''">[[${#numbers.formatDecimal(product.price*(100-product.discount)/100, 0, 'COMMA', 0,
                             'POINT')}]] đ</p>
-                        <p th:if="${product.discount} > 0" class="product-price-old">[[${#numbers.formatDecimal(product.price*(100-product.discount)/100, 0, 'COMMA', 0,
+                        <p th:if="${product.discount} > 0" class="product-price-old">[[${#numbers.formatDecimal(product.price, 0, 'COMMA', 0,
                             'POINT')}]] đ</p>
                         <p>[[${product.note}]]</p>
                         <div class="single-product-form">
@@ -183,7 +183,8 @@
                             </form>
                             <a th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
                                     class="fas fa-shopping-cart"></i> Add to Cart</a>
-                            <p><strong>Categories: </strong>[[${product.categoriesByCategoryId.categoryName}]]</p>
+                            <p><strong>Danh mục: </strong>[[${product.categoriesByCategoryId.categoryName}]]</p>
+                            <p><strong>Hãng: </strong>[[${product.brandByBrandId.brandName}]]</p>
                         </div>
                         <h4>Share:</h4>
                         <ul class="product-share">
