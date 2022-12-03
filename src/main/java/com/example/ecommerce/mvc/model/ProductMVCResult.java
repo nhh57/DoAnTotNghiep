@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 public class ProductMVCResult{
     Product product;
-    int soLuongTrongKho;
     String classPrice;
 }

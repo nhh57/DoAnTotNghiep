@@ -54,7 +54,7 @@ public class IndexMVCController {
         List<Product> list3 = productDAO.findByBrandId(pageable,3).getContent();
         model.addAttribute("listProductByBrandId1", list1);
         model.addAttribute("listProductByBrandId2", list2);
-        model.addAttribute("listProductByBrandId3", list2);
+        model.addAttribute("listProductByBrandId3", list3);
         model.addAttribute("listBestSelling", productDAO.findByBestSellingProducts(10));
         //Set số lượng giỏ hàng
         Account khachHang = (Account) session.get("user");

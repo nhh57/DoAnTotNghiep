@@ -36,6 +36,9 @@ public class Product extends BaseEntity implements Serializable {
     @Basic
     @Column(name = "brand_id", nullable = true)
     private Integer brandId;
+
+    @Column(name = "warehouse_id", nullable = true)
+    private Integer warehouseId;
     @Basic
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
@@ -45,6 +48,10 @@ public class Product extends BaseEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "brand_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Brand brandByBrandId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Warehouse warehouse;
 
     public int getId() {
         return id;
@@ -140,5 +147,21 @@ public class Product extends BaseEntity implements Serializable {
 
     public void setBrandByBrandId(Brand brandByBrandId) {
         this.brandByBrandId = brandByBrandId;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
 }

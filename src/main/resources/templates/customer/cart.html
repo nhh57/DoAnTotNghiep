@@ -64,7 +64,7 @@
 					<!-- menu start -->
 					<nav class="main-menu">
 						<ul>
-							<li class="current-list-item"><a href="/mvc/index">Trang chủ</a>
+							<li><a href="/mvc/index">Trang chủ</a>
 							</li>
 							<li><a href="/mvc/shop">Mua sắm</a></li>
 							<li><a href="/mvc/contact">Liên hệ</a>
@@ -171,7 +171,7 @@
 						</thead>
 						<tbody th:if="listGioHangLogin!=null" >
 						<th:block th:each="item : ${listGioHangLogin}">
-							<tr class="table-body-row">
+							<tr th:if="${item.productByProductId.warehouse.amount} >0" class="table-body-row">
 								<td class="product-remove"><a th:attr="data-masanpham=${item.productByProductId.id}" class="productRemove"><i class="far fa-window-close"></i></a></td>
 								<td class="product-image"><img th:src="@{'/assets/img/products/'+${item.productByProductId.images}}" alt=""></td>
 								<td class="product-name" th:text="${item.productByProductId.productName}"></td>

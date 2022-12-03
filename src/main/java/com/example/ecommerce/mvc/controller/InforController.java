@@ -36,6 +36,12 @@ public class InforController {
     OrderDetailRepo orderDetailRepo;
 
     @Autowired
+    ProductRepo productDAO;
+
+    @Autowired
+    WarehouseRepo warehouseDAO;
+
+    @Autowired
     OrderRepo orderRepo;
 
     @Autowired
@@ -283,6 +289,17 @@ public class InforController {
         Orders orders = orderRepo.findById(orderId).get();
         orders.setOrderStatus(orderStatus);
         orderRepo.save(orders);
+        if(orderStatus.equals("Đã hủy")){
+            List<OdersDetail> listOrerDetail=orderDetailRepo.findAllByOrderId(orderId);
+            for(OdersDetail orderDetail:listOrerDetail){
+                Product product=productDAO.findById(orderDetail.getProductId()).get();
+                product.setNumberOfSale(product.getNumberOfSale()-orderDetail.getAmount());
+                productDAO.save(product);
+                Warehouse warehouse=warehouseDAO.findByProductId(orderDetail.getProductId());
+                warehouse.setAmount(warehouse.getAmount()+orderDetail.getAmount());
+                warehouseDAO.save(warehouse);
+            }
+        }
         JSONObject json = new JSONObject();
         json.put("status", "Thành công");
         return ResponseEntity.ok(String.valueOf(json));

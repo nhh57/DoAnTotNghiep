@@ -33,10 +33,6 @@ public class ShopController {
 
     @Autowired
     BrandRepo brandDAO;
-
-    @Autowired
-    WarehouseRepo warehouseDAO;
-
     @Autowired
     ShoppingCartDAO shoppingCartDAO;
     @Autowired
@@ -82,7 +78,7 @@ public class ShopController {
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
         }
-        model.addAttribute("listProduct", getListProductMVCResult(list));
+        model.addAttribute("listProduct", productHelper.getListProductMVCResult(list));
         //Category
         model.addAttribute("listCategory", categoryDAO.findAll());
         //Brand
@@ -113,25 +109,6 @@ public class ShopController {
             model.addAttribute("tongSoLuongGioHang", shoppingCartDAO.getCount());
         }
         return "customer/shop";
-    }
-    private List<ProductMVCResult> getListProductMVCResult(List<Product> list) {
-        List<ProductMVCResult> listProductMVCResult = new ArrayList<>();
-        for (Product item : list) {
-            ProductMVCResult productMVCResult = new ProductMVCResult();
-            productMVCResult.setProduct(item);
-            if(item.getPrice()*(100-item.getDiscount())/100 <= 2000000){
-                productMVCResult.setClassPrice("price1");
-            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 3000000){
-                productMVCResult.setClassPrice("price2");
-            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 4000000){
-                productMVCResult.setClassPrice("price3");
-            }else if(item.getPrice()*(100-item.getDiscount())/100 > 4000000){
-                productMVCResult.setClassPrice("price4");
-            }
-            productMVCResult.setSoLuongTrongKho(warehouseDAO.findByProductId(item.getId()).getAmount());
-            listProductMVCResult.add(productMVCResult);
-        }
-        return listProductMVCResult;
     }
 
 }

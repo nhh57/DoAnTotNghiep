@@ -37,6 +37,8 @@ public class Warehouse extends BaseEntity implements Serializable {
     @Column(name = "is_deleted", nullable = true)
     private Boolean isDeleted;
 
+    @OneToOne(mappedBy = "warehouse")
+    private Product product;
 
     public int getId() {
         return id;
@@ -100,5 +102,13 @@ public class Warehouse extends BaseEntity implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

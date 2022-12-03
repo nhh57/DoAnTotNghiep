@@ -68,6 +68,12 @@ public class ShoppingCartController {
 			shoppingCartDAO.clear();
 		}
 		if(khachHang != null && cartId != null){
+			List<CartDetail> listCartFirst=cartDetailRepo.getCartDetail(cartId);
+			for(CartDetail cartDetail:listCartFirst){
+				if(cartDetail.getProductByProductId().getWarehouse().getAmount()==0){
+					cartDetailRepo.deleteByProductId(cartDetail.getCartId(),cartDetail.getProductId());
+				}
+			}
 			List<CartDetail> listCart=cartDetailRepo.getCartDetail(cartId);
 			if(listCart.size() > 0 ){
 				if(cartHelper.checkNullProductByProductId(listCart)){
