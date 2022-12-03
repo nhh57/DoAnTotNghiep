@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -469,5 +470,42 @@ public class Utils {
         }catch (Exception e){
             return false;
         }
+    }
+
+    //Format time "HH:mm:ss"
+    public static String getLocalTimeString(LocalTime localTime) {
+        if (localTime == null) {
+            return "";
+        } else {
+            String result=localTime.toString();
+            if(result.length()<6){
+                result=result+":00";
+            }
+            return result;
+        }
+    }
+
+    //Date format yyyy-MM-dd
+    public static String getDateAndMonthString(String dateString) {
+        if (dateString == null) {
+            return "";
+        } else {
+            String date=dateString.substring(dateString.length()-2,dateString.length());
+            String month=dateString.substring(dateString.indexOf("-")+1,dateString.indexOf("-")+3);
+            String dateMonth=date+"."+month;
+            return dateMonth;
+        }
+    }
+
+    //Datetime format "yyyy-MM-dd HH:mm:ss"
+    public static Date getDateTimeFromDateAndTimeString(String dateString,String timeString) throws ParseException {
+        String dateTimeString=dateString+" "+timeString;
+        Date result=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString);
+        return result;
+    }
+
+    public static double date1MinusDate2ToHours(Date date1,Date date2){
+        double result=(date1.getTime()-date2.getTime())/3600000.0;
+        return result;
     }
 }
