@@ -171,14 +171,15 @@
         </div>
         <div class="row">
             <div class="col-3">
-                <section class="sectionCustom" id="filters">
+                <section class="sectionCustom" id="options">
                     <h3>Bộ lọc</h3>
                     <!-- Section: Condition -->
-                    <section class="mb-4">
+                    <div data-group="brand" class="mb-4 option-set">
                         <h4 class="font-weight-bold mb-3">Hãng</h4>
                         <th:block th:each="brand : ${listBrand}">
                             <div class="form-check mb-3">
-                                <input class="form-check-input mt-2 checkboxCustom"
+                                <input class="form-check-input mt-2 checkboxCustom brandCustom"
+                                       value-group="brand"
                                        type="checkbox"
                                        th:value="'.brand'+${brand.id}"
                                        th:id="'brand' + ${brand.id}">
@@ -188,14 +189,15 @@
                                 </label>
                             </div>
                         </th:block>
-                    </section>
+                    </div>
                     <!-- Section: Condition -->
                     <!-- Section: Condition -->
-                    <section class="mb-4">
+                    <div data-group="category" class="mb-4 option-set">
                         <h4 class="font-weight-bold mb-3">Danh mục</h4>
                         <th:block th:each="category : ${listCategory}">
                             <div class="form-check mb-3">
-                                <input class="form-check-input mt-2 checkboxCustom"
+                                <input class="form-check-input mt-2 checkboxCustom categoryCustom"
+                                       value-group="category"
                                        type="checkbox"
                                        th:value="'.category'+${category.id}"
                                        th:id="'category' + ${category.id}">
@@ -205,14 +207,14 @@
                                 </label>
                             </div>
                         </th:block>
-                    </section>
+                    </div>
                     <!-- Section: Condition -->
 
                     <!-- Giá -->
-                    <section class="mb-4">
+                    <div data-group="price" class="mb-4 option-set">
                         <h4 class="font-weight-bold mb-3">Giá</h4>
                         <div class="form-check mb-3">
-                            <input class="form-check-input mt-2 checkboxCustom" value=".price1" type="radio"
+                            <input class="form-check-input mt-2 checkboxCustom priceCustom" value=".price1" type="checkbox"
                                    name="flexRadioDefault" id="price-radio">
                             <label class="form-check-label text-uppercase text-muted" for="price-radio">
                                 0 - 2,000,000 đ
@@ -220,7 +222,7 @@
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input mt-2 checkboxCustom" value=".price2" type="radio"
+                            <input class="form-check-input mt-2 checkboxCustom priceCustom" value=".price2" type="checkbox"
                                    name="flexRadioDefault" id="price-radio2">
                             <label class="form-check-label text-uppercase text-muted" for="price-radio2">
                                 2,000,001 - 3,000,000 đ
@@ -228,7 +230,7 @@
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input mt-2 checkboxCustom" value=".price3" type="radio"
+                            <input class="form-check-input mt-2 checkboxCustom priceCustom" value=".price3" type="checkbox"
                                    name="flexRadioDefault" id="price-radio3">
                             <label class="form-check-label text-uppercase text-muted" for="price-radio3">
                                 3,000,001 - 4,000,000 đ
@@ -236,7 +238,7 @@
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input mt-2 checkboxCustom" value=".price4" type="radio"
+                            <input class="form-check-input mt-2 checkboxCustom priceCustom" value=".price4" type="checkbox"
                                    name="flexRadioDefault" id="price-radio4">
                             <label class="form-check-label text-uppercase text-muted" for="price-radio4">
                                 Từ 4,000,001 đ trở lên
@@ -246,7 +248,7 @@
                             <a th:href="@{/mvc/shop}"
                                class="btn btn-danger">Xóa bộ lọc</a>
                         </div>
-                    </section>
+                    </div>
                     <!-- giá -->
                 </section>
             </div>
@@ -258,19 +260,19 @@
                             <span class="num_sorting_text">[[${soSanPhamHienTai}]]</span>
                             <i class="fa fa-angle-down"></i>
                             <ul class="sorting_num">
-                                <a th:href="@{'/mvc/shop?soSanPham=6&txtSearch='+${timKiemHienTai}}">
+                                <a th:href="@{'/mvc/shop?soSanPham=8&txtSearch='+${timKiemHienTai}}">
                                     <li class="num_sorting_btn">
-                                        <span>6</span>
+                                        <span>8</span>
                                     </li>
                                 </a>
-                                <a th:href="@{'/mvc/shop?soSanPham=12&txtSearch='+${timKiemHienTai}}">
+                                <a th:href="@{'/mvc/shop?soSanPham=16&txtSearch='+${timKiemHienTai}}">
                                     <li class="num_sorting_btn">
-                                        <span>12</span>
+                                        <span>16</span>
                                     </li>
                                 </a>
-                                <a th:href="@{'/mvc/shop?soSanPham=24&txtSearch='+${timKiemHienTai}}">
+                                <a th:href="@{'/mvc/shop?soSanPham=32&txtSearch='+${timKiemHienTai}}">
                                     <li class="num_sorting_btn">
-                                        <span>24</span>
+                                        <span>32</span>
                                     </li>
                                 </a>
                             </ul>
@@ -278,16 +280,16 @@
                     </ul>
                 </div>
                 <section class="items">
-                    <div class="row product-lists">
+                    <div class="row" id="product-lists">
                         <th:block th:each="item : ${listProduct}">
-                            <div class="col-lg-4 col-md-6 text-center"
+                            <div class="col-lg-3 col-md-6 text-center"
                                  th:classappend="'category'+${item.product.categoriesByCategoryId.id}+' brand'+${item.product.brandByBrandId.id}+' '+${item.classPrice}">
                                 <div class="single-product-item">
                                     <div class="product-image">
                                         <a th:href="@{'/mvc/single-product?id='+${item.product.id}}"><img id="product_img" class="product_img"
                                                                                                           th:src="@{'/assets/img/products/'+${item.product.images}}" alt=""></a>
                                     </div>
-                                    <h3 th:text="${item.product.productName}"></h3>
+                                    <h5 style="min-height:42px;" th:text="${item.product.productName}"></h5>
                                     <p class="product-price">
                                         [[${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
                                     <a th:attr="data-masanpham=${item.product.id}" class="cart-btn btnAddToCart"><i class="fas fa-shopping-cart"></i>
@@ -485,7 +487,7 @@
 
 <script th:src="@{/js/jquery-ui.js}"></script>
 
-<script th:src="@{/fly_to_cart/js/flyto2.min.js}"></script>
+<script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
 <script th:src="@{/js/index_custom.js}"></script>
 <script th:src="@{/js/isotopCustom.js}"></script>
 

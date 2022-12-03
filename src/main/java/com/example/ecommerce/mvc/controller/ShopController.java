@@ -62,7 +62,7 @@ public class ShopController {
             model.addAttribute("timKiemHienTai", "");
         }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
-        int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
+        int soSanPham = !soSanPhamString.isPresent() ? 8 : Integer.parseInt(soSanPhamString.get());
         int tongSoTrang = txtSearch.isPresent()
                 ? productHelper.getTotalPage(soSanPham, productDAO.findByName(txtSearch.get()))
                 : productHelper.getTotalPage(soSanPham, productDAO.findProductExist());
