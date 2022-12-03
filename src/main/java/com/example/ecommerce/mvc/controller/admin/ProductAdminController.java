@@ -130,7 +130,7 @@ public class ProductAdminController {
             product.setId(id.isPresent()?Integer.parseInt(id.get()):null);
             product.setProductName(productName.isPresent()?productName.get():null);
             product.setPrice(price.isPresent()?Integer.parseInt(price.get()):null);
-            product.setDiscount(discount.isPresent()?Integer.parseInt(discount.get()):null);
+            product.setDiscount(discount.isPresent()?Integer.parseInt(discount.get()):0);
             product.setNote(note.isPresent()?note.get():null);
             product.setNumberOfSale(0);
             if (isDeleted.isPresent()) {

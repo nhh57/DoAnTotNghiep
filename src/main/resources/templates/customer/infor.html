@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
     <!-- fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- fontawesome -->
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <!-- bootstrap -->
@@ -40,6 +41,7 @@
     <link rel="stylesheet" th:href="@{/css/infor.css}">
     <link rel="stylesheet" th:href="@{/css/modal_custom.css}">
 </head>
+
 <body>
 
 <!--PreLoader-->
@@ -59,7 +61,7 @@
                     <!-- logo -->
                     <div class="site-logo">
                         <a href="/mvc/index">
-                            <img th:src="@{/assets/logo/logo.png}"/>
+                            <img th:src="@{/assets/logo/logo.png}" />
                         </a>
                     </div>
                     <!-- logo -->
@@ -79,12 +81,14 @@
                                         <span id="checkout_items"
                                               class="checkout_items">[[${tongSoLuongGioHang}]]</span>
                                     </a>
-                                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                    <a class="mobile-hide search-bar-icon" href="#"><i
+                                            class="fas fa-search"></i></a>
                                     <div th:if="${sessionUsername}!=null" class="dropdown dropdownCustom">
                                         <div class="dropdown-toggle customUser" id="dropdownMenuButton"
-                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                             href="#">
                                             <i class="fas fa-user"></i>
-                                                Xin chào, [[${sessionUsername}]]
+                                            Xin chào, [[${sessionUsername}]]
                                         </div>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item dropdownCustom"
@@ -93,8 +97,8 @@
                                                th:href="@{/mvc/information?tag=change-password}">Đổi mật khẩu</a>
                                             <a class="dropdown-item dropdownCustom"
                                                th:href="@{/mvc/information?tag=order}">Đơn hàng</a>
-                                            <a class="dropdown-item dropdownCustom"
-                                               th:href="@{/mvc/logout}">Đăng xuất</a>
+                                            <a class="dropdown-item dropdownCustom" th:href="@{/mvc/logout}">Đăng
+                                                xuất</a>
                                         </div>
                                     </div>
 
@@ -152,7 +156,7 @@
                 <div class="sidebar-header">
                     <div class="row" style="padding: 10px;">
                         <div class="col-4">
-                            <img style="border-radius: 50%;" src="/assets/logo/user.png"/>
+                            <img style="border-radius: 50%;" src="/assets/logo/user.png" />
                         </div>
                         <div class="col-8">
                             <p style="font-size:16px;padding-top: 8px;">[[${sessionUsername}]]</p>
@@ -174,7 +178,8 @@
                                 <a data-toggle="pill" data-target="#user-address" aria-selected="false">Địa chỉ</a>
                             </li>
                             <li class="feat-show-btn" id="doiMatKhau">
-                                <a data-toggle="pill" data-target="#user-pass" aria-selected="false">Đổi mật khẩu</a>
+                                <a data-toggle="pill" data-target="#user-pass" aria-selected="false">Đổi mật
+                                    khẩu</a>
                             </li>
                         </ul>
                     </li>
@@ -219,8 +224,8 @@
                                 </div>
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="exampleInputName" name="fullName"
-                                           required="required"
-                                           placeholder="Nhập họ và tên" th:value="${userInfor.fullName}">
+                                           required="required" placeholder="Nhập họ và tên"
+                                           th:value="${userInfor.fullName}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -229,8 +234,7 @@
                                 </div>
                                 <div class="col-6">
                                     <input type="email" class="form-control" id="exampleInputEmail1" name="email"
-                                           required="required"
-                                           placeholder="Nhập email" th:value="${userInfor.email}">
+                                           required="required" placeholder="Nhập email" th:value="${userInfor.email}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -239,10 +243,8 @@
                                 </div>
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="exampleInputUserPhone" name="phone"
-                                           placeholder="Nhập số điện thoại"
-                                           pattern="(0[3|5|7|8|9])+([0-9]{8})"
-                                           title="Số điện thoại Việt Nam bao gồm 10 chữ số"
-                                           required="required"
+                                           placeholder="Nhập số điện thoại" pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                           title="Số điện thoại Việt Nam bao gồm 10 chữ số" required="required"
                                            th:value="${userInfor.phone}">
                                 </div>
                             </div>
@@ -252,25 +254,22 @@
                                 </div>
                                 <div class="col-6" style="display: flex;">
                                     <div class="form-check mr-3">
-                                        <input class="form-check-input" type="radio" name="gender"
-                                               id="gridRadios1" value="Nam"
-                                               th:checked="${userInfor.gender.contains('Nam')}">
+                                        <input class="form-check-input" type="radio" name="gender" id="gridRadios1"
+                                               value="Nam" th:checked="${userInfor.gender.contains('Nam')}">
                                         <label class="form-check-label" for="gridRadios1">
                                             Nam
                                         </label>
                                     </div>
                                     <div class="form-check mr-3">
-                                        <input class="form-check-input" type="radio" name="gender"
-                                               id="gridRadios2" value="Nữ"
-                                               th:checked="${userInfor.gender.contains('Nữ')}">
+                                        <input class="form-check-input" type="radio" name="gender" id="gridRadios2"
+                                               value="Nữ" th:checked="${userInfor.gender.contains('Nữ')}">
                                         <label class="form-check-label" for="gridRadios2">
                                             Nữ
                                         </label>
                                     </div>
                                     <div class="form-check mr-3">
-                                        <input class="form-check-input" type="radio" name="gender"
-                                               id="gridRadios3" value="Khác"
-                                               th:checked="${userInfor.gender.contains('Khác')}">
+                                        <input class="form-check-input" type="radio" name="gender" id="gridRadios3"
+                                               value="Khác" th:checked="${userInfor.gender.contains('Khác')}">
                                         <label class="form-check-label" for="gridRadios3">
                                             Khác
                                         </label>
@@ -302,8 +301,8 @@
                 <div class="tab-pane fade" id="user-address">
                     <div class="address-head">
                         <p class="head-title">Địa chỉ của tôi</p>
-                        <button data-toggle="modal"
-                                data-target="#modalShipDetail" class="btn btn-success btnCustom">
+                        <button data-toggle="modal" data-target="#modalShipDetail"
+                                class="btn btn-success btnCustom">
                             <i class="fa-solid fa-plus address-btn-icon"></i>
                             <span>Thêm địa chỉ mới</span>
                         </button>
@@ -324,12 +323,14 @@
                                                     [[${item.address}]]
                                                 </div>
                                                 <div class="status-group" th:unless="${item.getDefault()}">
-                                                    <div hidden="true" th:id="'macDinh' + ${item.id}" class="status-defaule active">
+                                                    <div hidden="true" th:id="'macDinh' + ${item.id}"
+                                                         class="status-defaule active">
                                                         Mặc định
                                                     </div>
                                                 </div>
                                                 <div class="status-group" th:if="${item.getDefault()}">
-                                                    <div th:id="'macDinh' + ${item.id}" class="status-defaule active">
+                                                    <div th:id="'macDinh' + ${item.id}"
+                                                         class="status-defaule active">
                                                         Mặc định
                                                     </div>
                                                 </div>
@@ -355,17 +356,17 @@
                                             </div>
                                             <!--Modal Cập nhật chỉ -->
                                             <form>
-                                                <div class="modal fade"
-                                                     th:id="'modalUpdate' + ${item.id}"
+                                                <div class="modal fade" th:id="'modalUpdate' + ${item.id}"
                                                      tabindex="-1" role="dialog"
                                                      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">Thông
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Thông
                                                                     tin địa chỉ</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
@@ -373,32 +374,30 @@
                                                                 <div class="card-body">
                                                                     <div class="billing-address-form">
                                                                         <p><input th:value="${item.id}"
-                                                                                  type="hidden"
-                                                                                  name="id"></p>
+                                                                                  type="hidden" name="id"></p>
                                                                         <p><input th:value="${item.fullName}"
-                                                                                  type="text"
-                                                                                  name="fullName"
+                                                                                  type="text" name="fullName"
                                                                                   placeholder="Họ và tên"
                                                                                   required="required"></p>
-                                                                        <p><input th:value="${item.phone}" type="text"
+                                                                        <p><input th:value="${item.phone}"
+                                                                                  type="text"
                                                                                   pattern="(0[3|5|7|8|9])+([0-9]{8})"
                                                                                   name="phone"
                                                                                   title="Số điện thoại Việt Nam bao gồm 10 chữ số"
                                                                                   required="required"
                                                                                   placeholder="Số điện thoại"></p>
-                                                                        <p><textarea
-                                                                                th:value="${item.address}"
-                                                                                th:text="${item.address}"
-                                                                                cols="30" rows="10"
-                                                                                required="required"
-                                                                                name="address"
-                                                                                placeholder="Địa chỉ giao hàng"></textarea>
+                                                                        <p><textarea th:value="${item.address}"
+                                                                                     th:text="${item.address}" cols="30"
+                                                                                     rows="10" required="required"
+                                                                                     name="address"
+                                                                                     placeholder="Địa chỉ giao hàng"></textarea>
                                                                         </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button formaction="/mvc/information/ship-detail/update"
+                                                                <button
+                                                                        formaction="/mvc/information/ship-detail/update"
                                                                         formmethod="post" type="submit"
                                                                         class="btn btn-primary">Hoàn thành
                                                                 </button>
@@ -414,33 +413,34 @@
 
                                             <!--Modal xóa địa chỉ -->
                                             <form>
-                                                <div class="modal fade"
-                                                     th:id="'modalDelete' + ${item.id}"
+                                                <div class="modal fade" th:id="'modalDelete' + ${item.id}"
                                                      tabindex="-1" role="dialog"
                                                      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">Xác
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Xác
                                                                     nhận</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="card-body">
                                                                     <div class="billing-address-form">
-                                                                        <input th:value="${item.id}"
-                                                                               type="hidden"
+                                                                        <input th:value="${item.id}" type="hidden"
                                                                                name="id">
-                                                                        <p class="pThongBao">Bạn có muốn xóa địa chỉ này
+                                                                        <p class="pThongBao">Bạn có muốn xóa địa chỉ
+                                                                            này
                                                                             không?</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button formaction="/mvc/information/ship-detail/delete"
+                                                                <button
+                                                                        formaction="/mvc/information/ship-detail/delete"
                                                                         formmethod="post" type="submit"
                                                                         class="btn btn-danger">Có
                                                                 </button>
@@ -467,7 +467,7 @@
                     <div class="user-pass-head">
                         <p class="head-title">Đổi mật khẩu</p>
                         <span class="head-text">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người
-                            khác</span>
+                                khác</span>
                         <hr>
                     </div>
                     <div class="user-pass-body">
@@ -478,9 +478,8 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="password" name="currentPassword" class="form-control"
-                                           th:value="${currentPassValue}"
-                                           id="currentPass" required="required" onkeyup='saveValue(this);'
-                                           placeholder="Nhập mật khẩu hiện tại">
+                                           th:value="${currentPassValue}" id="currentPass" required="required"
+                                           onkeyup='saveValue(this);' placeholder="Nhập mật khẩu hiện tại">
                                     <small th:if="${errorPass}" class="text-danger"><i>Sai mật khẩu</i></small>
                                 </div>
                             </div>
@@ -489,16 +488,11 @@
                                     <label for="newPassword">Mật khẩu mới:</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="password"
-                                           name="newPassword"
-                                           th:value="${newPassValue}"
-                                           placeholder="Nhập mật khẩu mới"
-                                           id="newPassword"
-                                           onkeyup='saveValue(this);'
+                                    <input type="password" name="newPassword" th:value="${newPassValue}"
+                                           placeholder="Nhập mật khẩu mới" id="newPassword" onkeyup='saveValue(this);'
                                            class="form-control"
                                            title="Mật khẩu bao gồm 8 ký tự, chữ in hoa, chữ cái thường và số"
-                                           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                                           required="required"/>
+                                           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" required="required" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -506,12 +500,10 @@
                                     <label for="confirmPassword">Xác nhận mật khẩu:</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="password" name="confirmPassword"
-                                           id="rePassword" required="required"
-                                           th:value="${confirmPassValue}"
-                                           onkeyup='saveValue(this);'
-                                           placeholder="Xác nhận mật khẩu mới"
-                                           class="form-control"/>
+                                    <input type="password" name="confirmPassword" id="rePassword"
+                                           required="required" th:value="${confirmPassValue}"
+                                           onkeyup='saveValue(this);' placeholder="Xác nhận mật khẩu mới"
+                                           class="form-control" />
                                     <small th:if="${errorRePass}" class="text-danger"><i>Nhập lại mật khẩu
                                         sai</i></small>
                                 </div>
@@ -558,13 +550,14 @@
                     </ol>
                     <form action="/mvc/information" method="get">
                         <div class="orderSearch">
-                            <input type="hidden" name="tag" value="order" >
-                            <button class="btn"><i class="fas fa-search"></i></button><input autocomplete="off" name="orderId"
-                                                                                 placeholder="Tìm kiếm theo ID đơn hàng" value="">
+                            <input type="hidden" name="tag" value="order">
+                            <button class="btn"><i class="fas fa-search"></i></button><input autocomplete="off"
+                                                                                             name="orderId" placeholder="Tìm kiếm theo ID đơn hàng" value="">
                         </div>
                     </form>
                     <div class="tab-content tab-content-design tab-content-custom" id="myTabContent">
-                        <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active " id="home" role="tabpanel"
+                             aria-labelledby="home-tab">
                             <th:block th:each="item : ${listTatCa}">
                                 <div class="idHomeCustom">
                                     <table class="table table-hover">
@@ -573,7 +566,8 @@
                                             <div class="col-5 customDangGiao">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-                                                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                                    <path
+                                                            d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                                 </svg>
                                                 Đang giao
                                             </div>
@@ -581,25 +575,29 @@
                                         <div class="row" th:if="${item.orders.orderStatus}=='Đã hủy'">
                                             <div class="col-7"></div>
                                             <div class="col-5 customDaHuy">
-                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã hủy
+                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã
+                                                hủy
                                             </div>
                                         </div>
                                         <div class="row" th:if="${item.orders.orderStatus}=='Chờ xác nhận'">
                                             <div class="col-7"></div>
                                             <div class="col-5 customChoXacNhan">
-                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ xác nhận
+                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ
+                                                xác nhận
                                             </div>
                                         </div>
                                         <div class="row" th:if="${item.orders.orderStatus}=='Đã giao'">
                                             <div class="col-7"></div>
                                             <div class="col-5 customDaGiao">
-                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã giao
+                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã
+                                                giao
                                             </div>
                                         </div>
                                         <div class="row" th:if="${item.orders.orderStatus}=='Chờ lấy hàng'">
                                             <div class="col-7"></div>
                                             <div class="col-5 customChoLayHang">
-                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ lấy hàng
+                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ
+                                                lấy hàng
                                             </div>
                                         </div>
                                         <tbody>
@@ -607,52 +605,69 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                    </span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
-                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy"
-                                                        data-toggle="modal"
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
+                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}"
+                                                        class="customBtnHuy" data-toggle="modal"
                                                         th:attr="data-target='#modalHuyDonHang'+${item.orders.id}">
                                                     Hủy đơn hàng
                                                 </button>
-                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" class="customBtnHuy">Đánh giá</button>
-                                                <button th:if="${item.orders.orderStatus=='Đã giao'}" th:attr="data-maorder=${item.orders.id}" class="customBtnMuaLai">Mua lại</button>
+                                                <button th:if="${item.orders.orderStatus=='Đã giao'}"
+                                                        class="customBtnHuy">Đánh giá</button>
+                                                <button th:if="${item.orders.orderStatus=='Đã giao'}"
+                                                        th:attr="data-maorder=${item.orders.id}"
+                                                        class="customBtnMuaLai">Mua lại</button>
                                             </td>
                                         </tr>
                                         </tbody>
                                         <!--start modal Hủy đơn hàng-->
-                                        <div class="modal fade"
-                                             th:id="'modalHuyDonHang' + ${item.orders.id}"
-                                             tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="exampleModalCenterTitle"
+                                        <div class="modal fade" th:id="'modalHuyDonHang' + ${item.orders.id}"
+                                             tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                                              aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
-                                                        <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận
+                                                        </h5>
+                                                        <button style="display: inline-block;border: none;"
+                                                                type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -660,12 +675,15 @@
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <div class="billing-address-form">
-                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn muốn hủy đơn hàng #[[${item.orders.id}]] không?</p>
+                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn
+                                                                    muốn hủy đơn hàng #[[${item.orders.id}]] không?
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btnHuyDonHang" th:attr="data-orderid=${item.orders.id}">Có
+                                                        <button type="button" class="btn btn-danger btnHuyDonHang"
+                                                                th:attr="data-orderid=${item.orders.id}">Có
                                                         </button>
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Không
@@ -686,7 +704,8 @@
                                         <div class="row" th:if="${item.orders.orderStatus}=='Chờ xác nhận'">
                                             <div class="col-7"></div>
                                             <div class="col-5 customChoXacNhan">
-                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ xác nhận
+                                                <img width="18" height="18" th:src="@{/assets/logo/wait.png}"> Chờ
+                                                xác nhận
                                             </div>
                                         </div>
                                         <tbody>
@@ -694,32 +713,46 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong></span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
-                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}" class="customBtnHuy"
-                                                        data-toggle="modal"
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
+                                                <button th:if="${item.orders.orderStatus=='Chờ xác nhận'}"
+                                                        class="customBtnHuy" data-toggle="modal"
                                                         th:attr="data-target='#modalHuyDonHang1'+${item.orders.id}">
                                                     Hủy đơn hàng
                                                 </button>
@@ -727,17 +760,16 @@
                                         </tr>
                                         </tbody>
                                         <!--start modal Hủy đơn hàng-->
-                                        <div class="modal fade"
-                                             th:id="'modalHuyDonHang1' + ${item.orders.id}"
-                                             tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="exampleModalCenterTitle"
+                                        <div class="modal fade" th:id="'modalHuyDonHang1' + ${item.orders.id}"
+                                             tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                                              aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
-                                                        <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận
+                                                        </h5>
+                                                        <button style="display: inline-block;border: none;"
+                                                                type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -745,12 +777,15 @@
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <div class="billing-address-form">
-                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn muốn hủy đơn hàng #[[${item.orders.id}]] không?</p>
+                                                                <p class="text-danger confirmHuy">Bạn có chắc chắn
+                                                                    muốn hủy đơn hàng #[[${item.orders.id}]] không?
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btnHuyDonHang1" th:attr="data-orderid=${item.orders.id}">Có
+                                                        <button type="button" class="btn btn-danger btnHuyDonHang1"
+                                                                th:attr="data-orderid=${item.orders.id}">Có
                                                         </button>
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Không
@@ -771,7 +806,8 @@
                                         <div class="row">
                                             <div class="col-7"></div>
                                             <div class="col-5 customChoLayHang">
-                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ lấy hàng
+                                                <img width="18" height="18" th:src="@{/assets/logo/waitMe.png}"> Chờ
+                                                lấy hàng
                                             </div>
                                         </div>
                                         <tbody>
@@ -779,30 +815,44 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong></span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -819,7 +869,8 @@
                                             <div class="col-5 customDangGiao">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-                                                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                                    <path
+                                                            d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                                 </svg>
                                                 Đang giao
                                             </div>
@@ -829,30 +880,44 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong></span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -867,7 +932,8 @@
                                         <div class="row">
                                             <div class="col-7"></div>
                                             <div class="col-5 customDaGiao">
-                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã giao
+                                                <img width="18" height="18" th:src="@{/assets/logo/success.png}"> Đã
+                                                giao
                                             </div>
                                         </div>
                                         <tbody>
@@ -875,32 +941,47 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong></span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
                                                 <button class="customBtnHuy">Đánh giá</button>
-                                                <button th:attr="data-maorder=${item.orders.id}" class="customBtnMuaLai">Mua lại</button>
+                                                <button th:attr="data-maorder=${item.orders.id}"
+                                                        class="customBtnMuaLai">Mua lại</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -915,7 +996,8 @@
                                         <div class="row">
                                             <div class="col-7"></div>
                                             <div class="col-5 customDaHuy">
-                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã hủy
+                                                <img width="18" height="18" th:src="@{/assets/logo/close.png}"> Đã
+                                                hủy
                                             </div>
                                         </div>
                                         <tbody>
@@ -923,30 +1005,44 @@
                                             <tr>
                                                 <td class="col-8">
                                                     <div class="media">
-                                                        <a class="thumbnail pull-left" href="#" style="margin-right: 10px;">
+                                                        <a class="thumbnail pull-left" href="#"
+                                                           style="margin-right: 10px;">
                                                             <img class="media-object"
                                                                  th:src="@{'/assets/img/products/'+${orderDetail.productByProductId.images}}"
                                                                  width="72" height="72"> </a>
                                                         <div class="media-body">
-                                                            <div>[[${orderDetail.productByProductId.productName}]]</div>
+                                                            <div>
+                                                                [[${orderDetail.productByProductId.productName}]]
+                                                            </div>
                                                             <div>x[[${orderDetail.amount}]]</div>
                                                             <span>Đơn giá: </span><span>
-                                                        <strong>
-                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price, 0, 'COMMA', 0, 'POINT')}]] đ
-                                                        </strong></span>
+                                                                        <strong
+                                                                                th:unless="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong>
+                                                                        <strong
+                                                                                th:if="${orderDetail.productByProductId.discount} > 0">
+                                                                            [[${#numbers.formatDecimal(orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100,
+                                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                                        </strong></span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-4 text-right" style="height:97px;line-height:97px;">
+                                                <td class="col-4 text-right"
+                                                    style="height:97px;line-height:97px;">
                                                     <strong class="text-primary">
-                                                        [[${#numbers.formatDecimal(orderDetail.productByProductId.price*orderDetail.amount, 0, 'COMMA', 0, 'POINT')}]] đ
+                                                        [[${#numbers.formatDecimal((orderDetail.productByProductId.price*(100-orderDetail.productByProductId.discount)/100)*orderDetail.amount,
+                                                        0, 'COMMA', 0, 'POINT')}]] đ
                                                     </strong>
                                                 </td>
                                             </tr>
                                         </th:block>
                                         <tr style="text-align:right;">
                                             <td></td>
-                                            <td class="tongTienCustom"><strong>Tổng tiền: [[${#numbers.formatDecimal(item.orders.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</strong>
+                                            <td class="tongTienCustom"><strong>Tổng tiền:
+                                                [[${#numbers.formatDecimal(item.orders.totalMoney, 0,
+                                                'COMMA', 0, 'POINT')}]] đ</strong>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -962,18 +1058,14 @@
         </div>
     </div>
     <!--start modal-->
-    <div th:if="${success!=null}" class="modal fade"
-         id="modalNotify2"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="exampleModalCenterTitle"
-         aria-hidden="true">
+    <div th:if="${success!=null}" class="modal fade" id="modalNotify2" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
-                    <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
+                    <button style="display: inline-block;border: none;" type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -985,8 +1077,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"
-                            data-dismiss="modal">Đồng ý
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Đồng ý
                     </button>
                 </div>
             </div>
@@ -1011,10 +1102,8 @@
                             <div class="billing-address-form">
                                 <p><input th:field="*{fullName}" type="text" placeholder="Họ và tên"
                                           required="required"></p>
-                                <p><input th:field="*{phone}" type="text"
-                                          pattern="(0[3|5|7|8|9])+([0-9]{8})"
-                                          title="Số điện thoại Việt Nam bao gồm 10 chữ số"
-                                          required="required"
+                                <p><input th:field="*{phone}" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                          title="Số điện thoại Việt Nam bao gồm 10 chữ số" required="required"
                                           placeholder="Số điện thoại"></p>
                                 <p><textarea th:field="*{address}" cols="30" rows="10" required="required"
                                              placeholder="Địa chỉ giao hàng"></textarea></p>
@@ -1025,8 +1114,7 @@
                         <button formaction="/mvc/information/ship-detail/add" formmethod="post" type="submit"
                                 class="btn btn-primary">Hoàn thành
                         </button>
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Đóng
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
                         </button>
                     </div>
                 </div>
@@ -1034,18 +1122,14 @@
         </div>
     </form>
     <!--start modal Kết quả Hủy đơn hàng-->
-    <div class="modal fade"
-         th:id="modalKetQuaHuyDonHang"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="exampleModalCenterTitle"
-         aria-hidden="true">
+    <div class="modal fade" th:id="modalKetQuaHuyDonHang" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
-                    <button style="display: inline-block;border: none;" type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
+                    <button style="display: inline-block;border: none;" type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1104,9 +1188,9 @@
                 <div class="footer-box pages">
                     <h2 class="widget-title">Tham khảo</h2>
                     <ul>
-                        <li><a >Thông Báo Mới</a></li>
+                        <li><a>Thông Báo Mới</a></li>
                         <li><a>Điêu Khoản Sử Dụng</a></li>
-                        <li><a >Bảo Mật Thông Tin</a></li>
+                        <li><a>Bảo Mật Thông Tin</a></li>
                     </ul>
 
                 </div>
@@ -1159,70 +1243,112 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
 
     <symbol id="icon-shopping-bag" viewBox="0 0 24 24">
-        <path d="M20 7h-4v-3c0-2.209-1.791-4-4-4s-4 1.791-4 4v3h-4l-2 17h20l-2-17zm-11-3c0-1.654 1.346-3 3-3s3 1.346 3 3v3h-6v-3zm-4.751 18l1.529-13h2.222v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h6v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h2.222l1.529 13h-15.502z"></path>
+        <path
+                d="M20 7h-4v-3c0-2.209-1.791-4-4-4s-4 1.791-4 4v3h-4l-2 17h20l-2-17zm-11-3c0-1.654 1.346-3 3-3s3 1.346 3 3v3h-6v-3zm-4.751 18l1.529-13h2.222v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h6v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h2.222l1.529 13h-15.502z">
+        </path>
     </symbol>
 
     <symbol id="icon-mastercard" viewBox="0 0 504 504">
-        <path d="m504 252c0 83.2-67.2 151.2-151.2 151.2-83.2 0-151.2-68-151.2-151.2 0-83.2 67.2-151.2 150.4-151.2 84.8 0 152 68 152 151.2z"
-              fill="#ffb600"></path>
+        <path
+                d="m504 252c0 83.2-67.2 151.2-151.2 151.2-83.2 0-151.2-68-151.2-151.2 0-83.2 67.2-151.2 150.4-151.2 84.8 0 152 68 152 151.2z"
+                fill="#ffb600"></path>
         <path d="m352.8 100.8c83.2 0 151.2 68 151.2 151.2 0 83.2-67.2 151.2-151.2 151.2-83.2 0-151.2-68-151.2-151.2"
               fill="#f7981d"></path>
         <path d="m352.8 100.8c83.2 0 151.2 68 151.2 151.2 0 83.2-67.2 151.2-151.2 151.2" fill="#ff8500"></path>
-        <path d="m149.6 100.8c-82.4.8-149.6 68-149.6 151.2s67.2 151.2 151.2 151.2c39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2 0-1.6 0-1.6-.8-1.6z"
-              fill="#ff5050"></path>
-        <path d="m0 252c0 83.2 67.2 151.2 151.2 151.2 39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2h-.8"
-              fill="#e52836"></path>
-        <path d="m151.2 403.2c39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2h-.8"
-              fill="#cb2026"></path>
+        <path
+                d="m149.6 100.8c-82.4.8-149.6 68-149.6 151.2s67.2 151.2 151.2 151.2c39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2 0-1.6 0-1.6-.8-1.6z"
+                fill="#ff5050"></path>
+        <path
+                d="m0 252c0 83.2 67.2 151.2 151.2 151.2 39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2h-.8"
+                fill="#e52836"></path>
+        <path
+                d="m151.2 403.2c39.2 0 74.4-15.2 101.6-39.2 5.6-4.8 10.4-10.4 15.2-16h-31.2c-4-4.8-8-10.4-11.2-15.2h53.6c3.2-4.8 6.4-10.4 8.8-16h-71.2c-2.4-4.8-4.8-10.4-6.4-16h83.2c4.8-15.2 8-31.2 8-48 0-11.2-1.6-21.6-3.2-32h-92.8c.8-5.6 2.4-10.4 4-16h83.2c-1.6-5.6-4-11.2-6.4-16h-70.4c2.4-5.6 5.6-10.4 8.8-16h53.6c-3.2-5.6-7.2-11.2-12-16h-29.6c4.8-5.6 9.6-10.4 15.2-15.2-26.4-24.8-62.4-39.2-101.6-39.2h-.8"
+                fill="#cb2026"></path>
         <g fill="#fff">
-            <path d="m204.8 290.4 2.4-13.6c-.8 0-2.4.8-4 .8-5.6 0-6.4-3.2-5.6-4.8l4.8-28h8.8l2.4-15.2h-8l1.6-9.6h-16s-9.6 52.8-9.6 59.2c0 9.6 5.6 13.6 12.8 13.6 4.8 0 8.8-1.6 10.4-2.4z"></path>
-            <path d="m210.4 264.8c0 22.4 15.2 28 28 28 12 0 16.8-2.4 16.8-2.4l3.2-15.2s-8.8 4-16.8 4c-17.6 0-14.4-12.8-14.4-12.8h32.8s2.4-10.4 2.4-14.4c0-10.4-5.6-23.2-23.2-23.2-16.8-1.6-28.8 16-28.8 36zm28-23.2c8.8 0 7.2 10.4 7.2 11.2h-17.6c0-.8 1.6-11.2 10.4-11.2z"></path>
-            <path d="m340 290.4 3.2-17.6s-8 4-13.6 4c-11.2 0-16-8.8-16-18.4 0-19.2 9.6-29.6 20.8-29.6 8 0 14.4 4.8 14.4 4.8l2.4-16.8s-9.6-4-18.4-4c-18.4 0-36.8 16-36.8 46.4 0 20 9.6 33.6 28.8 33.6 6.4 0 15.2-2.4 15.2-2.4z"></path>
-            <path d="m116.8 227.2c-11.2 0-19.2 3.2-19.2 3.2l-2.4 13.6s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-19.2-16-20-21.6-20zm3.2 36c0 2.4-1.6 15.2-11.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 3.2.8 3.2.8z"></path>
-            <path d="m153.6 292c4 0 24 .8 24-20.8 0-20-19.2-16-19.2-24 0-4 3.2-5.6 8.8-5.6 2.4 0 11.2.8 11.2.8l2.4-14.4s-5.6-1.6-15.2-1.6c-12 0-24 4.8-24 20.8 0 18.4 20 16.8 20 24 0 4.8-5.6 5.6-9.6 5.6-7.2 0-14.4-2.4-14.4-2.4l-2.4 14.4c.8 1.6 4.8 3.2 18.4 3.2z"></path>
-            <path d="m472.8 214.4-3.2 21.6s-6.4-8-15.2-8c-14.4 0-27.2 17.6-27.2 38.4 0 12.8 6.4 26.4 20 26.4 9.6 0 15.2-6.4 15.2-6.4l-.8 5.6h16l12-76.8zm-7.2 42.4c0 8.8-4 20-12.8 20-5.6 0-8.8-4.8-8.8-12.8 0-12.8 5.6-20.8 12.8-20.8 5.6 0 8.8 4 8.8 13.6z"></path>
-            <path d="m29.6 291.2 9.6-57.6 1.6 57.6h11.2l20.8-57.6-8.8 57.6h16.8l12.8-76.8h-26.4l-16 47.2-.8-47.2h-23.2l-12.8 76.8z"></path>
-            <path d="m277.6 291.2c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8h-15.2l-10.4 62.4h17.6z"></path>
-            <path d="m376.8 227.2c-11.2 0-19.2 3.2-19.2 3.2l-2.4 13.6s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c.8-19.2-16-20-21.6-20zm4 36c0 2.4-1.6 15.2-11.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 2.4.8 3.2.8z"></path>
-            <path d="m412 291.2c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8h-15.2l-10.4 62.4h17.6z"></path>
+            <path
+                    d="m204.8 290.4 2.4-13.6c-.8 0-2.4.8-4 .8-5.6 0-6.4-3.2-5.6-4.8l4.8-28h8.8l2.4-15.2h-8l1.6-9.6h-16s-9.6 52.8-9.6 59.2c0 9.6 5.6 13.6 12.8 13.6 4.8 0 8.8-1.6 10.4-2.4z">
+            </path>
+            <path
+                    d="m210.4 264.8c0 22.4 15.2 28 28 28 12 0 16.8-2.4 16.8-2.4l3.2-15.2s-8.8 4-16.8 4c-17.6 0-14.4-12.8-14.4-12.8h32.8s2.4-10.4 2.4-14.4c0-10.4-5.6-23.2-23.2-23.2-16.8-1.6-28.8 16-28.8 36zm28-23.2c8.8 0 7.2 10.4 7.2 11.2h-17.6c0-.8 1.6-11.2 10.4-11.2z">
+            </path>
+            <path
+                    d="m340 290.4 3.2-17.6s-8 4-13.6 4c-11.2 0-16-8.8-16-18.4 0-19.2 9.6-29.6 20.8-29.6 8 0 14.4 4.8 14.4 4.8l2.4-16.8s-9.6-4-18.4-4c-18.4 0-36.8 16-36.8 46.4 0 20 9.6 33.6 28.8 33.6 6.4 0 15.2-2.4 15.2-2.4z">
+            </path>
+            <path
+                    d="m116.8 227.2c-11.2 0-19.2 3.2-19.2 3.2l-2.4 13.6s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-19.2-16-20-21.6-20zm3.2 36c0 2.4-1.6 15.2-11.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 3.2.8 3.2.8z">
+            </path>
+            <path
+                    d="m153.6 292c4 0 24 .8 24-20.8 0-20-19.2-16-19.2-24 0-4 3.2-5.6 8.8-5.6 2.4 0 11.2.8 11.2.8l2.4-14.4s-5.6-1.6-15.2-1.6c-12 0-24 4.8-24 20.8 0 18.4 20 16.8 20 24 0 4.8-5.6 5.6-9.6 5.6-7.2 0-14.4-2.4-14.4-2.4l-2.4 14.4c.8 1.6 4.8 3.2 18.4 3.2z">
+            </path>
+            <path
+                    d="m472.8 214.4-3.2 21.6s-6.4-8-15.2-8c-14.4 0-27.2 17.6-27.2 38.4 0 12.8 6.4 26.4 20 26.4 9.6 0 15.2-6.4 15.2-6.4l-.8 5.6h16l12-76.8zm-7.2 42.4c0 8.8-4 20-12.8 20-5.6 0-8.8-4.8-8.8-12.8 0-12.8 5.6-20.8 12.8-20.8 5.6 0 8.8 4 8.8 13.6z">
+            </path>
+            <path
+                    d="m29.6 291.2 9.6-57.6 1.6 57.6h11.2l20.8-57.6-8.8 57.6h16.8l12.8-76.8h-26.4l-16 47.2-.8-47.2h-23.2l-12.8 76.8z">
+            </path>
+            <path
+                    d="m277.6 291.2c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8h-15.2l-10.4 62.4h17.6z">
+            </path>
+            <path
+                    d="m376.8 227.2c-11.2 0-19.2 3.2-19.2 3.2l-2.4 13.6s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c.8-19.2-16-20-21.6-20zm4 36c0 2.4-1.6 15.2-11.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 2.4.8 3.2.8z">
+            </path>
+            <path
+                    d="m412 291.2c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8h-15.2l-10.4 62.4h17.6z">
+            </path>
         </g>
-        <path d="m180 279.2c0 9.6 5.6 13.6 12.8 13.6 5.6 0 10.4-1.6 12-2.4l2.4-13.6c-.8 0-2.4.8-4 .8-5.6 0-6.4-3.2-5.6-4.8l4.8-28h8.8l2.4-15.2h-8l1.6-9.6"
-              fill="#dce5e5"></path>
-        <path d="m218.4 264.8c0 22.4 7.2 28 20 28 12 0 16.8-2.4 16.8-2.4l3.2-15.2s-8.8 4-16.8 4c-17.6 0-14.4-12.8-14.4-12.8h32.8s2.4-10.4 2.4-14.4c0-10.4-5.6-23.2-23.2-23.2-16.8-1.6-20.8 16-20.8 36zm20-23.2c8.8 0 10.4 10.4 10.4 11.2h-20.8c0-.8 1.6-11.2 10.4-11.2z"
-              fill="#dce5e5"></path>
-        <path d="m340 290.4 3.2-17.6s-8 4-13.6 4c-11.2 0-16-8.8-16-18.4 0-19.2 9.6-29.6 20.8-29.6 8 0 14.4 4.8 14.4 4.8l2.4-16.8s-9.6-4-18.4-4c-18.4 0-28.8 16-28.8 46.4 0 20 1.6 33.6 20.8 33.6 6.4 0 15.2-2.4 15.2-2.4z"
-              fill="#dce5e5"></path>
-        <path d="m95.2 244.8s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-18.4-16-19.2-22.4-19.2m12 34.4c0 2.4-9.6 15.2-19.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 11.2.8 11.2.8z"
-              fill="#dce5e5"></path>
-        <path d="m136 290.4s4.8 1.6 18.4 1.6c4 0 24 .8 24-20.8 0-20-19.2-16-19.2-24 0-4 3.2-5.6 8.8-5.6 2.4 0 11.2.8 11.2.8l2.4-14.4s-5.6-1.6-15.2-1.6c-12 0-16 4.8-16 20.8 0 18.4 12 16.8 12 24 0 4.8-5.6 5.6-9.6 5.6"
-              fill="#dce5e5"></path>
-        <path d="m469.6 236s-6.4-8-15.2-8c-14.4 0-19.2 17.6-19.2 38.4 0 12.8-1.6 26.4 12 26.4 9.6 0 15.2-6.4 15.2-6.4l-.8 5.6h16l12-76.8m-20.8 41.6c0 8.8-7.2 20-16 20-5.6 0-8.8-4.8-8.8-12.8 0-12.8 5.6-20.8 12.8-20.8 5.6 0 12 4 12 13.6z"
-              fill="#dce5e5"></path>
-        <path d="m29.6 291.2 9.6-57.6 1.6 57.6h11.2l20.8-57.6-8.8 57.6h16.8l12.8-76.8h-20l-22.4 47.2-.8-47.2h-8.8l-27.2 76.8z"
-              fill="#dce5e5"></path>
-        <path d="m260.8 291.2h16.8c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8"
-              fill="#dce5e5"></path>
-        <path d="m355.2 244.8s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-18.4-16-19.2-22.4-19.2m12 34.4c0 2.4-9.6 15.2-19.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 3.2.8 11.2.8 11.2.8z"
-              fill="#dce5e5"></path>
-        <path d="m395.2 291.2h16.8c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8"
-              fill="#dce5e5"></path>
+        <path
+                d="m180 279.2c0 9.6 5.6 13.6 12.8 13.6 5.6 0 10.4-1.6 12-2.4l2.4-13.6c-.8 0-2.4.8-4 .8-5.6 0-6.4-3.2-5.6-4.8l4.8-28h8.8l2.4-15.2h-8l1.6-9.6"
+                fill="#dce5e5"></path>
+        <path
+                d="m218.4 264.8c0 22.4 7.2 28 20 28 12 0 16.8-2.4 16.8-2.4l3.2-15.2s-8.8 4-16.8 4c-17.6 0-14.4-12.8-14.4-12.8h32.8s2.4-10.4 2.4-14.4c0-10.4-5.6-23.2-23.2-23.2-16.8-1.6-20.8 16-20.8 36zm20-23.2c8.8 0 10.4 10.4 10.4 11.2h-20.8c0-.8 1.6-11.2 10.4-11.2z"
+                fill="#dce5e5"></path>
+        <path
+                d="m340 290.4 3.2-17.6s-8 4-13.6 4c-11.2 0-16-8.8-16-18.4 0-19.2 9.6-29.6 20.8-29.6 8 0 14.4 4.8 14.4 4.8l2.4-16.8s-9.6-4-18.4-4c-18.4 0-28.8 16-28.8 46.4 0 20 1.6 33.6 20.8 33.6 6.4 0 15.2-2.4 15.2-2.4z"
+                fill="#dce5e5"></path>
+        <path
+                d="m95.2 244.8s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-18.4-16-19.2-22.4-19.2m12 34.4c0 2.4-9.6 15.2-19.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 2.4.8 11.2.8 11.2.8z"
+                fill="#dce5e5"></path>
+        <path
+                d="m136 290.4s4.8 1.6 18.4 1.6c4 0 24 .8 24-20.8 0-20-19.2-16-19.2-24 0-4 3.2-5.6 8.8-5.6 2.4 0 11.2.8 11.2.8l2.4-14.4s-5.6-1.6-15.2-1.6c-12 0-16 4.8-16 20.8 0 18.4 12 16.8 12 24 0 4.8-5.6 5.6-9.6 5.6"
+                fill="#dce5e5"></path>
+        <path
+                d="m469.6 236s-6.4-8-15.2-8c-14.4 0-19.2 17.6-19.2 38.4 0 12.8-1.6 26.4 12 26.4 9.6 0 15.2-6.4 15.2-6.4l-.8 5.6h16l12-76.8m-20.8 41.6c0 8.8-7.2 20-16 20-5.6 0-8.8-4.8-8.8-12.8 0-12.8 5.6-20.8 12.8-20.8 5.6 0 12 4 12 13.6z"
+                fill="#dce5e5"></path>
+        <path
+                d="m29.6 291.2 9.6-57.6 1.6 57.6h11.2l20.8-57.6-8.8 57.6h16.8l12.8-76.8h-20l-22.4 47.2-.8-47.2h-8.8l-27.2 76.8z"
+                fill="#dce5e5"></path>
+        <path
+                d="m260.8 291.2h16.8c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8"
+                fill="#dce5e5"></path>
+        <path
+                d="m355.2 244.8s7.2-3.2 17.6-3.2c5.6 0 10.4.8 10.4 5.6 0 3.2-.8 4-.8 4s-4.8 0-7.2 0c-13.6 0-28.8 5.6-28.8 24 0 14.4 9.6 17.6 15.2 17.6 11.2 0 16-7.2 16.8-7.2l-.8 6.4h14.4l6.4-44c0-18.4-16-19.2-22.4-19.2m12 34.4c0 2.4-9.6 15.2-19.2 15.2-4.8 0-6.4-4-6.4-6.4 0-4 2.4-9.6 14.4-9.6 3.2.8 11.2.8 11.2.8z"
+                fill="#dce5e5"></path>
+        <path
+                d="m395.2 291.2h16.8c4.8-26.4 5.6-48 16.8-44 1.6-10.4 4-14.4 5.6-18.4 0 0-.8 0-3.2 0-7.2 0-12.8 9.6-12.8 9.6l1.6-8.8"
+                fill="#dce5e5"></path>
     </symbol>
 
     <symbol id="icon-paypal" viewBox="0 0 491.2 491.2">
-        <path d="m392.049 36.8c-22.4-25.6-64-36.8-116-36.8h-152.8c-10.4 0-20 8-21.6 18.4l-64 403.2c-1.6 8 4.8 15.2 12.8 15.2h94.4l24-150.4-.8 4.8c1.6-10.4 10.4-18.4 21.6-18.4h44.8c88 0 156.8-36 176.8-139.2.8-3.2.8-6.4 1.6-8.8-2.4-1.6-2.4-1.6 0 0 5.6-38.4 0-64-20.8-88"
-              fill="#263b80"></path>
-        <path d="m412.849 124.8c-.8 3.2-.8 5.6-1.6 8.8-20 103.2-88.8 139.2-176.8 139.2h-44.8c-10.4 0-20 8-21.6 18.4l-29.6 186.4c-.8 7.2 4 13.6 11.2 13.6h79.2c9.6 0 17.6-7.2 19.2-16l.8-4 15.2-94.4.8-5.6c1.6-9.6 9.6-16 19.2-16h12c76.8 0 136.8-31.2 154.4-121.6 7.2-37.6 3.2-69.6-16-91.2-6.4-7.2-13.6-12.8-21.6-17.6"
-              fill="#139ad6"></path>
-        <path d="m391.249 116.8c-3.2-.8-6.4-1.6-9.6-2.4s-6.4-1.6-10.4-1.6c-12-2.4-25.6-3.2-39.2-3.2h-119.2c-3.2 0-5.6.8-8 1.6-5.6 2.4-9.6 8-10.4 14.4l-25.6 160.8-.8 4.8c1.6-10.4 10.4-18.4 21.6-18.4h44.8c88 0 156.8-36 176.8-139.2.8-3.2.8-6.4 1.6-8.8-4.8-2.4-10.4-4.8-16.8-7.2-1.6 0-3.2-.8-4.8-.8"
-              fill="#232c65"></path>
+        <path
+                d="m392.049 36.8c-22.4-25.6-64-36.8-116-36.8h-152.8c-10.4 0-20 8-21.6 18.4l-64 403.2c-1.6 8 4.8 15.2 12.8 15.2h94.4l24-150.4-.8 4.8c1.6-10.4 10.4-18.4 21.6-18.4h44.8c88 0 156.8-36 176.8-139.2.8-3.2.8-6.4 1.6-8.8-2.4-1.6-2.4-1.6 0 0 5.6-38.4 0-64-20.8-88"
+                fill="#263b80"></path>
+        <path
+                d="m412.849 124.8c-.8 3.2-.8 5.6-1.6 8.8-20 103.2-88.8 139.2-176.8 139.2h-44.8c-10.4 0-20 8-21.6 18.4l-29.6 186.4c-.8 7.2 4 13.6 11.2 13.6h79.2c9.6 0 17.6-7.2 19.2-16l.8-4 15.2-94.4.8-5.6c1.6-9.6 9.6-16 19.2-16h12c76.8 0 136.8-31.2 154.4-121.6 7.2-37.6 3.2-69.6-16-91.2-6.4-7.2-13.6-12.8-21.6-17.6"
+                fill="#139ad6"></path>
+        <path
+                d="m391.249 116.8c-3.2-.8-6.4-1.6-9.6-2.4s-6.4-1.6-10.4-1.6c-12-2.4-25.6-3.2-39.2-3.2h-119.2c-3.2 0-5.6.8-8 1.6-5.6 2.4-9.6 8-10.4 14.4l-25.6 160.8-.8 4.8c1.6-10.4 10.4-18.4 21.6-18.4h44.8c88 0 156.8-36 176.8-139.2.8-3.2.8-6.4 1.6-8.8-4.8-2.4-10.4-4.8-16.8-7.2-1.6 0-3.2-.8-4.8-.8"
+                fill="#232c65"></path>
         <path d="m275.249 0h-152c-10.4 0-20 8-21.6 18.4l-36.8 230.4 246.4-246.4c-11.2-1.6-23.2-2.4-36-2.4z"
               fill="#2a4dad"></path>
-        <path d="m441.649 153.6c-2.4-4-4-8-7.2-12-5.6-6.4-13.6-12-21.6-16.8-.8 3.2-.8 5.6-1.6 8.8-20 103.2-88.8 139.2-176.8 139.2h-44.8c-10.4 0-20 8-21.6 18.4l-25.6 161.6z"
-              fill="#0d7dbc"></path>
+        <path
+                d="m441.649 153.6c-2.4-4-4-8-7.2-12-5.6-6.4-13.6-12-21.6-16.8-.8 3.2-.8 5.6-1.6 8.8-20 103.2-88.8 139.2-176.8 139.2h-44.8c-10.4 0-20 8-21.6 18.4l-25.6 161.6z"
+                fill="#0d7dbc"></path>
         <path d="m50.449 436.8h94.4l23.2-145.6c0-2.4.8-4 1.6-5.6l-131.2 131.2-.8 4.8c-.8 8 4.8 15.2 12.8 15.2z"
               fill="#232c65"></path>
-        <path d="m246.449 0h-123.2c-3.2 0-5.6.8-8 1.6l-12 12c-.8 1.6-1.6 3.2-1.6 4.8l-24 150.4z" fill="#436bc4"></path>
-        <path d="m450.449 232.8c2.4-12 3.2-23.2 3.2-34.4l-156 156c76-.8 135.2-32 152.8-121.6z" fill="#0cb2ed"></path>
+        <path d="m246.449 0h-123.2c-3.2 0-5.6.8-8 1.6l-12 12c-.8 1.6-1.6 3.2-1.6 4.8l-24 150.4z" fill="#436bc4">
+        </path>
+        <path d="m450.449 232.8c2.4-12 3.2-23.2 3.2-34.4l-156 156c76-.8 135.2-32 152.8-121.6z" fill="#0cb2ed">
+        </path>
         <path d="m248.849 471.2 12.8-80-100 100h68c9.6 0 17.6-7.2 19.2-16z" fill="#0cb2ed"></path>
         <g fill="#33e2ff" opacity=".6">
             <path d="m408.049 146.4 45.6 45.6c0-5.6-1.6-11.2-2.4-16.8l-40-40c-1.6 4-2.4 7.2-3.2 11.2z"></path>
@@ -1242,29 +1368,42 @@
     <symbol id="icon-visa" viewBox="0 0 504 504">
         <path d="m184.8 324.4 25.6-144h40l-24.8 144z" fill="#3c58bf"></path>
         <path d="m184.8 324.4 32.8-144h32.8l-24.8 144z" fill="#293688"></path>
-        <path d="m370.4 182c-8-3.2-20.8-6.4-36.8-6.4-40 0-68.8 20-68.8 48.8 0 21.6 20 32.8 36 40s20.8 12 20.8 18.4c0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 42.4 0 70.4-20 70.4-50.4 0-16.8-10.4-29.6-34.4-40-14.4-7.2-23.2-11.2-23.2-18.4 0-6.4 7.2-12.8 23.2-12.8 13.6 0 23.2 2.4 30.4 5.6l4 1.6z"
-              fill="#3c58bf"></path>
-        <path d="m370.4 182c-8-3.2-20.8-6.4-36.8-6.4-40 0-61.6 20-61.6 48.8 0 21.6 12.8 32.8 28.8 40s20.8 12 20.8 18.4c0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 42.4 0 70.4-20 70.4-50.4 0-16.8-10.4-29.6-34.4-40-14.4-7.2-23.2-11.2-23.2-18.4 0-6.4 7.2-12.8 23.2-12.8 13.6 0 23.2 2.4 30.4 5.6l4 1.6z"
-              fill="#293688"></path>
-        <path d="m439.2 180.4c-9.6 0-16.8.8-20.8 10.4l-60 133.6h43.2l8-24h51.2l4.8 24h38.4l-33.6-144zm-18.4 96c2.4-7.2 16-42.4 16-42.4s3.2-8.8 5.6-14.4l2.4 13.6s8 36 9.6 44h-33.6z"
-              fill="#3c58bf"></path>
-        <path d="m448.8 180.4c-9.6 0-16.8.8-20.8 10.4l-69.6 133.6h43.2l8-24h51.2l4.8 24h38.4l-33.6-144zm-28 96c3.2-8 16-42.4 16-42.4s3.2-8.8 5.6-14.4l2.4 13.6s8 36 9.6 44h-33.6z"
-              fill="#293688"></path>
+        <path
+                d="m370.4 182c-8-3.2-20.8-6.4-36.8-6.4-40 0-68.8 20-68.8 48.8 0 21.6 20 32.8 36 40s20.8 12 20.8 18.4c0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 42.4 0 70.4-20 70.4-50.4 0-16.8-10.4-29.6-34.4-40-14.4-7.2-23.2-11.2-23.2-18.4 0-6.4 7.2-12.8 23.2-12.8 13.6 0 23.2 2.4 30.4 5.6l4 1.6z"
+                fill="#3c58bf"></path>
+        <path
+                d="m370.4 182c-8-3.2-20.8-6.4-36.8-6.4-40 0-61.6 20-61.6 48.8 0 21.6 12.8 32.8 28.8 40s20.8 12 20.8 18.4c0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 42.4 0 70.4-20 70.4-50.4 0-16.8-10.4-29.6-34.4-40-14.4-7.2-23.2-11.2-23.2-18.4 0-6.4 7.2-12.8 23.2-12.8 13.6 0 23.2 2.4 30.4 5.6l4 1.6z"
+                fill="#293688"></path>
+        <path
+                d="m439.2 180.4c-9.6 0-16.8.8-20.8 10.4l-60 133.6h43.2l8-24h51.2l4.8 24h38.4l-33.6-144zm-18.4 96c2.4-7.2 16-42.4 16-42.4s3.2-8.8 5.6-14.4l2.4 13.6s8 36 9.6 44h-33.6z"
+                fill="#3c58bf"></path>
+        <path
+                d="m448.8 180.4c-9.6 0-16.8.8-20.8 10.4l-69.6 133.6h43.2l8-24h51.2l4.8 24h38.4l-33.6-144zm-28 96c3.2-8 16-42.4 16-42.4s3.2-8.8 5.6-14.4l2.4 13.6s8 36 9.6 44h-33.6z"
+                fill="#293688"></path>
         <path d="m111.2 281.2-4-20.8c-7.2-24-30.4-50.4-56-63.2l36 128h43.2l64.8-144h-43.2z" fill="#3c58bf"></path>
         <path d="m111.2 281.2-4-20.8c-7.2-24-30.4-50.4-56-63.2l36 128h43.2l64.8-144h-35.2z" fill="#293688"></path>
-        <path d="m0 180.4 7.2 1.6c51.2 12 86.4 42.4 100 78.4l-14.4-68c-2.4-9.6-9.6-12-18.4-12z" fill="#ffbc00"></path>
-        <path d="m0 180.4c51.2 12 93.6 43.2 107.2 79.2l-13.6-56.8c-2.4-9.6-10.4-15.2-19.2-15.2z" fill="#f7981d"></path>
-        <path d="m0 180.4c51.2 12 93.6 43.2 107.2 79.2l-9.6-31.2c-2.4-9.6-5.6-19.2-16.8-23.2z" fill="#ed7c00"></path>
+        <path d="m0 180.4 7.2 1.6c51.2 12 86.4 42.4 100 78.4l-14.4-68c-2.4-9.6-9.6-12-18.4-12z" fill="#ffbc00">
+        </path>
+        <path d="m0 180.4c51.2 12 93.6 43.2 107.2 79.2l-13.6-56.8c-2.4-9.6-10.4-15.2-19.2-15.2z" fill="#f7981d">
+        </path>
+        <path d="m0 180.4c51.2 12 93.6 43.2 107.2 79.2l-9.6-31.2c-2.4-9.6-5.6-19.2-16.8-23.2z" fill="#ed7c00">
+        </path>
         <g fill="#051244">
             <path d="m151.2 276.4-27.2-27.2-12.8 30.4-3.2-20c-7.2-24-30.4-50.4-56-63.2l36 128h43.2z"></path>
             <path d="m225.6 324.4-34.4-35.2-6.4 35.2z"></path>
-            <path d="m317.6 274.8c3.2 3.2 4.8 5.6 4 8.8 0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 25.6 0 46.4-7.2 58.4-20z"></path>
-            <path d="m364 324.4h37.6l8-24h51.2l4.8 24h38.4l-13.6-58.4-48-46.4 2.4 12.8s8 36 9.6 44h-33.6c3.2-8 16-42.4 16-42.4s3.2-8.8 5.6-14.4"></path>
+            <path
+                    d="m317.6 274.8c3.2 3.2 4.8 5.6 4 8.8 0 9.6-12.8 14.4-24 14.4-16 0-24.8-2.4-38.4-8l-5.6-2.4-5.6 32.8c9.6 4 27.2 8 45.6 8 25.6 0 46.4-7.2 58.4-20z">
+            </path>
+            <path
+                    d="m364 324.4h37.6l8-24h51.2l4.8 24h38.4l-13.6-58.4-48-46.4 2.4 12.8s8 36 9.6 44h-33.6c3.2-8 16-42.4 16-42.4s3.2-8.8 5.6-14.4">
+            </path>
         </g>
     </symbol>
 </svg>
-<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+<script
+        src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
 
 <script th:src="@{/js/infor-custom.js}"></script>
 </body>
+
 </html>

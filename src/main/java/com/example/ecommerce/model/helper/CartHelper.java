@@ -41,7 +41,7 @@ public class CartHelper {
             return 0;
         }
         for(CartDetailDataModel item:list){
-            totalMoney+=(item.getAmount()*item.getProductDataModel().getPrice());
+            totalMoney+=(item.getAmount()*(item.getProductDataModel().getPrice()*(100-item.getProductDataModel().getDiscount())/100));
         }
         return  totalMoney;
     }
@@ -52,7 +52,7 @@ public class CartHelper {
             return 0;
         }
         for(CartDetail item:list){
-            totalMoney+=(item.getAmount()*item.getProductByProductId().getPrice());
+            totalMoney+=(item.getAmount()*(item.getProductByProductId().getPrice()*(100-item.getProductByProductId().getDiscount())/100));
         }
         return totalMoney;
     }

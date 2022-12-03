@@ -62,7 +62,7 @@ public class ShoppingCartImpl implements ShoppingCartDAO {
 		return maps.values().stream()
 				.mapToInt(item -> {
 					return item.getPrice()!=null
-							?item.getSoLuong()*item.getPrice().intValue()
+							?item.getSoLuong()*(item.getPrice()*(100-item.getDiscount())/100)
 							:item.getSoLuong()*0;
 				})
 				.sum();
