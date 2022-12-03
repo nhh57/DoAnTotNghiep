@@ -8,8 +8,6 @@ var priceCustom=$('.priceCustom');
 $(function(){
 
   $container = $('#product-lists');
-
-  $container.isotope();
   // do stuff when checkbox change
   $('#options').on( 'change', function( jQEvent ) {
     var $checkbox = $( jQEvent.target );

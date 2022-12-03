@@ -290,12 +290,20 @@
                                                     <tr>
                                                         <td>[[${item.productByProductId.productName}]]</td>
                                                         <td>[[${item.amount}]]</td>
-                                                        <td>
+                                                        <td th:unless="${item.productByProductId.discount} > 0">
                                                             [[${#numbers.formatDecimal(item.productByProductId.price,
                                                             0, 'COMMA', 0, 'POINT')}]] đ
                                                         </td>
-                                                        <td>
+                                                        <td th:if="${item.productByProductId.discount} > 0">
+                                                            [[${#numbers.formatDecimal(item.productByProductId.price*(100-item.productByProductId.discount)/100,
+                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </td>
+                                                        <td th:unless="${item.productByProductId.discount} > 0">
                                                             [[${#numbers.formatDecimal(item.productByProductId.price*item.amount,
+                                                            0, 'COMMA', 0, 'POINT')}]] đ
+                                                        </td>
+                                                        <td th:if="${item.productByProductId.discount} > 0">
+                                                            [[${#numbers.formatDecimal((item.productByProductId.price*(100-item.productByProductId.discount)/100)*item.amount,
                                                             0, 'COMMA', 0, 'POINT')}]] đ
                                                         </td>
                                                     </tr>

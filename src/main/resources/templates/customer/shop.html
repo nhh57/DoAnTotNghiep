@@ -286,12 +286,18 @@
                                  th:classappend="'category'+${item.product.categoriesByCategoryId.id}+' brand'+${item.product.brandByBrandId.id}+' '+${item.classPrice}">
                                 <div class="single-product-item">
                                     <div class="product-image">
-                                        <a th:href="@{'/mvc/single-product?id='+${item.product.id}}"><img id="product_img" class="product_img"
-                                                                                                          th:src="@{'/assets/img/products/'+${item.product.images}}" alt=""></a>
+                                        <span th:if="${item.product.discount} > 0" id="checkout_items" class="checkout_items3">[[${item.product.discount}]]%</span>
+                                        <a th:href="@{'/mvc/single-product?id='+${item.product.id}}">
+                                            <img id="product_img" class="product_img"
+                                                 th:src="@{'/assets/img/products/'+${item.product.images}}" alt=""></a>
                                     </div>
                                     <h5 style="min-height:42px;" th:text="${item.product.productName}"></h5>
-                                    <p class="product-price">
-                                        [[${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                    <div style="min-height: 87px;">
+                                        <p class="product-price" th:classappend="${item.product.discount} > 0 ? 'discountCustom' : ''" >
+                                            [[${#numbers.formatDecimal(item.product.price*(100-item.product.discount)/100, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                        <p th:if="${item.product.discount} > 0" class="product-price-old">
+                                            [[${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                    </div>
                                     <a th:attr="data-masanpham=${item.product.id}" class="cart-btn btnAddToCart"><i class="fas fa-shopping-cart"></i>
                                         Thêm vào giỏ hàng</a>
                                 </div>

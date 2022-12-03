@@ -103,15 +103,23 @@
                                     <td>
                                         [[${item.productByProductId.productName}]]
                                     </td>
-                                    <th class="hidden-480">
+                                    <th th:unless="${item.productByProductId.discount} > 0" class="hidden-480">
                                         [[${#numbers.formatDecimal(item.productByProductId.price,
                                         0, 'COMMA', 0, 'POINT')}]] đ
                                      </th>
+                                    <th th:if="${item.productByProductId.discount} > 0" class="hidden-480">
+                                        [[${#numbers.formatDecimal(item.productByProductId.price*(100-item.productByProductId.discount)/100,
+                                        0, 'COMMA', 0, 'POINT')}]] đ
+                                    </th>
                                     <td class="hidden-480">
                                         [[${item.amount}]]
                                     </td>
-                                    <td>
+                                    <td th:unless="${item.productByProductId.discount} > 0">
                                         [[${#numbers.formatDecimal(item.productByProductId.price*item.amount,
+                                        0, 'COMMA', 0, 'POINT')}]] đ
+                                    </td>
+                                    <td th:if="${item.productByProductId.discount} > 0">
+                                        [[${#numbers.formatDecimal((item.productByProductId.price*(100-item.productByProductId.discount)/100)*item.amount,
                                         0, 'COMMA', 0, 'POINT')}]] đ
                                     </td>
                                 </tr>

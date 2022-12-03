@@ -232,7 +232,7 @@
                 <div class="image">
                     <div class="price-box">
                         <div class="inner-price">
-                                <span class="price">
+                                <span class="price" style="padding-top: 20px !important;">
                                     <strong>30%</strong> <br> nhiều sản phẩm
                                 </span>
                         </div>
@@ -242,13 +242,11 @@
             </div>
             <!--Content Column-->
             <div class="content-column col-lg-6">
-                <h3><span class="orange-text">FLASHSALE</span>11.11</h3>
-                <h4>Updating...</h4>
-                <div class="text">Updating...
-                </div>
+                <h3><span class="orange-text">FLASHSALE</span> 12.12</h3>
+                <h4>Sự kiện sắp diễn ra...</h4>
                 <!--Countdown Timer-->
                 <div class="time-counter">
-                    <div class="time-countdown clearfix" data-countdown="2022/12/07">
+                    <div class="time-countdown clearfix" data-countdown="2022/12/12">
                         <div class="counter-column">
                             <div class="inner"><span class="count">00</span>Days</div>
                         </div>
@@ -288,12 +286,17 @@
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
+                                <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
                             <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
-                            <p class="product-price">
-                                [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            <div style="min-height: 87px;">
+                                <p class="product-price" th:classappend="${item.discount} > 0 ? 'discountCustom' : ''" >
+                                    [[${#numbers.formatDecimal(item.price*(100-item.discount)/100, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                <p th:if="${item.discount} > 0" class="product-price-old">
+                                    [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            </div>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
                                     class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
                         </div>
@@ -303,12 +306,17 @@
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
+                                <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
                             <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
-                            <p class="product-price">
-                                [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            <div style="min-height: 87px;">
+                                <p class="product-price" th:classappend="${item.discount} > 0 ? 'discountCustom' : ''" >
+                                    [[${#numbers.formatDecimal(item.price*(100-item.discount)/100, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                <p th:if="${item.discount} > 0" class="product-price-old">
+                                    [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            </div>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
                                     class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
                         </div>
@@ -318,12 +326,17 @@
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
+                                <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
                             <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
-                            <p class="product-price">
-                                [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            <div style="min-height: 87px;">
+                                <p class="product-price" th:classappend="${item.discount} > 0 ? 'discountCustom' : ''" >
+                                    [[${#numbers.formatDecimal(item.price*(100-item.discount)/100, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                                <p th:if="${item.discount} > 0" class="product-price-old">
+                                    [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
+                            </div>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
                                     class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
                         </div>

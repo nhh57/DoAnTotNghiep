@@ -119,13 +119,13 @@ public class ShopController {
         for (Product item : list) {
             ProductMVCResult productMVCResult = new ProductMVCResult();
             productMVCResult.setProduct(item);
-            if(item.getPrice() <= 2000000){
+            if(item.getPrice()*(100-item.getDiscount())/100 <= 2000000){
                 productMVCResult.setClassPrice("price1");
-            }else if(item.getPrice() <= 3000000){
+            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 3000000){
                 productMVCResult.setClassPrice("price2");
-            }else if(item.getPrice() <= 4000000){
+            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 4000000){
                 productMVCResult.setClassPrice("price3");
-            }else if(item.getPrice() > 4000000){
+            }else if(item.getPrice()*(100-item.getDiscount())/100 > 4000000){
                 productMVCResult.setClassPrice("price4");
             }
             productMVCResult.setSoLuongTrongKho(warehouseDAO.findByProductId(item.getId()).getAmount());
