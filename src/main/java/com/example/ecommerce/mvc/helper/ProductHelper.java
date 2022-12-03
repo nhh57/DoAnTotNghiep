@@ -1,6 +1,7 @@
 package com.example.ecommerce.mvc.helper;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.mvc.model.ProductMVCResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductHelper {
@@ -63,5 +65,23 @@ public class ProductHelper {
             photo.write(photoFile.getAbsolutePath());
         }
         return tenHinhAnh;
+    }
+    public List<ProductMVCResult> getListProductMVCResult(List<Product> list) {
+        List<ProductMVCResult> listProductMVCResult = new ArrayList<>();
+        for (Product item : list) {
+            ProductMVCResult productMVCResult = new ProductMVCResult();
+            productMVCResult.setProduct(item);
+            if(item.getPrice()*(100-item.getDiscount())/100 <= 2000000){
+                productMVCResult.setClassPrice("price1");
+            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 3000000){
+                productMVCResult.setClassPrice("price2");
+            }else if(item.getPrice()*(100-item.getDiscount())/100 <= 4000000){
+                productMVCResult.setClassPrice("price3");
+            }else if(item.getPrice()*(100-item.getDiscount())/100 > 4000000){
+                productMVCResult.setClassPrice("price4");
+            }
+            listProductMVCResult.add(productMVCResult);
+        }
+        return listProductMVCResult;
     }
 }

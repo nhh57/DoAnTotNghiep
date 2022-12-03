@@ -8,7 +8,6 @@ import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.model.helper.OrderHelper;
 import com.example.ecommerce.mvc.common.PAYPAL_URL;
 import com.example.ecommerce.mvc.dao.SessionDAO;
-import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.repository.*;
 import com.example.ecommerce.service.PaypalService;
 import com.paypal.api.payments.Links;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,20 +40,15 @@ public class PaymentController {
     OrderDetailRepo orderDetailDAO;
 
     @Autowired
-    ProductRepo productRepo;
-    @Autowired
     SessionDAO session;
-    @Autowired
-    ShipDetailRepo shipDetailRepo;
-
-    @Autowired
-    ShoppingCartDAO shoppingCartDAO;
     @Autowired
     CartDetailRepo cartDetailRepo;
 
     @Autowired
     ProductRepo productDAO;
 
+    @Autowired
+    WarehouseRepo warehouseDAO;
     OrderHelper orderHelper = new OrderHelper();
     CartHelper cartHelper = new CartHelper();
 
@@ -97,11 +90,16 @@ public class PaymentController {
         //Chi tiết đơn hàng
         List<CartDetail> listCartDetail = cartDetailRepo.getCartDetail(cartId.get());
         for (CartDetail item : listCartDetail) {
+            Product product = productDAO.findById(item.getProductId()).get();
+            product.setNumberOfSale(product.getNumberOfSale() + item.getAmount());
+            productDAO.save(product);
+            Warehouse warehouse = warehouseDAO.findByProductId(item.getProductId());
+            warehouse.setAmount(warehouse.getAmount()-item.getAmount());
+            warehouseDAO.save(warehouse);
             OdersDetail ordersDetail = new OdersDetail();
             ordersDetail.setOrderId(orderId);
             ordersDetail.setProductId(item.getProductId());
             ordersDetail.setAmount(item.getAmount());
-            Product product = productRepo.findById(item.getProductId()).get();
             ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()));
             ordersDetail.setDeleted(false);
             //Save chi tiết đơn hàng
@@ -126,7 +124,7 @@ public class PaymentController {
                 }
             }
         }
-        return "redirect:/mvc/order/payment/pay/status?orderId="+orderId;
+        return "redirect:/mvc/order/payment/pay/status?orderId=" + orderId;
     }
 
     @GetMapping(PAYPAL_URL.URL_PAYPAL)
@@ -135,9 +133,9 @@ public class PaymentController {
                              @RequestParam("PayerID") Optional<String> payerId,
                              @RequestParam Integer orderId) {
         Account sessionLogin = (Account) session.get("user");
-        if(sessionLogin==null){
-            return "redirect:/mvc/login?error=errorNoLogin&urlReturn=order/payment/pay/status?orderId="+orderId;
-        }else if(orderDAO.existByAccountIdAndOrderId(sessionLogin.getId(),orderId)==null){
+        if (sessionLogin == null) {
+            return "redirect:/mvc/login?error=errorNoLogin&urlReturn=order/payment/pay/status?orderId=" + orderId;
+        } else if (orderDAO.existByAccountIdAndOrderId(sessionLogin.getId(), orderId) == null) {
             return "customer/404";
         }
         try {

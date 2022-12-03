@@ -8,7 +8,7 @@
           content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
     <!-- title -->
-    <title>Single News</title>
+    <title>Chi tiết sản phẩm</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
@@ -181,8 +181,9 @@
                                 <input class="inputSoLuong" value="1" id="soLuong" type="number" placeholder="1" min="1"
                                        max="1000">
                             </form>
-                            <a th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
-                                    class="fas fa-shopping-cart"></i> Add to Cart</a>
+                            <a th:if="${product.warehouse.amount} > 0" th:attr="data-masanpham=${product.id}" class="cart-btn btnAddToCart"><i
+                                    class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                            <h4 th:unless="${product.warehouse.amount} > 0" class="text-danger">Sản phẩm tạm hết hàng</h4>
                             <p><strong>Danh mục: </strong>[[${product.categoriesByCategoryId.categoryName}]]</p>
                             <p><strong>Hãng: </strong>[[${product.brandByBrandId.brandName}]]</p>
                         </div>

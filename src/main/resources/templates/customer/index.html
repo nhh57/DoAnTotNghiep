@@ -283,7 +283,7 @@
         <section class="items">
             <div class="row product-lists">
                 <th:block th:each="item : ${listProductByBrandId1}">
-                    <div class="col-lg-3 col-md-6 text-center">
+                    <div th:if="${item.warehouse.amount} > 0" class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
                                 <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
@@ -303,7 +303,7 @@
                     </div>
                 </th:block>
                 <th:block th:each="item : ${listProductByBrandId2}">
-                    <div class="col-lg-3 col-md-6 text-center">
+                    <div th:if="${item.warehouse.amount} > 0" class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
                                 <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
@@ -323,7 +323,7 @@
                     </div>
                 </th:block>
                 <th:block th:each="item : ${listProductByBrandId3}">
-                    <div class="col-lg-3 col-md-6 text-center">
+                    <div th:if="${item.warehouse.amount} > 0" class="col-lg-3 col-md-6 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
                                 <span th:if="${item.discount} > 0" id="checkout_items" class="checkout_items2">[[${item.discount}]]%</span>
@@ -366,24 +366,27 @@
                     <div class="divCustom bbb_viewed_slider_container">
                         <div class="divCustom owl-carousel owl-theme bbb_viewed_slider">
                             <th:block th:each="item : ${listBestSelling}">
-                                <div class="divCustom owl-item">
+                                <div th:if="${item.warehouse.amount} > 0" class="divCustom owl-item">
                                     <div
                                             class="divCustom bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                                         <div class="divCustom bbb_viewed_image"><img
                                                 th:src="@{'/assets/img/products/'+${item.images}}" alt=""></div>
                                         <div class="divCustom bbb_viewed_content text-center">
-                                            <div class="divCustom bbb_viewed_price">
+                                            <div th:if="${item.discount} > 0" class="divCustom bbb_viewed_price">
                                                 [[${#numbers.formatDecimal(item.price*(100-item.discount)/100, 0,
                                                 'COMMA', 0, 'POINT')}]] đ
                                                 <span>[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0,
                                                         'POINT')}]] đ </span></div>
+                                            <div th:unless="${item.discount} > 0" class="divCustom bbb_viewed_price">
+                                                [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0,
+                                                'POINT')}]] đ</div>
                                             <div class="divCustom bbb_viewed_name"><a
                                                     th:href="@{'/mvc/single-product?id='+${item.id}}">[[${item.productName}]]</a>
                                             </div>
                                         </div>
                                         <ul class="item_marks">
-                                            <li class="item_mark item_discount">-[[${item.discount}]]%</li>
-                                            <li class="item_mark item_new">new</li>
+                                            <li th:if="${item.discount} > 0" class="item_mark item_discount">-[[${item.discount}]]%</li>
+                                            <li th:unless="${item.discount} > 0" class="item_mark item_new">new</li>
                                         </ul>
                                     </div>
                                 </div>
