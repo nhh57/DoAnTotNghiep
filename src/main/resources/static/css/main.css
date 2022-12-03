@@ -2405,7 +2405,7 @@ ul.social-link-team li a {
 }
 
 .single-product-item {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .product-image {
@@ -2427,7 +2427,7 @@ ul.social-link-team li a {
 
 p.product-price {
   font-family: 'Poppins', sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 700;
   margin-bottom: 15px;
 }
@@ -2440,11 +2440,12 @@ p.product-price span {
 }
 
 a.cart-btn {
+  font-size: 12px;
   font-family: 'Poppins', sans-serif;
   display: inline-block;
   background-color: #F28123;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 10px;
 }
 
 a.cart-btn i {
@@ -2796,4 +2797,8 @@ line-height: 1.8;
 }
 .copyright{
   text-align: center;
+}
+
+.textCustom{
+    margin-left:10px;
 }

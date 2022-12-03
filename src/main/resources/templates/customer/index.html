@@ -286,12 +286,12 @@
             <div class="row product-lists">
                 <th:block th:each="item : ${listProductByBrandId1}">
                     <div class="col-lg-3 col-md-6 text-center">
-                        <div class="single-product-item" style="min-height:462px;">
+                        <div class="single-product-item">
                             <div class="product-image">
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
-                            <h3 th:text="${item.productName}"></h3>
+                            <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
                             <p class="product-price">
                                 [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
@@ -301,12 +301,12 @@
                 </th:block>
                 <th:block th:each="item : ${listProductByBrandId2}">
                     <div class="col-lg-3 col-md-6 text-center">
-                        <div class="single-product-item" style="min-height:462px;">
+                        <div class="single-product-item">
                             <div class="product-image">
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
-                            <h3 th:text="${item.productName}"></h3>
+                            <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
                             <p class="product-price">
                                 [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
@@ -316,12 +316,12 @@
                 </th:block>
                 <th:block th:each="item : ${listProductByBrandId3}">
                     <div class="col-lg-3 col-md-6 text-center">
-                        <div class="single-product-item" style="min-height:462px;">
+                        <div class="single-product-item">
                             <div class="product-image">
                                 <a th:href="@{'/mvc/single-product?id='+${item.id}}"><img class="product_img"
                                                                                           th:src="@{'/assets/img/products/'+${item.images}}" alt=""></a>
                             </div>
-                            <h3 th:text="${item.productName}"></h3>
+                            <h5 style="min-height:42px;" th:text="${item.productName}"></h5>
                             <p class="product-price">
                                 [[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ </p>
                             <a th:attr="data-masanpham=${item.id}" class="cart-btn btnAddToCart"><i
