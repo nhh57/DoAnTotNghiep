@@ -75,12 +75,26 @@
             }
         });
 
-        // count down
+        // count down 1
         if($('.time-countdown').length){  
             $('.time-countdown').each(function() {
-            var $this = $(this), finalDate = $(this).data('countdown');
+            var $this = $(this)
+            var finalDate = $('#countDown').val();
             $this.countdown(finalDate, function(event) {
                 var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>Days</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>Hours</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>Mins</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>Secs</div></div>'));
+            });
+         });
+        }
+
+        // count down 2
+        if($('.time-countdown2').length){
+            $('.time-countdown2').each(function() {
+            var $this = $(this)
+            var finalDate = $('#countDown2').val();
+            $this.countdown(finalDate, function(event) {
+                var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>Days</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>Hours</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>Mins</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>Secs</div></div>'));
+                console.log("%M","%M");
+                console.log("%S","%S");
             });
          });
         }
