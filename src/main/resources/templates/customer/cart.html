@@ -192,7 +192,8 @@
 								<td th:unless="${item.discount} > 0" class="product-price">[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ</td>
 								<td th:if="${item.discount} > 0" class="product-price">[[${#numbers.formatDecimal(item.price*(100-item.discount)/100, 0, 'COMMA', 0, 'POINT')}]] đ</td>
 								<td class="product-quantity"><input th:attr="data-masp=${item.id}" class="inputSoLuong" type="number" min="1" max="1000" placeholder="0" th:value="${item.soLuong}"></td>
-								<td class="product-total productTotal">[[${#numbers.formatDecimal(item.price*item.soLuong, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+								<td th:unless="${item.discount} > 0" class="product-total productTotal">[[${#numbers.formatDecimal(item.price*item.soLuong, 0, 'COMMA', 0, 'POINT')}]] đ</td>
+								<td th:if="${item.discount} > 0" class="product-total productTotal">[[${#numbers.formatDecimal((item.price*(100-item.discount)/100)*item.soLuong, 0, 'COMMA', 0, 'POINT')}]] đ</td>
 							</tr>
 						</th:block>
 						</tbody>
