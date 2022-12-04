@@ -33,11 +33,15 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1")
     List<Product> findByBrandId(Integer brandId);
 
+    @Query("SELECT p FROM Product p WHERE p.brandId=?1")
+    List<Product> findByBrandIdAdmin(Integer brandId);
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1")
     Page<Product> findByBrandId(Pageable pageable,Integer brandId);
 
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.categoryId=?1")
     List<Product> findByCategoryId(Integer categoryId);
+    @Query("SELECT p FROM Product p WHERE p.categoryId=?1")
+    List<Product> findByCategoryIdAdmin(Integer categoryId);
 
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.categoryId=?1")
     Page<Product> findByCategoryId(Pageable pageable,Integer categoryId);
@@ -48,4 +52,10 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = 0 AND p.brandId=?1 AND p.categoryId=?2 AND id!=?3")
     Page<Product> findByBrandIdAndCategoryId(Pageable pageable,Integer brandId,Integer categoryId,Integer oldProductId);
 
+    @Query(value="select * from product p " +
+            "left join ware_house wh " +
+            "on p.warehouse_id = wh.id " +
+            "where p.is_deleted = 0 and wh.amount > 0 " +
+            "order by p.number_of_sale asc",nativeQuery = true)
+    List<Product> findProductSale();
 }

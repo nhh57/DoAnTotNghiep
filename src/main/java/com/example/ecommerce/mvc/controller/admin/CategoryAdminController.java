@@ -129,7 +129,7 @@ public class CategoryAdminController {
     public String delete(@RequestParam("categoryId") Optional<String> categoryId) {
         try {
             Integer id = Integer.parseInt(categoryId.get());
-            List<Product> products=productDAO.findByCategoryId(id);
+            List<Product> products=productDAO.findByCategoryIdAdmin(id);
             for(Product product:products){
                 product.setDeleted(true);
                 productDAO.save(product);
@@ -146,7 +146,7 @@ public class CategoryAdminController {
     public String revert(@RequestParam("categoryId") Optional<String> categoryId) {
         try {
             Integer id = Integer.parseInt(categoryId.get());
-            List<Product> products=productDAO.findByCategoryId(id);
+            List<Product> products=productDAO.findByCategoryIdAdmin(id);
             for(Product product:products){
                 product.setDeleted(false);
                 productDAO.save(product);

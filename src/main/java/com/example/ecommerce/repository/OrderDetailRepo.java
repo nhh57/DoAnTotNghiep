@@ -9,6 +9,8 @@ import java.util.List;
 public interface OrderDetailRepo extends JpaRepository<OdersDetail,Integer> {
     @Query("SELECT od FROM OdersDetail od WHERE od.orderId=?1 AND od.ordersByOrderId.isDeleted=0")
     List<OdersDetail> findAllByOrderId(Integer orderId);
+    @Query("SELECT od FROM OdersDetail od WHERE od.orderId=?1")
+    List<OdersDetail> findAllByOrderIdAdmin(Integer orderId);
 
     @Query("SELECT od FROM OdersDetail od WHERE od.ordersByOrderId.accountId=?1 " +
             "AND od.ordersByOrderId.isDeleted=0 " +

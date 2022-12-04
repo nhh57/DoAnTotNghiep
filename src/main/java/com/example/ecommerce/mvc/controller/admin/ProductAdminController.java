@@ -1,15 +1,9 @@
 package com.example.ecommerce.mvc.controller.admin;
 
 
-import com.example.ecommerce.model.Brand;
-import com.example.ecommerce.model.Categories;
-import com.example.ecommerce.model.OdersDetail;
-import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.ProductHelper;
-import com.example.ecommerce.repository.BrandRepo;
-import com.example.ecommerce.repository.CategoriesRepo;
-import com.example.ecommerce.repository.OrderDetailRepo;
-import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +27,8 @@ public class ProductAdminController {
 //    HttpServletRequest request;
     @Autowired
     ProductRepo productDAO;
+    @Autowired
+    WarehouseRepo warehouseDAO;
 
     @Autowired
     CategoriesRepo categoryDAO;
@@ -119,6 +114,8 @@ public class ProductAdminController {
                        @RequestParam("categoryId") Optional<String> categoryId,
                        @RequestParam("brandId") Optional<String> brandId,
                        @RequestParam("isDeleted") Optional<Boolean> isDeleted,
+                       @RequestParam("warehouseId") Optional<Integer> warehouseId,
+                       @RequestParam("amount") Optional<Integer> amount,
                        @RequestParam("images") MultipartFile fileImages,
                        @RequestParam("imagesOld") Optional<String> imagesOld,HttpServletRequest req){
         try{
@@ -127,9 +124,11 @@ public class ProductAdminController {
             // Upload file lên server tomcat
             String imagesNameSaved= productHelper.uploadImage(req);
             Product product=new Product();
-            product.setId(id.isPresent()?Integer.parseInt(id.get()):null);
+            if(id.isPresent()){
+                product.setId(Integer.parseInt(id.get()));
+            }
             product.setProductName(productName.isPresent()?productName.get():null);
-            product.setPrice(price.isPresent()?Integer.parseInt(price.get()):null);
+            product.setPrice(price.isPresent()?Integer.parseInt(price.get()):0);
             product.setDiscount(discount.isPresent()?Integer.parseInt(discount.get()):0);
             product.setNote(note.isPresent()?note.get():null);
             product.setNumberOfSale(0);
@@ -138,10 +137,26 @@ public class ProductAdminController {
             } else {
                 product.setDeleted(false);
             }
-            product.setCategoryId(categoryId.isPresent()?Integer.parseInt(categoryId.get()):null);
-            product.setBrandId(brandId.isPresent()?Integer.parseInt(brandId.get()):null);
+            product.setCategoryId(Integer.parseInt(categoryId.get()));
+            product.setBrandId(Integer.parseInt(brandId.get()));
+            if(warehouseId.isPresent()){
+                product.setWarehouseId(warehouseId.get());
+            }
             product.setImages(imagesNameSaved==null || imagesNameSaved.isEmpty()?imagesOld.get():imagesNameSaved);
-            productDAO.save(product);
+            Product productSaved=productDAO.save(product);
+            // Lưu số lượng vô kho
+            Warehouse warehouse=new Warehouse();
+            if(warehouseId.isPresent()){
+                warehouse.setId(warehouseId.get());
+            }
+            warehouse.setProductId(productSaved.getId());
+            warehouse.setAmount(amount.isPresent()?amount.get():0);
+            warehouse.setDeleted(false);
+            Warehouse warehouseSaved=warehouseDAO.save(warehouse);
+            if(productSaved.getWarehouseId()==null){
+                productSaved.setWarehouseId(warehouseSaved.getId());
+                productDAO.save(productSaved);
+            }
             return "redirect:/mvc/admin/product?save=true";
         }catch (Exception e){
             e.printStackTrace();

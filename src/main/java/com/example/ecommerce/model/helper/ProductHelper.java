@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class ProductHelper {
             // upload file to server folder path
             file.transferTo(path);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return filename;
     }

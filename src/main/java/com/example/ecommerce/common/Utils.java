@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.*;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -507,5 +508,25 @@ public class Utils {
     public static double date1MinusDate2ToHours(Date date1,Date date2){
         double result=(date1.getTime()-date2.getTime())/3600000.0;
         return result;
+    }
+
+    public static Date getDateFromDateTimeLocalString(String dateTimeLocalString) throws ParseException {
+        String dateString=dateTimeLocalString.substring(0,dateTimeLocalString.indexOf("T"));
+        Date result=new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+        return result;
+    }
+
+    // datetimelocal có dạng "22022-09-22T23:01"
+    public static LocalTime getLocalTimeFromDateTimeLocalString(String dateTimeLocalString){
+        String timeString=dateTimeLocalString.substring(dateTimeLocalString.indexOf("T")+1,dateTimeLocalString.length());
+        LocalTime localTime=LocalTime.parse(timeString);
+        return localTime;
+    }
+    public static String getDateStringVN(Date date) {
+        if (date == null) {
+            return "";
+        } else {
+            return (new SimpleDateFormat("dd-MM-yyyy").format(date));
+        }
     }
 }

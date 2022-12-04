@@ -23,4 +23,8 @@ public class SaleResult {
     private Boolean showProduct;
     private Boolean showSale;
     private String dateStartShow;
+    private String saleDateTimeStartFormatVN;
+    private String saleDateTimeEndFormatVN;
+    private String saleDateTimeStartFormatInputDateTimeLocal;
+    private String saleDateTimeEndFormatInputDateTimeLocal;
 }

@@ -125,7 +125,7 @@ public class BrandAdminController {
     public String delete(@RequestParam("brandId") Optional<String> brandId) {
         try {
             Integer id = Integer.parseInt(brandId.get());
-            List<Product> products=productDAO.findByBrandId(id);
+            List<Product> products=productDAO.findByBrandIdAdmin(id);
             for(Product product:products){
                 product.setDeleted(true);
                 productDAO.save(product);
@@ -142,7 +142,7 @@ public class BrandAdminController {
     public String revert(@RequestParam("brandId") Optional<String> brandId) {
         try {
             Integer id = Integer.parseInt(brandId.get());
-            List<Product> products=productDAO.findByBrandId(id);
+            List<Product> products=productDAO.findByBrandIdAdmin(id);
             for(Product product:products){
                 product.setDeleted(false);
                 productDAO.save(product);

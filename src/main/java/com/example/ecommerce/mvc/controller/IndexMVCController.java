@@ -64,9 +64,6 @@ public class IndexMVCController {
         model.addAttribute("listBestSelling", productDAO.findByBestSellingProducts(10));
         //Flash sale
         Sale sale=saleRepo.findByRecentDay();
-        if(sale !=null){
-
-        }
         SaleResult saleResult=saleHelper.getSaleResult(sale);
         List<SaleDetail> listSaleDetail=saleDetailRepo.findAllBySaleId(saleResult.getId());
         Date now=new Date();

@@ -46,4 +46,23 @@
 .isDeleted{
     background-color: #f3be66;
 }
+.fa-window-close:hover{
+    cursor:pointer !important;
+}
+.inputNumberCustom {
+    border: none;
+    text-align: center;
+    padding: 5px 0;
+    width: 55px;
+}
 
+.inputNumberCustom:hover {
+    border: none;
+    width: 55px;
+}
+
+.inputNumberCustom:focus {
+    outline: none;
+    width: 55px;
+    border-radius: 5px;
+}
