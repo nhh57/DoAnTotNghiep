@@ -193,7 +193,7 @@ public class AccountAdminController {
                 o.setIsDeleted(true);
                 orderDAO.save(o);
             }
-            List<ShipDetail> shipDetails=shipDetailDAO.findByAccountId(id);
+            List<ShipDetail> shipDetails=shipDetailDAO.findByAccountIdAdmin(id);
             for(ShipDetail s:shipDetails){
                 s.setDeleted(true);
                 shipDetailDAO.save(s);
@@ -230,7 +230,7 @@ public class AccountAdminController {
                 o.setIsDeleted(false);
                 orderDAO.save(o);
             }
-            List<ShipDetail> shipDetails=shipDetailDAO.findByAccountId(id);
+            List<ShipDetail> shipDetails=shipDetailDAO.findByAccountIdAdmin(id);
             for(ShipDetail s:shipDetails){
                 s.setDeleted(false);
                 shipDetailDAO.save(s);

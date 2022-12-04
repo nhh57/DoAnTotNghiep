@@ -172,7 +172,7 @@ public class OrderAdminController {
     public String delete(@RequestParam("orderId") Optional<String> orderId){
         try{
             Integer id=Integer.parseInt(orderId.get());
-            List<OdersDetail> list=orderDetailDAO.findAllByOrderId(id);
+            List<OdersDetail> list=orderDetailDAO.findAllByOrderIdAdmin(id);
             for(OdersDetail o:list){
                 o.setDeleted(true);
                 orderDetailDAO.save(o);
@@ -189,7 +189,7 @@ public class OrderAdminController {
     public String revert(@RequestParam("orderId") Optional<String> orderId){
         try{
             Integer id=Integer.parseInt(orderId.get());
-            List<OdersDetail> list=orderDetailDAO.findAllByOrderId(id);
+            List<OdersDetail> list=orderDetailDAO.findAllByOrderIdAdmin(id);
             for(OdersDetail o:list){
                 o.setDeleted(false);
                 orderDetailDAO.save(o);
