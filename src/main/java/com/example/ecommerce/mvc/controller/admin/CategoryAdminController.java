@@ -2,16 +2,13 @@ package com.example.ecommerce.mvc.controller.admin;
 
 
 
-import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
-import com.example.ecommerce.model.RolesDetail;
 import com.example.ecommerce.model.helper.CategoriesHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.repository.CategoriesRepo;
 import com.example.ecommerce.repository.ProductRepo;
-import com.example.ecommerce.repository.RolesDetailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,15 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("mvc/admin/category")
 public class CategoryAdminController {
-//    @Autowired
-//    HttpServletRequest request;
     @Autowired
     CategoriesRepo categoryDAO;
 
@@ -41,9 +35,6 @@ public class CategoryAdminController {
     @Autowired
     SessionDAO session;
 
-    @Autowired
-    RolesDetailRepo rolesDetailDAO;
-
     CategoriesHelper categoryHelper = new CategoriesHelper();
 
     @GetMapping("")
@@ -52,13 +43,10 @@ public class CategoryAdminController {
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString,
                         @RequestParam("txtSearch") Optional<String> txtSearch) {
-//        Account account=(Account) session.get("user");
-//        if(account!=null){
-//            List<RolesDetail> rolesDetailList=rolesDetailDAO.findByAccountId(account.getId());
-//            if(!Utils.checkRole(rolesDetailList)){
-//                return "redirect:/mvc/loginAdmin";
-//            }
-//        }
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=category";
+        }
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
         int tongSoTrang = txtSearch.isPresent()
@@ -100,7 +88,7 @@ public class CategoryAdminController {
             }
         }
         model.addAttribute("listCategory", list);
-
+        model.addAttribute("admin",account);
         return "admin/category";
     }
 
@@ -108,6 +96,10 @@ public class CategoryAdminController {
     public String update(@RequestParam("categoryName") Optional<String> categoryName,
                          @RequestParam("categoryId") Optional<String> categoryId,
                          @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=category";
+        }
         Categories category = new Categories();
         if (categoryId.isPresent()) {
             category.setId(Integer.parseInt(categoryId.get()));
@@ -144,6 +136,10 @@ public class CategoryAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("categoryId") Optional<String> categoryId) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=category";
+        }
         try {
             Integer id = Integer.parseInt(categoryId.get());
             List<Product> products=productDAO.findByCategoryIdAdmin(id);

@@ -1,10 +1,11 @@
 package com.example.ecommerce.mvc.controller.admin;
 
 import com.example.ecommerce.common.Utils;
+import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Sale;
 import com.example.ecommerce.model.helper.SaleHelper;
+import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.model.SaleResult;
-import com.example.ecommerce.repository.SaleDetailRepo;
 import com.example.ecommerce.repository.SaleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ import java.util.Optional;
 @RequestMapping("mvc/admin/sale")
 public class SaleAdminController {
     @Autowired
+    SessionDAO session;
+    @Autowired
     SaleRepo saleDAO;
 
     SaleHelper saleHelper=new SaleHelper();
@@ -35,6 +38,11 @@ public class SaleAdminController {
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString,
                         @RequestParam("txtSearch") Optional<String> txtSearch){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=sale";
+        }
+        model.addAttribute("admin",admin);
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
         int tongSoTrang = txtSearch.isPresent()
@@ -88,6 +96,10 @@ public class SaleAdminController {
                        @RequestParam("dateStartSale") String dateStartSale,
                        @RequestParam("dateEndSale") String dateEndSale,
                        @RequestParam("saleName") String saleName){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=sale";
+        }
         try{
             Sale sale=new Sale();
             if(saleId.isPresent()){
@@ -108,6 +120,10 @@ public class SaleAdminController {
 
     @GetMapping("delete")
     public String delete(@RequestParam("saleId") Optional<String> saleId) {
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=sale";
+        }
         try {
             Integer id = Integer.parseInt(saleId.get());
             Sale sale=saleDAO.findById(id).get();
@@ -120,6 +136,10 @@ public class SaleAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("saleId") Optional<String> saleId) {
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=sale";
+        }
         try {
             Integer id = Integer.parseInt(saleId.get());
             Sale sale=saleDAO.findById(id).get();

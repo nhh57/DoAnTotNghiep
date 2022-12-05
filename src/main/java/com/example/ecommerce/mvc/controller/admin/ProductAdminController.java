@@ -3,6 +3,7 @@ package com.example.ecommerce.mvc.controller.admin;
 
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.ProductHelper;
+import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("mvc/admin/product")
 public class ProductAdminController {
-//    @Autowired
-//    HttpServletRequest request;
     @Autowired
     ProductRepo productDAO;
     @Autowired
@@ -37,7 +36,7 @@ public class ProductAdminController {
     BrandRepo brandDAO;
 
     @Autowired
-    OrderDetailRepo orderDetailDAO;
+    SessionDAO session;
 
     ProductHelper productHelper=new ProductHelper();
     @GetMapping("")
@@ -48,9 +47,11 @@ public class ProductAdminController {
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString,
                         @RequestParam("txtSearch") Optional<String> txtSearch) {
-//        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
-//            return "redirect:/mvc/auth/access/denied";
-//        }
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=product";
+        }
+        model.addAttribute("admin",admin);
         int soTrang=!soTrangString.isPresent()?1:Integer.parseInt(soTrangString.get());
         int soSanPham=!soSanPhamString.isPresent()?6:Integer.parseInt(soSanPhamString.get());
         int tongSoTrang=txtSearch.isPresent()
@@ -118,6 +119,10 @@ public class ProductAdminController {
                        @RequestParam("amount") Optional<Integer> amount,
                        @RequestParam("images") MultipartFile fileImages,
                        @RequestParam("imagesOld") Optional<String> imagesOld,HttpServletRequest req){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=product";
+        }
         try{
             //Lưu file vào thư mục của project
             productHelper.saveFile(fileImages);
@@ -166,6 +171,10 @@ public class ProductAdminController {
 
     @GetMapping("delete")
     public String delete(@RequestParam("productId") Optional<String> productId){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=product";
+        }
         try{
             Integer id=Integer.parseInt(productId.get());
             Product product=productDAO.findById(id).get();
@@ -178,6 +187,10 @@ public class ProductAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("productId") Optional<String> productId){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=product";
+        }
         try{
             Integer id=Integer.parseInt(productId.get());
             Product product=productDAO.findById(id).get();

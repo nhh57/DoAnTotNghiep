@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller.admin;
 
 
 
+import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Brand;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.helper.BrandHelper;
@@ -26,8 +27,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("mvc/admin/brand")
 public class BrandAdminController {
-    //    @Autowired
-//    HttpServletRequest request;
     @Autowired
     BrandRepo brandDAO;
 
@@ -48,13 +47,11 @@ public class BrandAdminController {
                         @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString) {
-//        Account account=(Account) session.get("user");
-//        if(account!=null){
-//            List<RolesDetail> rolesDetailList=rolesDetailDAO.findByAccountId(account.getId());
-//            if(!Utils.checkRole(rolesDetailList)){
-//                return "redirect:/mvc/loginAdmin";
-//            }
-//        }
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=brand";
+        }
+        model.addAttribute("admin",account);
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
         int tongSoTrang = txtSearch.isPresent()
@@ -104,6 +101,10 @@ public class BrandAdminController {
     public String update(@RequestParam("brandName") Optional<String> brandName,
                          @RequestParam("brandId") Optional<String> brandId,
                          @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=brand";
+        }
         Brand brand = new Brand();
         if (brandId.isPresent()) {
             brand.setId(Integer.parseInt(brandId.get()));
@@ -123,6 +124,10 @@ public class BrandAdminController {
 
     @GetMapping("delete")
     public String delete(@RequestParam("brandId") Optional<String> brandId) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=brand";
+        }
         try {
             Integer id = Integer.parseInt(brandId.get());
             List<Product> products=productDAO.findByBrandIdAdmin(id);
@@ -140,6 +145,10 @@ public class BrandAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("brandId") Optional<String> brandId) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=brand";
+        }
         try {
             Integer id = Integer.parseInt(brandId.get());
             List<Product> products=productDAO.findByBrandIdAdmin(id);

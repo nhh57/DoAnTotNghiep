@@ -1,9 +1,11 @@
 package com.example.ecommerce.mvc.controller.admin;
 
 import com.example.ecommerce.common.Utils;
+import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.SaleDetail;
 import com.example.ecommerce.model.helper.SaleDetailHelper;
+import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.repository.SaleDetailRepo;
 import org.json.JSONObject;
@@ -31,6 +33,9 @@ public class SaleDetailAdminController {
     @Autowired
     ProductRepo productDAO;
 
+    @Autowired
+    SessionDAO session;
+
     SaleDetailHelper saleDetailHelper=new SaleDetailHelper();
 
     @GetMapping("")
@@ -40,6 +45,11 @@ public class SaleDetailAdminController {
                              @RequestParam("soTrang") Optional<String> soTrangString,
                              @RequestParam("soSanPham") Optional<String> soSanPhamString,
                              @RequestParam("txtSearch") Optional<String> txtSearch){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=sale/sale-detail?saleId="+saleIdString.get();
+        }
+        model.addAttribute("admin",admin);
         if(!saleIdString.isPresent() || !Utils.checkIsNumber(saleIdString.get())){
             return  "customer/404";
         }

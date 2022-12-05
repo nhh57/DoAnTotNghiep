@@ -109,7 +109,7 @@
                 <span class="nav-link-text ms-1">Quản lý khuyến mãi</span>
             </a></li>
             <li class="nav-item"><a class="nav-link text-white "
-                                    href="/mvc/admin/logout">
+                                    href="/mvc/admin/logout?urlReturn=account">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">logout</i>
                 </div>
@@ -157,9 +157,9 @@
                         <i class="fa fa-user dropbtn btn btn-success dropdown-toggle"
                            aria-hidden="true" id="dropdownMenuButton"
                            data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false"> Hi, tên</i>
+                           aria-expanded="false"> Hi, [[${admin.username}]]</i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/auth/logoff">Đăng
+                            <a class="dropdown-item" href="/mvc/admin/logout?urlReturn=account">Đăng
                                 xuất</a>
 
                         </div>
@@ -292,7 +292,7 @@
                                             </p>
                                             <p>
                                                 <select id="gender"
-                                                        class="form-control" name="gender">
+                                                        class="form-control formControlCustom" name="gender">
                                                     <option value="Nam">Nam</option>
                                                     <option value="Nữ">Nữ</option>
                                                 </select>
@@ -301,7 +301,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button formaction="/mvc/admin/user/save" formmethod="post" type="submit"
+                                    <button formaction="/mvc/admin/account/save" formmethod="post" type="submit"
                                             class="btn btn-primary">Lưu lại
                                     </button>
                                     <button type="button" class="btn btn-secondary"
