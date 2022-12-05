@@ -106,10 +106,11 @@
 				<span class="nav-link-text ms-1">Quản lý khuyến mãi</span>
 			</a></li>
 			<li class="nav-item"><a class="nav-link text-white "
-									href="/mvc/admin/logout">
+									href="/mvc/admin/logout?urlReturn=product">
 				<div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
 					<i class="material-icons opacity-10">logout</i>
-				</div> <span class="nav-link-text ms-1">Đăng xuất</span>
+				</div>
+				<span class="nav-link-text ms-1">Đăng xuất</span>
 			</a></li>
 		</ul>
 	</div>
@@ -153,9 +154,9 @@
 						<i class="fa fa-user dropbtn btn btn-success dropdown-toggle"
 						   aria-hidden="true" id="dropdownMenuButton"
 						   data-toggle="dropdown" aria-haspopup="true"
-						   aria-expanded="false"> Hi, </i>
+						   aria-expanded="false"> Hi, [[${admin.username}]]</i>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="/auth/logoff/success">Đăng
+							<a class="dropdown-item" href="/mvc/admin/logout?urlReturn=product">Đăng
 								xuất</a>
 
 						</div>

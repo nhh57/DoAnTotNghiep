@@ -1,10 +1,12 @@
 package com.example.ecommerce.mvc.controller.admin;
 
 import com.example.ecommerce.common.Utils;
+import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.OdersDetail;
 import com.example.ecommerce.model.Orders;
 import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.model.helper.OrderHelper;
+import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.repository.OrderDetailRepo;
 import com.example.ecommerce.repository.OrderRepo;
 import com.example.ecommerce.repository.ShipDetailRepo;
@@ -19,11 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +37,8 @@ public class OrderAdminController {
     @Autowired
     ShipDetailRepo shipDetailDAO;
 
-//    @Autowired
-//    HttpServletRequest request;
+    @Autowired
+    SessionDAO session;
 
     OrderHelper orderHelper=new OrderHelper();
 
@@ -52,9 +50,11 @@ public class OrderAdminController {
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString,
                         @RequestParam("txtSearch") Optional<Integer> txtSearch){
-//        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
-//            return "redirect:/auth/access/denied";
-//        }
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
+        }
+        model.addAttribute("admin",admin);
         try{
             int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
             int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
@@ -113,6 +113,10 @@ public class OrderAdminController {
 
     @GetMapping("detail")
     public String detail(Model model,@RequestParam("orderId") Integer orderId){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
+        }
         model.addAttribute("order", orderDAO.findById(orderId).get());
         model.addAttribute("orderDetail", orderDetailDAO.findAllByOrderId(orderId));
         return "admin/order-detail";
@@ -132,11 +136,11 @@ public class OrderAdminController {
                        @RequestParam("phone") Optional<String> phone,
                        @RequestParam("address") Optional<String> address,
                        @RequestParam("note") Optional<String> note,
-                       @RequestParam("isDeleted") Optional<Boolean> isDeleted,
-                       HttpServletRequest req){
-//        if(!(request.isUserInRole("1") || request.isUserInRole("2"))) {
-//            return "redirect:/auth/access/denied";
-//        }
+                       @RequestParam("isDeleted") Optional<Boolean> isDeleted){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
+        }
         try{
             Orders order = new Orders();
             order.setId(id.get());
@@ -170,6 +174,10 @@ public class OrderAdminController {
     }
     @GetMapping("delete")
     public String delete(@RequestParam("orderId") Optional<String> orderId){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
+        }
         try{
             Integer id=Integer.parseInt(orderId.get());
             List<OdersDetail> list=orderDetailDAO.findAllByOrderIdAdmin(id);
@@ -187,6 +195,10 @@ public class OrderAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("orderId") Optional<String> orderId){
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
+        }
         try{
             Integer id=Integer.parseInt(orderId.get());
             List<OdersDetail> list=orderDetailDAO.findAllByOrderIdAdmin(id);

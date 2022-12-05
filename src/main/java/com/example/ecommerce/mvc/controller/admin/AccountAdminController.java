@@ -53,6 +53,12 @@ public class AccountAdminController {
     RolesRepo rolesDAO;
 
     @Autowired
+    CartRepo cartDAO;
+
+    @Autowired
+    SessionDAO session;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     AccountHelper accountHelper = new AccountHelper();
@@ -63,6 +69,11 @@ public class AccountAdminController {
                         @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
                         @RequestParam("soSanPham") Optional<String> soSanPhamString) {
+        Account account=(Account) session.get("admin");
+        if(account==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=account";
+        }
+        model.addAttribute("admin",account);
         int soTrang = !soTrangString.isPresent() ? 1 : Integer.parseInt(soTrangString.get());
         int soSanPham = !soSanPhamString.isPresent() ? 6 : Integer.parseInt(soSanPhamString.get());
         int tongSoTrang = txtSearch.isPresent()
@@ -148,12 +159,22 @@ public class AccountAdminController {
                          @RequestParam("gender") Optional<String> gender,
                          @RequestParam("cartId") Optional<Integer> cartId,
                          @RequestParam("isDeleted") Optional<Boolean> isDeleted) {
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=category";
+        }
         try{
             Account account = new Account();
             if(accountId.isPresent()){
                 account.setId(accountId.get());
             }
-            account.setCartId(cartId.get());
+            if(cartId.isPresent()){
+                account.setCartId(cartId.get());
+            }else{
+                Cart cartSaved=cartDAO.save(new Cart(false));
+                account.setCartId(cartSaved.getId());
+            }
+
             account.setUsername(username.get());
             if(!password.get().equals("passwordDefault")){
                 account.setPassword(passwordEncoder.encode(password.get()));
@@ -181,6 +202,10 @@ public class AccountAdminController {
 
     @GetMapping("delete")
     public String delete(@RequestParam("accountId") Optional<String> accountId) {
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=account";
+        }
         try {
             Integer id = Integer.parseInt(accountId.get());
             List<Orders> orderss=orderDAO.findAllByAccountId(id);
@@ -218,6 +243,10 @@ public class AccountAdminController {
     }
     @GetMapping("revert")
     public String revert(@RequestParam("accountId") Optional<String> accountId) {
+        Account admin=(Account) session.get("admin");
+        if(admin==null){
+            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=account";
+        }
         try {
             Integer id = Integer.parseInt(accountId.get());
             List<Orders> orderss=orderDAO.findAllByAccountId(id);
