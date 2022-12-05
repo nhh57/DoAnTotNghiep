@@ -49,6 +49,9 @@
 .fa-window-close:hover{
     cursor:pointer !important;
 }
+.hoverCustom:hover{
+    cursor:pointer !important;
+}
 .inputNumberCustom {
     border: none;
     text-align: center;
