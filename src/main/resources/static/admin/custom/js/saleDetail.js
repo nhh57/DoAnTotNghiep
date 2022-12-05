@@ -72,6 +72,7 @@ $(document).ready(function () {
                 const obj = JSON.parse(response);
                 console.log(obj)
                 console.log('result',obj);
+                $('#trCustom'+id).remove();
             }
         });
     });
@@ -90,6 +91,8 @@ $(document).ready(function () {
                     const obj = JSON.parse(response);
                     console.log(obj)
                     console.log('result',obj);
+                    $('#tableFilter').remove();
+                    $('#numberPageID').remove();
                 }
             });
         });
@@ -123,11 +126,44 @@ $(document).ready(function () {
                   const obj = JSON.parse(response);
                   console.log(obj)
                   console.log('result',obj);
-                  location.reload();
+                  $('#modalAddToList').modal('show');
+                  let i=3;
+                  setInterval(function() {
+                    notify= 'Đồng ý ' + '('+i+')';
+                    $('#yesConfirm').html(notify);
+                    i--;
+                    if(i==-1){
+                        location.reload();
+                    }
+                  }, 1000);
               }
           });
         });
     });
 
+    $("#filterCustom").change((e)=> {
+    var filterCustom = $(e.currentTarget);
+        var value = filterCustom.val().toLowerCase();
+        $("#tableFilter tr").filter(function () {
+            if(value=='tất cả'){
+                filterCustom.toggle(filterCustom.text().toLowerCase().indexOf('') > -1)
+            }else{
+                filterCustom.toggle(filterCustom.text().toLowerCase().indexOf(value) > -1)
+            }
+        });
+    });
+    $("#myInput").on("keyup", function () {
+         var value = $(this).val().toLowerCase();
+         $("#tableFilter tr").filter(function () {
+             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+         });
+    });
+
+    $("#myInput2").on("keyup", function () {
+         var value = $(this).val().toLowerCase();
+         $("#tableFilter2 tr").filter(function () {
+             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+         });
+    });
 
 });

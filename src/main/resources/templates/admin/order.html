@@ -97,6 +97,15 @@
                 </div>
                 <span class="nav-link-text ms-1">Quản lý hóa đơn</span>
             </a></li>
+            <li class="nav-item"><a
+                    class="nav-link text-white"
+                    th:href="@{/mvc/admin/sale}">
+                <div
+                        class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">view_in_ar</i>
+                </div>
+                <span class="nav-link-text ms-1">Quản lý khuyến mãi</span>
+            </a></li>
             <li class="nav-item"><a class="nav-link text-white "
                                     href="/mvc/admin/logout">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -232,6 +241,9 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Ghi chú
                                     </th>
+                                    <th class="align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Trạng thái xóa
+                                    </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Thao tác
                                     </th>
@@ -321,6 +333,12 @@
                                                     <h6 class="mb-0 text-sm">[[${item.note}]]</h6>
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td th:if="${item.getIsDeleted()}" class="align-middle text-center"><span
+                                                class="text-secondary text-xs font-weight-bold">Đã xóa</span>
+                                        </td>
+                                        <td th:unless="${item.getIsDeleted()}" class="align-middle text-center"><span
+                                                class="text-secondary text-xs font-weight-bold">Chưa xóa</span>
                                         </td>
                                         <td class="align-middle text-center">
                                             <a style="cursor: pointer;"

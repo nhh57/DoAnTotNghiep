@@ -144,6 +144,8 @@
                     <div class="input-group input-group-outline">
                         <label class="form-label">Tìm kiếm...</label> <input name="txtSearch" id="myInput" type="text"
                                                                              class="form-control">
+                        <input name="saleId" type="hidden" th:value="${saleId}"
+                               class="form-control">
                     </div>
                     <button style="margin-top: 20px;" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -194,15 +196,45 @@
                             <h6 class="text-white text-capitalize ps-3">Danh sách chi tiết sale</h6>
                         </div>
                     </div>
+                    <!--start modal-->
+                    <div class="modal fade" id="modalClearAll" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận</h5>
+                                    <button style="display: inline-block;border: none;" type="button" class="close"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-body">
+                                        <div class="billing-address-form">
+                                            <p class="text-center text-danger font-weight-bold">Bạn có muốn xóa tất cả các sản phẩm khỏi danh sách khuyến mãi không?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button th:attr="data-saleid=${saleId}"
+                                            id="clearAll" type="button" class="btn btn-primary" data-dismiss="modal">Có
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Không
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end modal-->
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        <i  th:attr="data-saleid=${saleId}"
-                                            id="clearAll"
-                                            class="far fa-window-close"></i> Xóa tất cả
+                                    <th data-toggle="modal"
+                                        data-target="#modalClearAll"
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 hoverCustom">
+                                        <i class="far fa-window-close"></i> Xóa tất cả
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Khuyến mãi
@@ -226,7 +258,7 @@
                                 </thead>
                                 <tbody id="tableFilter">
                                 <th:block th:each="item : ${listSaleDetail}">
-                                    <tr>
+                                    <tr th:id="'trCustom'+${item.id}">
                                         <td class="align-middle text-center text-sm">
                                             <i  th:attr="data-id=${item.id}"
                                                 class="far fa-window-close clearOne"></i>
@@ -261,20 +293,6 @@
                                         <td class="align-middle text-center"><span
                                                 class="text-secondary text-xs font-weight-bold">[[${item.product.brandByBrandId.brandName}]]</span>
                                         </td>
-                                        <td class="align-middle text-center">
-                                            <a style="cursor: pointer;"
-                                               class="text-secondary font-weight-bold text-xs"
-                                               data-toggle="modal"
-                                               th:attr="data-target='#modelChiTiet'+${item.id}"
-                                            > Chi tiết
-                                            </a>
-                                            <a th:href="@{'/mvc/admin/sale-detail/delete?saleDetailId='+${item.id}}"
-                                               th:attr="onclick=|return confirm('Bạn có chắc chắn xóa ${item.product.productName} khỏi danh sách không?')|"
-                                               class="text-secondary font-weight-bold text-xs"
-                                               style="margin-left: 10px; cursor: pointer;"> Xóa
-                                            </a>
-                                        </td>
-
                                     </tr>
                                 </th:block>
                                 </tbody>
@@ -294,13 +312,40 @@
                 </div>
             </div>
         </div>
+        <!--start Thêm vào danh sách-->
+        <div class="modal fade" id="modalAddToList" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+                        <button style="display: inline-block;border: none;" type="button" class="close"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="billing-address-form">
+                                <p class="text-center text-success font-weight-bold">Sản phẩm đã được thêm vào danh sách khuyến mãi!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="yesConfirm" onClick="window.location.reload();" type="button" class="btn btn-primary" data-dismiss="modal">Đồng ý (3)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-->
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
                     <div class="position-relative mt-n4 mx-3 ">
-                        <button
-                                class="btn btn-success btnAddSaleDetail">Thêm vào danh sách khuyến mãi
+                        <button class="btn btn-success btnAddSaleDetail">Thêm vào danh sách khuyến mãi
                         </button>
+                        <input id="myInput2" style="float:right !important" placeholder="Tìm kiếm theo tên" type="text" class="inputSearchCustom">
                     </div>
                 </div>
                 <div class="card my-4">
@@ -313,7 +358,7 @@
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0" style="height: 424px !important; display: block; overflow: auto;">
+                            <table class="table align-items-center mb-0 tableProductCustom">
                                 <thead>
                                 <tr>
                                     <th
@@ -349,7 +394,7 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody id="tableFilter">
+                                <tbody id="tableFilter2">
                                 <th:block th:each="item : ${listProduct}">
                                     <tr th:class="${item.getDeleted} ? isDeleted : ''">
                                         <td class="align-middle text-center text-sm">
