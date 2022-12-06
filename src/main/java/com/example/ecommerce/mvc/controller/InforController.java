@@ -47,6 +47,8 @@ public class InforController {
     @Autowired
     AccountRepo accountRepo;
 
+    @Autowired
+    ReviewRepo reviewDAO;
     CartHelper cartHelper = new CartHelper();
 
     @Autowired
@@ -60,6 +62,14 @@ public class InforController {
             OrderResult orderResult = new OrderResult();
             orderResult.setOrders(item);
             orderResult.setListOrderDetail(orderDetailRepo.findAllByOrderId(item.getId()));
+            List<Reviews> listReview= reviewDAO.findByOrderId(item.getId());
+            if(item.getOrderStatus().equals("Đã giao")){
+                if(listReview.size()>0){
+                    orderResult.setActiveDanhGia(false);
+                }else {
+                    orderResult.setActiveDanhGia(true);
+                }
+            }
             listOrderResult.add(orderResult);
         }
         return listOrderResult;
@@ -289,14 +299,14 @@ public class InforController {
         Orders orders = orderRepo.findById(orderId).get();
         orders.setOrderStatus(orderStatus);
         orderRepo.save(orders);
-        if(orderStatus.equals("Đã hủy")){
-            List<OdersDetail> listOrerDetail=orderDetailRepo.findAllByOrderId(orderId);
-            for(OdersDetail orderDetail:listOrerDetail){
-                Product product=productDAO.findById(orderDetail.getProductId()).get();
-                product.setNumberOfSale(product.getNumberOfSale()-orderDetail.getAmount());
+        if (orderStatus.equals("Đã hủy")) {
+            List<OdersDetail> listOrerDetail = orderDetailRepo.findAllByOrderId(orderId);
+            for (OdersDetail orderDetail : listOrerDetail) {
+                Product product = productDAO.findById(orderDetail.getProductId()).get();
+                product.setNumberOfSale(product.getNumberOfSale() - orderDetail.getAmount());
                 productDAO.save(product);
-                Warehouse warehouse=warehouseDAO.findByProductId(orderDetail.getProductId());
-                warehouse.setAmount(warehouse.getAmount()+orderDetail.getAmount());
+                Warehouse warehouse = warehouseDAO.findByProductId(orderDetail.getProductId());
+                warehouse.setAmount(warehouse.getAmount() + orderDetail.getAmount());
                 warehouseDAO.save(warehouse);
             }
         }
@@ -309,8 +319,8 @@ public class InforController {
     public ResponseEntity<String> repurchase(@RequestParam("orderId") Integer orderId) throws JSONException {
         Account khachHang = session.get("user") != null ? (Account) session.get("user") : null;
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
-        List<OdersDetail> listOrderDetail=orderDetailRepo.findAllByOrderId(orderId);
-        for(OdersDetail o:listOrderDetail){
+        List<OdersDetail> listOrderDetail = orderDetailRepo.findAllByOrderId(orderId);
+        for (OdersDetail o : listOrderDetail) {
             Integer maSanPham = o.getProductId();
             Integer soLuong = o.getAmount();
             CartDetail cartDetail = cartDetailRepo.existByProductId(cartId, maSanPham);
@@ -330,5 +340,29 @@ public class InforController {
         JSONObject json = new JSONObject();
         json.put("soLuong", tongSoLuongGioHang);
         return ResponseEntity.ok(String.valueOf(json));
+    }
+
+    @PostMapping("review/save")
+    public ResponseEntity<String> saveReview(@RequestParam("productId") Integer productId,
+                                             @RequestParam("orderId") Integer orderId,
+                                             @RequestParam("rate") Integer rate,
+                                             @RequestParam("comment") String comment) {
+        try{
+            Account account= (Account) session.get("user");
+            Reviews reviews=new Reviews();
+            reviews.setDeleted(false);
+            reviews.setProductId(productId);
+            reviews.setAccountId(account.getId());
+            reviews.setRate(rate);
+            reviews.setOrderId(orderId);
+            reviews.setComment(comment);
+            reviewDAO.save(reviews);
+            JSONObject json = new JSONObject();
+            json.put("status", "Thành công");
+            return ResponseEntity.ok(String.valueOf(json));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 }

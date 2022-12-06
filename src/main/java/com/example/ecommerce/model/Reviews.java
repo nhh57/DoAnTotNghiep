@@ -24,12 +24,23 @@ public class Reviews extends BaseEntity implements Serializable {
     @Column(name = "account_id")
     private int accountId;
 
+    @Column(name = "order_id")
+    private int orderId;
+
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account accountByAccountId;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Orders orders;
 
 
     public int getId() {
@@ -86,5 +97,29 @@ public class Reviews extends BaseEntity implements Serializable {
 
     public void setAccountByAccountId(Account accountByAccountId) {
         this.accountByAccountId = accountByAccountId;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 }

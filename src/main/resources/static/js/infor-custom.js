@@ -142,4 +142,116 @@ $(document).ready(() => {
             }
         });
     });
+
+    let selectedRating=0;
+    let selectedRating1=0;
+    $('.fa-star').hover(function(){
+        const thisRating=$(this).data('rating');
+        const productId=$(this).data('idsp');
+        const orderId=$(this).data('orderid');
+        $(this).addClass('checked').siblings().removeClass('checked');
+        for(let i=1;i<=thisRating;i++){
+            $('.star'+i+''+orderId+''+productId).addClass('checked');
+            $('.star1'+i+''+orderId+''+productId).addClass('checked');
+        }
+    });
+    $('.fa-star').on('mouseleave',function(){
+        const productId=$(this).data('idsp');
+        const orderId=$(this).data('orderid');
+        $(this).siblings().removeClass('checked');
+        $(this).removeClass('checked');
+        for(let i=1;i<=selectedRating;i++){
+            $('.star'+i+''+orderId+''+productId).addClass('checked');
+        }
+        for(let i=1;i<=selectedRating1;i++){
+            $('.star1'+i+''+orderId+''+productId).addClass('checked');
+        }
+    });
+    $('.fa-star').on('click', function(){
+        selectedRating=$(this).data('rating');
+        selectedRating1=$(this).data('rating');
+        const productId=$(this).data('idsp');
+        const orderId=$(this).data('orderid');
+        $('#rate'+orderId+''+productId).val(selectedRating);
+        $('#rate1'+orderId+''+productId).val(selectedRating1);
+        console.log("selectedRating",selectedRating)
+        $(this).addClass('checked').siblings().removeClass('checked');
+        for(let i=1;i<=selectedRating;i++){
+            $('.star'+i+''+orderId+''+productId).addClass('checked');
+        }
+        for(let i=1;i<=selectedRating1;i++){
+            $('.star1'+i+''+orderId+''+productId).addClass('checked');
+        }
+    });
+
+    $('.btnHoanThanhCustom').on('click',function(){
+        const orderId=$(this).data('orderid');
+        console.log('orderId',orderId);
+        console.log('reviewCustom',$('.reviewCustom'));
+        $('.reviewCustom').each(function(){
+            const comment=$(this).find('textarea[name="comment"]').val();
+            const rate=$(this).find('input[name="rate"]').val();
+            const productId=$(this).find('input[name="productId"]').val();
+            console.log('comment',comment);
+            console.log('rate',rate);
+            console.log('productId',productId);
+            if(comment && rate && productId){
+                $.ajax({
+                    url: "/mvc/information/review/save",
+                    method: "POST",
+                    // type: "application/json",
+                    data: {
+                        orderId:orderId,
+                        productId:productId,
+                        comment: comment,
+                        rate:rate
+                    },
+                    success: function(response) {
+                        const obj = JSON.parse(response);
+                        console.log(obj);
+                        if(obj.status=='Thành công'){
+                            $("#modalDanhGia1"+orderId).modal('toggle');
+                            $('#modalNotify3').modal('show');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //custom
+    $('.btnHoanThanhCustom1').on('click',function(){
+        const orderId=$(this).data('orderid');
+        console.log('orderId',orderId);
+        console.log('reviewCustom1',$('.reviewCustom1'));
+        $('.reviewCustom1').each(function(){
+            const comment=$(this).find('textarea[name="comment"]').val();
+            const rate=$(this).find('input[name="rate"]').val();
+            const productId=$(this).find('input[name="productId"]').val();
+            console.log('comment',comment);
+            console.log('rate',rate);
+            console.log('productId',productId);
+            if(comment && rate && productId){
+                $.ajax({
+                    url: "/mvc/information/review/save",
+                    method: "POST",
+                    // type: "application/json",
+                    data: {
+                        orderId:orderId,
+                        productId:productId,
+                        comment: comment,
+                        rate:rate
+                    },
+                    success: function(response) {
+                        const obj = JSON.parse(response);
+                        console.log(obj);
+                        if(obj.status=='Thành công'){
+                            $("#modalDanhGia"+orderId).modal('toggle');
+                            $('#modalNotify3').modal('show');
+                        }
+                    }
+                });
+            }
+        });
+    });
 });

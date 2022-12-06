@@ -384,168 +384,186 @@ path.two {
 }
 
 .orderSearch {
-        padding: 12px 0;
-        margin: 12px 0;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
-        color: #212121;
-        background: #eaeaea;
-        border-radius: 2px;
-    }
+    padding: 12px 0;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+    color: #212121;
+    background: #eaeaea;
+    border-radius: 2px;
+}
 
-    .orderSearch i {
-        margin: 0 15px;
-        color: #bbb;
-    }
+.orderSearch i {
+    margin: 0 15px;
+    color: #bbb;
+}
 
-    .orderSearch input {
-        flex: 1;
-        font-size: 14px;
-        line-height: 16px;
-        border: 0;
-        outline: none;
-        background-color: inherit;
-    }
-    .tab-content-custom{
-        padding: 0;
-    }
-    .idHomeCustom{
-        padding: 20px;
-        padding-bottom:5px;
-        background-color: #f5f1f1;
-        margin-bottom: 20px;
-    }
-    .tableCustom{
-        margin-bottom: 20px;
-    }
-    .customDangGiao{
-        color: #26aa99;
-        text-align:right;
-        margin-bottom: 15px;
-    }
-    .customDaHuy{
-        color: #ee4d2d;
-        text-align:right;
-        margin-bottom: 15px;
-    }
-    .customChoXacNhan{
-        color: #29F29C;
-        text-align:right;
-        margin-bottom: 15px;
-    }
-    .customDaGiao{
-        color: #3EB655;
-        text-align:right;
-        margin-bottom: 15px;
-    }
-    .customChoLayHang{
-        color: #168DE2;
-        text-align:right;
-        margin-bottom: 15px;
-    }
-    #user-cart #myTab a{
-        color: #1c1c1c;
-    }
-    #user-cart #myTab a:hover{
-        color: #F07748;
-    }
-    #user-cart #myTab .active{
-        color: #F07748;
-    }
-    .tongTienCustom{
-        color: #ee4d2d;
-        font-size:18px;
-    }
-    .btnAddressCustom {
-            margin-top:10px;
-            margin-right:10px;
-    		display: inline-block;
-    		font-weight: 400;
-    		color: #212529;
-    		text-align: center;
-    		vertical-align: middle;
-    		cursor: pointer;
-    		-webkit-user-select: none;
-    		-moz-user-select: none;
-    		-ms-user-select: none;
-    		user-select: none;
-    		background-color: transparent;
-    		border: 1px solid transparent;
-    		padding: 0.375rem 0.75rem;
-    		font-size: 1rem;
-    		line-height: 1.5;
-    		border-radius: 0.25rem;
-    		transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    	}
+.orderSearch input {
+    flex: 1;
+    font-size: 14px;
+    line-height: 16px;
+    border: 0;
+    outline: none;
+    background-color: inherit;
+}
+.tab-content-custom{
+    padding: 0;
+}
+.idHomeCustom{
+    padding: 20px;
+    padding-bottom:5px;
+    background-color: #f5f1f1;
+    margin-bottom: 20px;
+}
+.tableCustom{
+    margin-bottom: 20px;
+}
+.customDangGiao{
+    color: #26aa99;
+    text-align:right;
+    margin-bottom: 15px;
+}
+.customDaHuy{
+    color: #ee4d2d;
+    text-align:right;
+    margin-bottom: 15px;
+}
+.customChoXacNhan{
+    color: #29F29C;
+    text-align:right;
+    margin-bottom: 15px;
+}
+.customDaGiao{
+    color: #3EB655;
+    text-align:right;
+    margin-bottom: 15px;
+}
+.customChoLayHang{
+    color: #168DE2;
+    text-align:right;
+    margin-bottom: 15px;
+}
+#user-cart #myTab a{
+    color: #1c1c1c;
+}
+#user-cart #myTab a:hover{
+    color: #F07748;
+}
+#user-cart #myTab .active{
+    color: #F07748;
+}
+.tongTienCustom{
+    color: #ee4d2d;
+    font-size:18px;
+}
+.btnAddressCustom {
+    margin-top:10px;
+    margin-right:10px;
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
 
 
-    	.btnAddressCustom:focus{
-        		outline: 0;
-        	}
+.btnAddressCustom:focus{
+    outline: 0;
+}
 
-        	.btnDisable {
-        		color: #fff;
-        		background-color: #f9dd8a;
-        		border-color: #f9dd8a;
-        	}
+.btnDisable {
+    color: #fff;
+    background-color: #f9dd8a;
+    border-color: #f9dd8a;
+}
 
-        	.btnDisable:hover {
-        		cursor:not-allowed;
-        	}
+.btnDisable:hover {
+    cursor:not-allowed;
+}
 
-        	.btnActive {
-        		color: #fff;
-        		background-color: #ffc107;
-        		border-color: #ffc107;
-        		box-shadow: 0 0 0 0.2rem rgba(222, 170, 12, 0.5);
-        	}
-        	.btnActive:hover {
-        		color: #fff;
-        		background-color: #e0a800;
-        		border-color: #d39e00;
-        	}
-        	.addressBodyCustom{
-        	    margin-top: 15px;
-                margin-left: 35px;
-        	}
-   .customBtnHuy{
-       background-color: #ee4d2d;
-       color: #fff; font-weight: 400;font-size: 14px;
-       border-radius: 4px;
-       border: 1px solid rgba(0,0,0,.26);
-       border-color: #cd3011;
-       padding: 8px 8px;
-       outline: none;
-       overflow: hidden;
-       border-radius: 4px;
-       outline: 0;
-   }
-   .customBtnHuy:hover{
-       background-color: #f63b16;
-       color: rgb(237, 232, 232);
-   }
+.btnActive {
+    color: #fff;
+    background-color: #ffc107;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(222, 170, 12, 0.5);
+}
+.btnActive:hover {
+    color: #fff;
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+.addressBodyCustom{
+    margin-top: 15px;
+    margin-left: 35px;
+}
+.customBtnHuy{
+   background-color: #ee4d2d;
+   color: #fff; font-weight: 400;font-size: 14px;
+   border-radius: 4px;
+   border: 1px solid rgba(0,0,0,.26);
+   border-color: #cd3011;
+   padding: 8px 8px;
+   outline: none;
+   overflow: hidden;
+   border-radius: 4px;
+   outline: 0;
+}
+.customBtnHuy:hover{
+   background-color: #f63b16;
+   color: rgb(237, 232, 232);
+}
 
-       .customBtnMuaLai{
-           background-color: #fff;
-           color: #181818;
-           font-weight: 400;
-           font-size: 14px;
-           border-radius: 4px;
-           border: 1px solid #00000042;
-           border-color: #4e4d4c;
-           padding: 8px 8px;
-           outline: none;
-           overflow: hidden;
-           border-radius: 4px;
-           outline: 0;
-       }
-       .customBtnMuaLai:hover{
-           background-color: #f2efef;
-           color: #383737;
-       }
-       .confirmHuy{
-        font-size:14px;
-        font-weight:600;
-       }
+.customBtnMuaLai{
+   background-color: #fff;
+   color: #181818;
+   font-weight: 400;
+   font-size: 14px;
+   border-radius: 4px;
+   border: 1px solid #00000042;
+   border-color: #4e4d4c;
+   padding: 8px 8px;
+   outline: none;
+   overflow: hidden;
+   border-radius: 4px;
+   outline: 0;
+}
+.customBtnMuaLai:hover{
+   background-color: #f2efef;
+   color: #383737;
+}
+.confirmHuy{
+font-size:14px;
+font-weight:600;
+}
+.selectCustom{
+   border: 1px solid #ddd;
+   padding: 15px;
+   width: 100%;
+   border-radius: 3px;
+}
+.checked {
+   color: #ffeb0d !important;
+}
+
+.fa-star {
+   color: #848383;
+}
+
+.fa-star:hover {
+   cursor: pointer;
+   color: #ffeb0d;
+}
