@@ -11,5 +11,6 @@ import java.util.List;
 @Setter
 public class OrderResult {
     Orders orders;
+    boolean activeDanhGia;
     List<OdersDetail> listOrderDetail;
 }
