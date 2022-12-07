@@ -53,7 +53,7 @@ public class LoginAdminController {
 
     @GetMapping("/logout")
     public String logout(@RequestParam Optional<String> urlReturn) {
-        session.clear();
+        session.clear("admin");
         return urlReturn.isPresent()?"redirect:/mvc/admin/login?urlReturn=" +urlReturn.get():"redirect:/mvc/admin/login";
     }
 

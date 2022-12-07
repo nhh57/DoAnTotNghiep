@@ -137,6 +137,10 @@ public class SaleDetailAdminController {
     @PostMapping("remove")
     public ResponseEntity<String> remove(@RequestParam("id") Integer id){
         try{
+            SaleDetail saleDetail=saleDetailRepo.findById(id).get();
+            Product product=saleDetail.getProduct();
+            product.setDiscount(saleDetail.getDiscountOld());
+            productDAO.save(product);
             saleDetailRepo.deleteById(id);
             JSONObject json = new JSONObject();
             json.put("status", "Thành công");
@@ -150,6 +154,9 @@ public class SaleDetailAdminController {
         try{
             List<SaleDetail> list=saleDetailRepo.findAllBySaleId(saleId);
             for(SaleDetail saleDetail:list){
+                Product product=saleDetail.getProduct();
+                product.setDiscount(saleDetail.getDiscountOld());
+                productDAO.save(product);
                 saleDetailRepo.delete(saleDetail);
             }
             JSONObject json = new JSONObject();

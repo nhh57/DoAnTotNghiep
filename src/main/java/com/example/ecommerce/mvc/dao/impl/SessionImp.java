@@ -40,14 +40,12 @@ public class SessionImp implements SessionDAO {
 		listSession.add(session);
 	}	
 	@Override
-	public void clear() {
-//		for(int i=0;i<listSession.size();i++) {
-//			if(key.equals(listSession.get(i).getKey())) {
-//				listSession.remove(i);
-//				return;
-//			}
-//		}
-		listSession.removeAll(listSession);
-		
+	public void clear(String key) {
+		for(Session session:listSession) {
+			if(key.equals(session.getKey())) {
+				listSession.remove(session);
+				break;
+			}
+		}
 	}
 }

@@ -6,7 +6,6 @@ import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.model.helper.SaleHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
-import com.example.ecommerce.mvc.helper.ProductHelper;
 import com.example.ecommerce.mvc.model.SaleResult;
 import com.example.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

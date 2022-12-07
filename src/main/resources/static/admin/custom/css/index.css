@@ -85,3 +85,6 @@ display: block;
     padding: 10px 15px !important;
     border: 1px solid #d2d6da !important;
 }
+.heightCustom{
+    min-height: 400px !important;
+}
