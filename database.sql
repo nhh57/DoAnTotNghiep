@@ -129,6 +129,14 @@ CREATE TABLE ship_detail
 (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     phone VARCHAR(20),
+    province_id INT(11)
+    province TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
+    district_id INT(11)
+    district TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
+    ward_id INT(11)
+    ward TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
+    address_more TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
+    full_name VARCHAR(50),
     address TEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
     full_name VARCHAR(50),
     is_default TINYINT(1) DEFAULT 0 ,
@@ -203,11 +211,13 @@ create table reviews
 	rate INT,
 	product_id int(11),
 	account_id int(11),
+	order_id int(11),
 	is_deleted TINYINT(1) DEFAULT 0,
 	created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW(),
     FOREIGN KEY (account_id) REFERENCES account(id),
-    FOREIGN KEY (product_id) REFERENCES product(id)
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
 -- Flash sale
@@ -236,7 +246,6 @@ create table sale_detail
     FOREIGN KEY (sale_id) REFERENCES sale(id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
-
 
 create table calendar
 (
@@ -397,8 +406,8 @@ values (100,1,'0'),
 (100,14,'0'),
 (100,15,'0')
 
--- PROCEDURE
 
+-- PROCEDURE
 -- 1
 CREATE DEFINER=`admin`@`%` PROCEDURE `aaa_sss`(
 	IN `userName` VARCHAR(50)
@@ -798,10 +807,6 @@ BEGIN
 	COMMIT;
 END ;;
 
--- 11
-CREATE DEFINER=`admin`@`%` PROCEDURE `statistical_total_revenue`()
-BEGIN
-END ;;
 
 -- 12
 CREATE DEFINER=`admin`@`%` PROCEDURE `thongketien`(
@@ -903,9 +908,9 @@ values (2,1,0,10),
 (2,7,0,10),
 (2,8,0,20)
 
+select * from orders o 
 
-
-
+select * from ship_detail sd 
 
 
 
