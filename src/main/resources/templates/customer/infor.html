@@ -386,42 +386,56 @@
                                                                                   title="Số điện thoại Việt Nam bao gồm 10 chữ số"
                                                                                   required="required"
                                                                                   placeholder="Số điện thoại"></p>
-                                                                        <p><select id="chonTinh2"
-                                                                                   required="required"
+                                                                        <p><select required="required"
+                                                                                   th:attr="data-province=${item.province},data-shipid=${item.id}"
                                                                                    title="Vui lòng chọn 1 mục trong danh sách!"
                                                                                    onchange="handleChonTinh2(event)"
-                                                                                   class="selectCustom">
-                                                                            <option value="" selected="selected">--Chọn
-                                                                                tỉnh--
-                                                                            </option>
+                                                                                   class="selectCustom chonTinh">
+                                                                            <option value="" selected="selected">--Chọn tỉnh--</option>
                                                                         </select></p>
-                                                                        <p><select id="chonHuyen2"
+                                                                        <p><select
                                                                                    required="required"
+                                                                                   th:attr="data-district=${item.district},data-provinceid=${item.provinceId}, data-shipid=${item.id}"
                                                                                    title="Vui lòng chọn 1 mục trong danh sách!"
                                                                                    onchange="handleChonHuyen2(event)"
-                                                                                   class="selectCustom">
-                                                                            <option value="" selected="selected">--Chọn
-                                                                                huyện--
-                                                                            </option>
+                                                                                   class="selectCustom chonHuyen" th:classappend="'huyenCustom'+${item.id}">
+                                                                            <option value="" selected="selected">--Chọn huyện--</option>
                                                                         </select></p>
-                                                                        <p><select id="chonXa2"
-                                                                                   required="required"
-                                                                                   title="Vui lòng chọn 1 mục trong danh sách!"
-                                                                                   class="selectCustom">
-                                                                            <option value="" selected>--Chọn xã--
-                                                                            </option>
+                                                                        <p><select class="selectCustom chonXa"
+                                                                                   th:attr="data-ward=${item.ward},data-districtid=${item.districtId}, data-shipid=${item.id}"
+                                                                                   th:classappend="'xaCustom'+${item.id}">
+                                                                            <option value="" selected="selected">--Chọn xã--</option>
                                                                         </select></p>
-                                                                        <p><input id="soNha"
-                                                                                  type="text"
+                                                                        <p><input th:class="'hiddenProvinceId'+${item.id}"
+                                                                                  th:value="${item.provinceId}"
+                                                                                  name="provinceId"
+                                                                                  type="hidden"></p>
+                                                                        <p><input th:class="'hiddenProvince'+${item.id}"
+                                                                                  th:value="${item.province}"
+                                                                                  name="province"
+                                                                                  type="hidden"></p>
+                                                                        <p><input th:class="'hiddenDistrictId'+${item.id}"
+                                                                                  th:value="${item.districtId}"
+                                                                                  name="districtId"
+                                                                                  type="hidden"></p>
+                                                                        <p><input th:class="'hiddenDistrict'+${item.id}"
+                                                                                  th:value="${item.district}"
+                                                                                  name="district"
+                                                                                  type="hidden"></p>
+                                                                        <p><input th:class="'hiddenWardId'+${item.id}"
+                                                                                  th:value="${item.wardId}"
+                                                                                  name="wardId"
+                                                                                  type="hidden"></p>
+                                                                        <p><input th:class="'hiddenWard'+${item.id}"
+                                                                                  th:value="${item.ward}"
+                                                                                  name="ward"
+                                                                                  type="hidden"></p>
+                                                                        <p><input type="text"
                                                                                   title="Hãy nhập địa chỉ cụ thể!"
+                                                                                  name="addressMore"
                                                                                   required="required"
+                                                                                  th:value="${item.addressMore}"
                                                                                   placeholder="Số nhà, tên đường...">
-                                                                        </p>
-                                                                        <p><textarea th:value="${item.address}"
-                                                                                     th:text="${item.address}" cols="30"
-                                                                                     rows="10" required="required"
-                                                                                     name="address"
-                                                                                     placeholder="Địa chỉ giao hàng"></textarea>
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -748,7 +762,8 @@
                                                 <div class="modal-body">
                                                     <div class="card-body">
                                                         <div class="container">
-                                                            <div class="mb-5 reviewCustom" th:each="orderDetail : ${item.listOrderDetail}">
+                                                            <div class="mb-5 reviewCustom"
+                                                                 th:each="orderDetail : ${item.listOrderDetail}">
                                                                 <div class="row mb-3">
                                                                     <div class="col-2">
                                                                         <img width="80" height="50"
@@ -763,19 +778,33 @@
                                                                 </div>
                                                                 <div class="row mb-3">
                                                                     <div class="col-5">Chất lượng sản phẩm:</div>
-                                                                    <input type="hidden" class="form-control" name="productId" th:value="${orderDetail.productByProductId.id}">
-                                                                    <input type="hidden" class="form-control" name="rate" th:id="'rate'+${item.orders.id}+${orderDetail.productByProductId.id}" >
+                                                                    <input type="hidden" class="form-control"
+                                                                           name="productId"
+                                                                           th:value="${orderDetail.productByProductId.id}">
+                                                                    <input type="hidden" class="form-control"
+                                                                           name="rate"
+                                                                           th:id="'rate'+${item.orders.id}+${orderDetail.productByProductId.id}">
                                                                     <div class="col-7 modal-review">
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="1"
-                                                                              class="fa fa-star" th:classappend="'star1'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="2"
-                                                                              class="fa fa-star" th:classappend="'star2'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="3"
-                                                                              class="fa fa-star" th:classappend="'star3'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="4"
-                                                                              class="fa fa-star" th:classappend="'star4'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="5"
-                                                                              class="fa fa-star" th:classappend="'star5'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="1"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star1'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="2"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star2'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="3"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star3'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="4"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star4'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="5"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star5'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
                                                                     </div>
                                                                 </div>
                                                                 <textarea class="form-control" name="comment"
@@ -785,7 +814,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button th:attr="data-orderid=${item.orders.id}" type="button" class="btn btn-primary btnHoanThanhCustom">Hoàn thành
+                                                        <button th:attr="data-orderid=${item.orders.id}" type="button"
+                                                                class="btn btn-primary btnHoanThanhCustom">Hoàn thành
                                                         </button>
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Trở lại
@@ -1112,7 +1142,8 @@
                                             <div class="modal-body">
                                                 <div class="card-body">
                                                     <div class="container">
-                                                        <div class="mb-5 reviewCustom1" th:each="orderDetail : ${item.listOrderDetail}">
+                                                        <div class="mb-5 reviewCustom1"
+                                                             th:each="orderDetail : ${item.listOrderDetail}">
                                                             <div class="row mb-3">
                                                                 <div class="col-2">
                                                                     <img width="80" height="50"
@@ -1127,19 +1158,32 @@
                                                             </div>
                                                             <div class="row mb-3">
                                                                 <div class="col-5">Chất lượng sản phẩm:</div>
-                                                                <input type="hidden" class="form-control" name="productId" th:value="${orderDetail.productByProductId.id}">
-                                                                <input type="hidden" class="form-control" name="rate" th:id="'rate1'+${item.orders.id}+${orderDetail.productByProductId.id}" >
+                                                                <input type="hidden" class="form-control"
+                                                                       name="productId"
+                                                                       th:value="${orderDetail.productByProductId.id}">
+                                                                <input type="hidden" class="form-control" name="rate"
+                                                                       th:id="'rate1'+${item.orders.id}+${orderDetail.productByProductId.id}">
                                                                 <div class="col-7 modal-review">
-                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="1"
-                                                                              class="fa fa-star" th:classappend="'star11'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="2"
-                                                                          class="fa fa-star" th:classappend="'star12'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="3"
-                                                                          class="fa fa-star" th:classappend="'star13'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="4"
-                                                                          class="fa fa-star" th:classappend="'star14'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
-                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}" data-rating="5"
-                                                                          class="fa fa-star" th:classappend="'star15'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                        <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                              data-rating="1"
+                                                                              class="fa fa-star"
+                                                                              th:classappend="'star11'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                          data-rating="2"
+                                                                          class="fa fa-star"
+                                                                          th:classappend="'star12'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                          data-rating="3"
+                                                                          class="fa fa-star"
+                                                                          th:classappend="'star13'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                          data-rating="4"
+                                                                          class="fa fa-star"
+                                                                          th:classappend="'star14'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
+                                                                    <span th:attr="data-idsp=${orderDetail.productByProductId.id},data-orderid=${item.orders.id}"
+                                                                          data-rating="5"
+                                                                          class="fa fa-star"
+                                                                          th:classappend="'star15'+${item.orders.id}+${orderDetail.productByProductId.id}"></span>
                                                                 </div>
                                                             </div>
                                                             <textarea class="form-control" name="comment"
@@ -1149,7 +1193,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button th:attr="data-orderid=${item.orders.id}" type="button" class="btn btn-primary btnHoanThanhCustom1">Hoàn thành
+                                                    <button th:attr="data-orderid=${item.orders.id}" type="button"
+                                                            class="btn btn-primary btnHoanThanhCustom1">Hoàn thành
                                                     </button>
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Trở lại
@@ -1297,9 +1342,9 @@
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="billing-address-form">
-                                <p><input th:field="*{fullName}" type="text" placeholder="Họ và tên"
+                                <p><input name="fullName" type="text" placeholder="Họ và tên"
                                           required="required"></p>
-                                <p><input th:field="*{phone}" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                <p><input name="phone" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})"
                                           title="Số điện thoại Việt Nam bao gồm 10 chữ số" required="required"
                                           placeholder="Số điện thoại"></p>
                                 <p><select id="chonTinh"
@@ -1315,16 +1360,32 @@
                                     <option value="" selected="selected">--Chọn huyện--</option>
                                 </select></p>
                                 <p><select id="chonXa"
-                                           required="required" title="Vui lòng chọn 1 mục trong danh sách!"
                                            class="selectCustom">
                                     <option value="" selected>--Chọn xã--</option>
                                 </select></p>
                                 <p><input id="soNha"
+                                          name="addressMore"
                                           type="text"
                                           title="Hãy nhập địa chỉ cụ thể!" required="required"
                                           placeholder="Số nhà, tên đường..."></p>
-                                <p><textarea th:field="*{address}" id="address" cols="30" rows="10" required="required"
-                                             placeholder="Địa chỉ giao hàng" hidden></textarea></p>
+                                <p><input id="hiddenProvinceId"
+                                          name="provinceId"
+                                          type="hidden"></p>
+                                <p><input id="hiddenProvince"
+                                          name="province"
+                                          type="hidden"></p>
+                                <p><input id="hiddenDistrictId"
+                                          name="districtId"
+                                          type="hidden"></p>
+                                <p><input id="hiddenDistrict"
+                                          name="district"
+                                          type="hidden"></p>
+                                <p><input id="hiddenWardId"
+                                          name="wardId"
+                                          type="hidden"></p>
+                                <p><input id="hiddenWard"
+                                          name="ward"
+                                          type="hidden"></p>
                             </div>
                         </div>
                     </div>
