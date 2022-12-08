@@ -63,44 +63,49 @@ public class IndexMVCController {
         model.addAttribute("listBestSelling", productDAO.findByBestSellingProducts(10));
         //Flash sale
         Sale sale=saleRepo.findByRecentDay();
-        SaleResult saleResult=saleHelper.getSaleResult(sale);
-        List<SaleDetail> listSaleDetail=saleDetailRepo.findAllBySaleId(saleResult.getId());
-        Date now=new Date();
-        Date dateStart= Utils.getDateTimeFromDateAndTimeString(saleResult.getSaleDateStart(),saleResult.getSaleTimeStart());
-        Date dateEnd= Utils.getDateTimeFromDateAndTimeString(saleResult.getSaleDateEnd(),saleResult.getSaleTimeEnd());
-        double timeLeft=Utils.date1MinusDate2ToHours(dateStart,now);
-        double timeEnd=Utils.date1MinusDate2ToHours(dateEnd,now);
-        //Nếu thời gian KM cách thời gian hiện tại dưới 3 tiếng thì bắt đầu đếm nhưng không hiện sp
-        if(timeLeft <= 3){
-            saleResult.setShowSale(true);
+        if(sale != null){
+            SaleResult saleResult=saleHelper.getSaleResult(sale);
+            List<SaleDetail> listSaleDetail=saleDetailRepo.findAllBySaleId(saleResult.getId());
+            Date now=new Date();
+            Date dateStart= Utils.getDateTimeFromDateAndTimeString(saleResult.getSaleDateStart(),saleResult.getSaleTimeStart());
+            Date dateEnd= Utils.getDateTimeFromDateAndTimeString(saleResult.getSaleDateEnd(),saleResult.getSaleTimeEnd());
+            double timeLeft=Utils.date1MinusDate2ToHours(dateStart,now);
+            double timeEnd=Utils.date1MinusDate2ToHours(dateEnd,now);
+            //Nếu thời gian KM cách thời gian hiện tại dưới 3 tiếng thì bắt đầu đếm nhưng không hiện sp
+            if(timeLeft <= 3){
+                saleResult.setShowSale(true);
+            }else{
+                saleResult.setShowSale(false);
+            }
+            //Nếu thời gian bắt đầu KM bé hơn hoặc bằng now thì sự kiện bắt đầu
+            if(timeLeft <=0 && timeEnd >= 0){
+                for(SaleDetail item:listSaleDetail){
+                    Product product=item.getProduct();
+                    product.setDiscount(item.getDiscountSale());
+                    productDAO.save(product);
+                }
+                saleResult.setShowProduct(true);
+                saleResult.setShowSale(false);
+            }
+            //Nếu thời gian kết thúc KM bé hơn now thì sự kiện kết thúc
+            if(timeEnd < 0){
+                for(SaleDetail item:listSaleDetail){
+                    Product product=item.getProduct();
+                    product.setDiscount(item.getDiscountOld());
+                    productDAO.save(product);
+                }
+                saleResult.setShowSale(false);
+                saleResult.setShowSale(false);
+                sale.setIsDeleted(true);
+                saleRepo.save(sale);
+            }
+            model.addAttribute("sale",saleResult);
+            model.addAttribute("listSaleDetail",listSaleDetail);
         }else{
-            saleResult.setShowSale(false);
-        }
-        //Nếu thời gian bắt đầu KM bé hơn hoặc bằng now thì sự kiện bắt đầu
-        if(timeLeft <=0 && timeEnd >= 0){
-            for(SaleDetail item:listSaleDetail){
-                Product product=item.getProduct();
-                product.setDiscount(item.getDiscountSale());
-                productDAO.save(product);
-            }
-            saleResult.setShowProduct(true);
-            saleResult.setShowSale(false);
-        }
-        //Nếu thời gian kết thúc KM bé hơn now thì sự kiện kết thúc
-        if(timeEnd < 0){
-            for(SaleDetail item:listSaleDetail){
-                Product product=item.getProduct();
-                product.setDiscount(item.getDiscountOld());
-                productDAO.save(product);
-            }
-            saleResult.setShowSale(false);
-            saleResult.setShowSale(false);
-            sale.setIsDeleted(true);
-            saleRepo.save(sale);
+            model.addAttribute("sale",null);
+            model.addAttribute("listSaleDetail",null);
         }
 
-        model.addAttribute("sale",saleResult);
-        model.addAttribute("listSaleDetail",listSaleDetail);
 
         //Set số lượng giỏ hàng
         Account khachHang = (Account) session.get("user");

@@ -39,6 +39,7 @@
     <link rel="stylesheet" th:href="@{/css/cart_custom.css}">
 
     <link rel="stylesheet" th:href="@{/css/modal_custom.css}">
+    <link rel="stylesheet" th:href="@{/css/infor.css}">
 </head>
 <body>
 
@@ -206,7 +207,9 @@
                                                                         <div th:attr="data-shipid=${item.id},
                                                                             data-shipname=${item.fullName},
                                                                             data-shipphone=${item.phone},
-                                                                            data-shipaddress=${item.address}"
+                                                                            data-shipaddress=${item.address},
+                                                                            data-districtid=${item.districtId},
+                                                                            data-wardid=${item.wardId}"
                                                                              class="btnAddressCustom" th:classappend="${item.getDefault()} ? btnActive : btnDisable">
                                                                             Chọn
                                                                         </div>
@@ -231,8 +234,11 @@
                                             <p><input name="cart-id" type="hidden" th:value="${cartId}"></p>
                                             <p><input id="shipDetailId" type="hidden"
                                                       name="ship-detail-id"
-                                                      th:value="${diaChiMacDinh.id}"
-                                                      placeholder="Ship detail Id"></p>
+                                                      th:value="${diaChiMacDinh.id}"></p>
+                                            <p><input id="districtId" type="hidden"
+                                                      th:value="${diaChiMacDinh.districtId}"></p>
+                                            <p><input id="wardId" type="hidden"
+                                                      th:value="${diaChiMacDinh.wardId}"></p>
                                             <p><input id="fullName" required="required" type="hidden"
                                                       name="full-name"
                                                       th:value="${diaChiMacDinh.fullName}"
@@ -472,15 +478,50 @@
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="billing-address-form">
-                            <p><input th:field="*{fullName}" type="text" placeholder="Họ và tên"
+                            <p><input name="fullName" type="text" placeholder="Họ và tên"
                                       required="required"></p>
-                            <p><input th:field="*{phone}" type="text"
-                                      pattern="(0[3|5|7|8|9])+([0-9]{8})"
-                                      title="Số điện thoại Việt Nam bao gồm 10 chữ số"
-                                      required="required"
+                            <p><input name="phone" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})"
+                                      title="Số điện thoại Việt Nam bao gồm 10 chữ số" required="required"
                                       placeholder="Số điện thoại"></p>
-                            <p><textarea th:field="*{address}" cols="30" rows="10" required="required"
-                                         placeholder="Địa chỉ giao hàng"></textarea></p>
+                            <p><select id="chonTinh"
+                                       required="required" title="Vui lòng chọn 1 mục trong danh sách!"
+                                       onchange="handleChonTinh(event)"
+                                       class="selectCustom">
+                                <option value="" selected="selected">--Chọn tỉnh--</option>
+                            </select></p>
+                            <p><select id="chonHuyen"
+                                       required="required" title="Vui lòng chọn 1 mục trong danh sách!"
+                                       onchange="handleChonHuyen(event)"
+                                       class="selectCustom">
+                                <option value="" selected="selected">--Chọn huyện--</option>
+                            </select></p>
+                            <p><select id="chonXa"
+                                       class="selectCustom">
+                                <option value="" selected>--Chọn xã--</option>
+                            </select></p>
+                            <p><input id="soNha"
+                                      name="addressMore"
+                                      type="text"
+                                      title="Hãy nhập địa chỉ cụ thể!" required="required"
+                                      placeholder="Số nhà, tên đường..."></p>
+                            <p><input id="hiddenProvinceId"
+                                      name="provinceId"
+                                      type="hidden"></p>
+                            <p><input id="hiddenProvince"
+                                      name="province"
+                                      type="hidden"></p>
+                            <p><input id="hiddenDistrictId"
+                                      name="districtId"
+                                      type="hidden"></p>
+                            <p><input id="hiddenDistrict"
+                                      name="district"
+                                      type="hidden"></p>
+                            <p><input id="hiddenWardId"
+                                      name="wardId"
+                                      type="hidden"></p>
+                            <p><input id="hiddenWard"
+                                      name="ward"
+                                      type="hidden"></p>
                         </div>
                     </div>
                 </div>
@@ -488,8 +529,7 @@
                     <button formaction="/mvc/order/ship-detail/add" formmethod="post" type="submit"
                             class="btn btn-primary">Hoàn thành
                     </button>
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Đóng
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
                     </button>
                 </div>
             </div>

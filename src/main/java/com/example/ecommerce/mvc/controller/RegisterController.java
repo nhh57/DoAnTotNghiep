@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
 @Controller
 @RequestMapping("mvc")
 public class RegisterController {
@@ -32,8 +31,6 @@ public class RegisterController {
 
     @Autowired
     CartRepo cartDAO;
-    @Autowired
-    ShipDetailRepo shipDetailRepo;
 
     @Autowired
     SessionDAO session;
@@ -43,13 +40,16 @@ public class RegisterController {
 
     RegisterHelper registerHelper=new RegisterHelper();
 
+    public static String path="";
+
     @GetMapping("register")
-    public String showRegister(Model model,
+    public String showRegister(Model model,@RequestParam Optional<String> urlReturn,
                                @ModelAttribute("user") Account user,
                                @RequestParam("registerStatus") Optional<String> registerStatus) {
         if(session.get("user")!=null){
             return "redirect:/mvc/index";
         }
+        path=urlReturn.isPresent()?urlReturn.get():"";
         if(registerStatus.isPresent()){
             if(registerStatus.get().equals("username_exist")){
                 model.addAttribute("registerSuccess",false);
@@ -67,6 +67,7 @@ public class RegisterController {
                 model.addAttribute("registerSuccess",true);
             }
         }
+        model.addAttribute("urlReturn",path);
         return "customer/register";
     }
     @PostMapping("register")
@@ -81,13 +82,13 @@ public class RegisterController {
         if (!accountValidate.listIsNullOrEmpty(listCheck)) {
             List<Account> list = accountDAO.findAll();
             if(registerHelper.checkAccountExist(user.getUsername(),list)){
-                return "redirect:/mvc/register?registerStatus=username_exist";
+                return "redirect:/mvc/register?registerStatus=username_exist&urlReturn="+path;
             }
             if(registerHelper.checkEmailExist(user.getEmail(),list)){
-                return "redirect:/mvc/register?registerStatus=email_exist";
+                return "redirect:/mvc/register?registerStatus=email_exist&urlReturn="+path;
             }
             if(registerHelper.checkPhoneExist(user.getPhone(),list)){
-                return "redirect:/mvc/register?registerStatus=phone_exist";
+                return "redirect:/mvc/register?registerStatus=phone_exist&urlReturn="+path;
             }
 
             Cart cartSaved=cartDAO.save(new Cart(false));
@@ -101,18 +102,10 @@ public class RegisterController {
             account.setDateOfBirth(user.getDateOfBirth());
             account.setDeleted(false);
             account.setCartId(cartSaved.getId());
-            Account accountSaved=accountDAO.save(account);
-            ShipDetail shipDetail=new ShipDetail();
-            shipDetail.setFullName(accountSaved.getFullName());
-            shipDetail.setPhone(accountSaved.getPhone());
-            shipDetail.setAddress(address.get());
-            shipDetail.setAccountId(accountSaved.getId());
-            shipDetail.setDeleted(false);
-            shipDetail.setDefault(true);
-            shipDetailRepo.save(shipDetail);
-            return "redirect:/mvc/register?registerStatus=true";
+            accountDAO.save(account);
+            return "redirect:/mvc/register?registerStatus=true&urlReturn="+path;
         }else {
-            return "redirect:/mvc/register?registerStatus=infor_empty";
+            return "redirect:/mvc/register?registerStatus=infor_empty&urlReturn="+path;
         }
 
     }

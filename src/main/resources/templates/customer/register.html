@@ -136,19 +136,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="address">Địa chỉ</label> <textarea
-                                    required="required"
-                                    name="address"
-                                    type="text"
-                                    onkeyup='saveValue(this);'
-                                    id="address" class="form-control"
-                                    rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
                     <hr>
                     <div >
                         <button class="btn btn-primary">ĐĂNG KÝ</button>
@@ -181,7 +168,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="/mvc/login" class="btn btn-primary">Tiếp tục</a>
+                            <a th:href="@{'/mvc/login?urlReturn='+${urlReturn}}" class="btn btn-primary">Tiếp tục</a>
                             <button type="button" class="btn btn-secondary"
                                     data-dismiss="modal">Đóng</button>
                         </div>

@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller;
 
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.CartHelper;
+import com.example.ecommerce.model.helper.ShipDetailHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.repository.*;
@@ -101,22 +102,40 @@ public class OrderMVCController {
     }
 
     @PostMapping("ship-detail/add")
-    public String shipDetailAdd(@ModelAttribute("shipDetail") ShipDetail shipDetail) {
+    public String shipDetailAdd(@RequestParam Optional<String> fullName,
+                                @RequestParam Optional<Integer> provinceId,
+                                @RequestParam Optional<Integer> districtId,
+                                @RequestParam Optional<Integer> wardId,
+                                @RequestParam Optional<String> province,
+                                @RequestParam Optional<String> district,
+                                @RequestParam Optional<String> ward,
+                                @RequestParam Optional<String> addressMore,
+                                @RequestParam Optional<String> phone) {
         Account account = (Account) session.get("user");
         if (account == null) {
             return "redirect:/mvc/login?urlReturn=information";
         }
-        if(shipDetail!=null){
-            List<ShipDetail> list=shipDetailRepo.findByAccountId(account.getId());
-            if(list.isEmpty() || list ==null){
-                shipDetail.setDefault(true);
-            }else{
-                shipDetail.setDefault(false);
-            }
-            shipDetail.setDeleted(false);
-            shipDetail.setAccountId(account.getId());
-            shipDetailRepo.save(shipDetail);
+        List<ShipDetail> list = shipDetailRepo.findByAccountId(account.getId());
+        ShipDetail shipDetail=new ShipDetail();
+        if (list.isEmpty() || list == null) {
+            shipDetail.setDefault(true);
+        } else {
+            shipDetail.setDefault(false);
         }
+        shipDetail.setFullName(fullName.get());
+        shipDetail.setPhone(phone.get());
+        shipDetail.setProvinceId(provinceId.get());
+        shipDetail.setDistrictId(districtId.get());
+        shipDetail.setWardId(wardId.get());
+        shipDetail.setProvince(province.get());
+        shipDetail.setDistrict(district.get());
+        shipDetail.setWard(ward.get());
+        shipDetail.setAddressMore(addressMore.get());
+        String address=new ShipDetailHelper().getAddress(province,district,ward,addressMore);
+        shipDetail.setAddress(address);
+        shipDetail.setAccountId(account.getId());
+        shipDetail.setDeleted(false);
+        shipDetailRepo.save(shipDetail);
         return "redirect:/mvc/order?success=shipDetail";
     }
 }
