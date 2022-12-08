@@ -592,36 +592,36 @@ tfoot {
 		transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 	}
 
+.btnAddressCustom:focus{
+    outline: 0;
+}
 
+.btnDisable {
+    color: #fff;
+    background-color: #f9dd8a;
+    border-color: #f9dd8a;
+}
 
-	.btnAddressCustom:focus{
-    		outline: 0;
-    	}
+.btnDisable:hover {
+    color: #fff;
+    background-color: #e0a800;
+    border-color: #d39e00;
+    cursor:pointer !important;
+}
 
-    	.btnDisable {
-    		color: #fff;
-    		background-color: #f9dd8a;
-    		border-color: #f9dd8a;
-    	}
-
-    	.btnDisable:hover {
-    		color: #fff;
-    		background-color: #e0a800;
-    		border-color: #d39e00;
-    	}
-
-    	.btnActive {
-    		color: #fff;
-    		background-color: #ffc107;
-    		border-color: #ffc107;
-    		box-shadow: 0 0 0 0.2rem rgba(222, 170, 12, 0.5);
-    	}
-    	.btnActive:hover {
-    		color: #fff;
-    		background-color: #e0a800;
-    		border-color: #d39e00;
-    	}
-    	.addressBodyCustom{
-    	    margin-top: 15px;
-            margin-left: 35px;
-    	}
+.btnActive {
+    color: #fff;
+    background-color: #ffc107;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(222, 170, 12, 0.5);
+}
+.btnActive:hover {
+    color: #fff;
+    background-color: #e0a800;
+    border-color: #d39e00;
+    cursor:no-drop;
+}
+.addressBodyCustom{
+    margin-top: 15px;
+    margin-left: 35px;
+}

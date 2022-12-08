@@ -20,7 +20,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("mvc")
 public class LoginController {
-    String path="";
+    public static String path="";
     AccountValidate accountValidate=new AccountValidate();
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -43,6 +43,7 @@ public class LoginController {
                 model.addAttribute("message", "Sai tên đăng nhập hoặc mật khẩu");
             }
         }
+        model.addAttribute("urlReturn",path);
         return "customer/login";
     }
 

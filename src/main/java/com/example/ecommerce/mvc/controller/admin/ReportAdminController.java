@@ -44,7 +44,8 @@ public class ReportAdminController {
             listReport.add(report);
         }
         reportResult.setListReport(listReport);
-        reportResult.setOldestYear(statisticalRepo.getOldestYear().getValue());
+        Statistical statistical=statisticalRepo.getOldestYear();
+        reportResult.setOldestYear(statistical == null ? 2022 : statistical.getValue());
         reportResult.setNameChart(year.isPresent() ? "Doanh thu năm "+ year.get() : "Doanh thu năm 2022");
         model.addAttribute("report",reportResult);
         model.addAttribute("thisYear",year.isPresent() ? Integer.parseInt(year.get()) : 2022);
