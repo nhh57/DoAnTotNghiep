@@ -212,19 +212,9 @@
 						</thead>
 						<tbody>
 						<tr class="total-data">
-							<td><strong>Tổng tiền: </strong></td>
+							<td><strong>Tạm tính: </strong></td>
 							<td th:if="${tongSoLuongGioHang>0}" id="tongTien">[[${#numbers.formatDecimal(tongTienGioHang, 0, 'COMMA', 0, 'POINT')}]] đ</td>
 							<td th:if="${tongSoLuongGioHang<=0}" id="tongTien">0</td>
-						</tr>
-						<tr class="total-data">
-							<td><strong>Phí ship: </strong></td>
-							<td id="phiShip" th:if="${tongSoLuongGioHang>0}">15,000 đ</td>
-							<td id="phiShip" th:if="${tongSoLuongGioHang<=0}">0</td>
-						</tr>
-						<tr class="total-data">
-							<td><strong>Phải trả: </strong></td>
-							<td th:if="${tongSoLuongGioHang>0}" id="phaiTra">[[${#numbers.formatDecimal(tongTienGioHang+15000, 0, 'COMMA', 0, 'POINT')}]] đ</td>
-							<td th:if="${tongSoLuongGioHang<=0}" id="phaiTra">0</td>
 						</tr>
 						</tbody>
 					</table>

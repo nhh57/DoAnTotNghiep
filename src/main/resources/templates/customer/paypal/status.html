@@ -71,6 +71,9 @@
                                         <li>
                                             <i class="ace-icon fa fa-caret-right blue"></i> Phương thức thanh toán: [[${order.paymentMethod}]]
                                         </li>
+                                        <li>
+                                            <i class="ace-icon fa fa-caret-right blue"></i> Phương thức vận chuyển: [[${order.shipMethod}]]
+                                        </li>
 
                                         <li>
                                             <i class="ace-icon fa fa-caret-right blue"></i> Địa chỉ: [[${order.shipDetailByShipDetailId.address}]]
@@ -134,12 +137,13 @@
                                 <ul>
                                     <h4 class="pull-right">
                                         Tổng tiền đơn hàng:
-                                        <span class="red">[[${#numbers.formatDecimal(order.totalMoney-15000,
+                                        <span class="red">[[${#numbers.formatDecimal(order.totalMoney-order.deliveryCharges,
                                         0, 'COMMA', 0, 'POINT')}]] đ</span>
                                     </h4>
                                     <h4 class="pull-right">
                                         Phí giao hàng:
-                                        <span class="red">15,000 đ</span>
+                                        <span class="red">[[${#numbers.formatDecimal(order.deliveryCharges,
+                                        0, 'COMMA', 0, 'POINT')}]] đ</span>
                                     </h4>
                                     <h4 class="pull-right">
                                         Tổng thanh toán:

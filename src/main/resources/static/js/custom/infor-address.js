@@ -182,6 +182,7 @@ $('#chonXa').on('change', function(e) {
 	$('#hiddenWard').val(tenXa);
 });
 
+//call back
 const getAPI = (url, callback) => {
 	fetch(url, {
 		method: 'GET',

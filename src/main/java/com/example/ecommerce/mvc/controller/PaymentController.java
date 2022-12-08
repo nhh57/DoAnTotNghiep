@@ -59,6 +59,9 @@ public class PaymentController {
 
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
+                      @RequestParam("shipMethod") Optional<String> shipMethod,
+                      @RequestParam("shipMethodId") Optional<Integer> shipMethodId,
+                      @RequestParam("deliveryCharges") Optional<Integer> deliveryCharges,
                       @RequestParam("total-money") Optional<Double> totalMoney,
                       @RequestParam("cart-id") Optional<Integer> cartId,
                       @RequestParam("ship-detail-id") Optional<String> shipDetailId,
@@ -80,6 +83,9 @@ public class PaymentController {
         order.setPaymentMethod(paymentMethod.get());
         order.setPaymentStatus("Chưa thanh toán");
         order.setAccountId(sessionLogin.getId());
+        order.setDeliveryCharges(deliveryCharges.get());
+        order.setShipMethodId(shipMethodId.get());
+        order.setShipMethod(shipMethod.get());
         order.setIsDeleted(false);
         if (shipDetailId.isPresent()) {
             order.setShipDetailId(Integer.parseInt(shipDetailId.get()));
