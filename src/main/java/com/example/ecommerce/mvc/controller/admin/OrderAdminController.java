@@ -124,6 +124,9 @@ public class OrderAdminController {
 
     @PostMapping("save")
     public String save(@RequestParam("orderId") Optional<Integer> id,
+                       @RequestParam("shipMethod") Optional<String> shipMethod,
+                       @RequestParam("shipMethodId") Optional<Integer> shipMethodId,
+                       @RequestParam("deliveryCharges") Optional<Integer> deliveryCharges,
                        @RequestParam("orderDate") Optional<String> orderDate,
                        @RequestParam("deliveryDate") Optional<String> deliveryDate,
                        @RequestParam("orderStatus") Optional<String> orderStatus,
@@ -151,6 +154,9 @@ public class OrderAdminController {
             order.setPaymentMethod(payment.get());
             order.setPaymentStatus(paymentStatus.get());
             order.setAccountId(accountId.get());
+            order.setDeliveryCharges(deliveryCharges.get());
+            order.setShipMethodId(shipMethodId.get());
+            order.setShipMethod(shipMethod.get());
             if(isDeleted.isPresent()){
                 order.setIsDeleted(isDeleted.get());
             }else{

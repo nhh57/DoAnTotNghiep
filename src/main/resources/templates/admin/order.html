@@ -106,6 +106,15 @@
                 </div>
                 <span class="nav-link-text ms-1">Quản lý khuyến mãi</span>
             </a></li>
+            <li class="nav-item"><a
+                    class="nav-link text-white"
+                    th:href="@{/mvc/admin/report}">
+                <div
+                        class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                </div>
+                <span class="nav-link-text ms-1">Thống kê doanh thu</span>
+            </a></li>
             <li class="nav-item"><a class="nav-link text-white "
                                     href="/mvc/admin/logout?urlReturn=order">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -224,6 +233,9 @@
                                         Phương thức thanh toán
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Phương thức vận chuyển
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Trạng thái thanh toán
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -289,6 +301,13 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">[[${item.paymentMethod}]]</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">[[${item.shipMethod}]]</h6>
                                                 </div>
                                             </div>
                                         </td>
@@ -553,6 +572,27 @@
                                                                             name="note"
                                                                             placeholder="Ghi chú"
                                                                             th:value="${item.note}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="shipMethod"
+                                                                            th:value="${item.shipMethod}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="shipMethodId"
+                                                                            th:value="${item.shipMethodId}">
+                                                                    </p>
+                                                                    <p><input
+                                                                            style="border: solid; padding: 10px 15px;"
+                                                                            class="form-control"
+                                                                            type="hidden"
+                                                                            name="deliveryCharges"
+                                                                            th:value="${item.deliveryCharges}">
                                                                     </p>
                                                                 </div>
                                                             </div>
