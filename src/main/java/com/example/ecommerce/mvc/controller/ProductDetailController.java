@@ -8,6 +8,7 @@ import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.repository.CartDetailRepo;
 import com.example.ecommerce.repository.ProductRepo;
+import com.example.ecommerce.repository.ReviewRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,9 @@ public class ProductDetailController {
     ShoppingCartDAO shoppingCartDAO;
     @Autowired
     CartDetailRepo cartDetailRepo;
+
+    @Autowired
+    ReviewRepo reviewRepo;
 
     CartHelper cartHelper=new CartHelper();
 
@@ -57,6 +61,7 @@ public class ProductDetailController {
             }else{
                 model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
             }
+            model.addAttribute("listReviews",reviewRepo.findByProductId(productId));
         }
         return "customer/single-product";
     }

@@ -199,8 +199,34 @@
                 <!--			more review-->
                 <div>
                     <h2>Reviews</h2>
-                <div class="container-reviews mt-3" id="list_product_random" name="list_product_random">
+                <div class="container-reviews mt-3" name="list_product_random">
+                    <th:block th:each="item : ${listReviews}">
+                        <div class="card">
+                            <div class="card-body" style="width: 1138px">
+                                <div class="row" id="reviews">
+                                    <div class="col-md-2">
+                                        <img th:src="@{'/assets/img/products/'+${item.product.images}}" class="img img-rounded img-fluid"/>
 
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p>
+                                            <a class="float-left"   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong id="review-user-name" name="review-user-name"></strong></a>
+                                            <th:block th:each="i: ${#numbers.sequence(1,item.rate)}">
+                                                <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                            </th:block>
+                                        </p>
+                                        <div class="clearfix"></div>
+                                        <p>[[${item.comment}]]</p>
+                                        <p>
+                                            <a class="float-right btn btn-outline-primary ml-2"> <i
+                                                    class="fa fa-reply"></i> Reply</a>
+                                            <a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
                 </div>
                 </div>
             </div>
@@ -366,88 +392,6 @@
 
 <script th:src="@{/fly_to_cart/js/flyto.min.js}"></script>
 <script th:src="@{/js/single_product_custom.js}"></script>
-
-<script>
-    // $(document).ready(function () {
-    //     LoadReview();
-    //     loadAllProductRandomByCategoryId();
-    //
-    // });
-    $(function() {
-        loadAllProductRandomByCategoryId();
-    })
-
-    function LoadReview() {
-        $.ajax({
-            url: 'http://localhost:8080/api/review/get-all-review-by-product_id/' + 24 + '',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.data[1].comment)
-                $('#reviews').text(data.data[1].comment);
-            },
-            error: function (data) {
-
-            }
-        });
-    }
-
-
-    async function axiosTemplate(method, url, params, data) {
-        let res = await axios({
-            method: method, url: url, params: params, data: data
-        });
-        console.log(res);
-        if (res.data.status == 200) {
-            // sweatAlert(res.data.message, "success")
-        }
-        return res;
-    }
-    var productIds = parseInt($('.single-product-img img').data('id'));
-    async function loadAllProductRandomByCategoryId(productId) {
-        productId = productIds;
-        var randomHTML = ``;
-        let method = 'get',
-            url = 'http://localhost:8080/api/review/get-all-review-by-product_id/' + productId ,
-            params ,
-            data = {};
-        let res = await axiosTemplate(method, url, params, data);
-        console.log("ress ne", res);
-        for (let i = 0; i < res.data.data.length; i++) { //   <img class="" th:data-id="${product.id}" th:src="@{'/assets/img/products/'+${product.images}}" alt="">
-            let rating = res.data.data[i].rate;
-            let rateHtml = "";
-            for (let i = 0; i < rating; i++) {
-                rateHtml += `<span class="float-right"><i class="text-warning fa fa-star"></i></span>`;
-            }
-            randomHTML += `
-			<div class="card">
-				<div class="card-body" style="width: 1138px">
-					<div class="row" id="reviews">
-						<div class="col-md-2">
-							<img src="@{'/assets/img/products/'+${res.data.data[i].images}" class="img img-rounded img-fluid"/>
-							<p class="text-secondary text-center">${res.data.data[i].createdAt}</p>
-						</div>
-						<div class="col-md-10">
-							<p>
-								<a class="float-left"   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong id="review-user-name" name="review-user-name"></strong></a>
-			                    ${rateHtml}
-
-							</p>
-							<div class="clearfix"></div>
-							<p>${res.data.data[i].comment}</p>
-							<p>
-								<a class="float-right btn btn-outline-primary ml-2"> <i
-										class="fa fa-reply"></i> Reply</a>
-								<a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div> `;
-        }
-        $('#list_product_random').html(randomHTML);
-    }
-</script>
 
 
 		<script th:src="@{/fly_to_cart/js/flyto2.js}"></script>
