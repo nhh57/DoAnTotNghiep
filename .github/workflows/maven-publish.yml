@@ -27,7 +27,7 @@ jobs:
        uses: mr-smithers-excellent/docker-build-push@v5
        with:
          image: nhh0507/watch-shop-new
-         tags: v1.0.0
+         tags: v2.0.0
          registry: docker.io
          dockerfile: Dockerfile
          username: ${{ secrets.DOCKER_USERNAME }}
