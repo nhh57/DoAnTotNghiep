@@ -1,7 +1,7 @@
-DROP database IF EXISTS TEST1;
-
-create DATABASE TEST1;
-use TEST1;
+DROP database IF EXISTS WatchShop;
+select * from product p 
+create DATABASE WatchShop;
+use WatchShop;
 -- Danh mục sản phẩm (Điện thoại, phụ kiện)
 CREATE TABLE categories
 (
@@ -311,7 +311,7 @@ N'Đồng hồ nữ Curnon Hamilton Sylvia phong cách vintage, nhẹ nhàng nh�
 (N'CASIO MTP-1381D-1AVDF',1710000,0,'CASIO MTP-1381D-1AVDF.png',
 N'Đồng hồ Casio MTP-1381D-1AVDF có vỏ và dây đeo kim loại phủ bạc sáng bóng, nền số màu đen mạnh mẽ với kim chỉ và vạch số được phủ phản quang nổi bật, lịch thứ vị trí 12h và lịch ngày vị trí 6h.',
 20,1,1,0),
-(N'CASIO MTP-B305D-1EVDF',3058000,0,'CASIO MTP-B305D-1EVDF.png',
+(N'CASIO MTP-B305D-1EVDF',3058000,0,'mtpb305.png',
 N'Mẫu Casio MTP-B305D-1EVDF phiên bản các chức năng lịch được phân chia ra các ô số riêng biệt tạo nên kiểu dáng độc đáo đồng hồ 6 kim hiện thị trên nền mặt số với kích thước 41mm..',
 20,1,1,0),
 (N'CASIO A100WEG-9ADF',2591000,0,'CASIO A100WEG-9ADF.png',
@@ -338,10 +338,10 @@ N'Mẫu Casio MTD-1060D-1A3VDF mang trên mình một vẻ ngoài kiểu dáng �
 (N'CASIO MTP-VD02L-7EUDF' ,1086000 ,0,'CASIO MTP-VD02L-7EUDF.png',
 N'Mẫu Casio MTP-VD02L-7EUDF dây da nâu với phiên bản da trơn phong cách thời trang, các cọc vạch số cùng kim chỉ được tạo hình dày dặn phủ dạ quang nổi bật trong điều kiện thiếu sáng.',
 20,1,1,0),
-(N'CASIO MTP-B305D-1EVDF' ,3058000 ,0,'CASIO MTP-B305D-1EVDF.png',
-N'Mẫu Casio MTD-1060D-1A3VDF mang trên mình một vẻ ngoài kiểu dáng đồng hồ 6 kim thể thao nam tính với các chi tiết vạch số tạo hình dày dặn, điểm nhấn nổi bật với khả năng chịu nước lên đến 10ATM..',
+(N'CASIO MTP-VT01L-1B' ,3058000 ,0,'MTP-VT01L-1B.jpg',
+N'Mẫu Casio MTP-VT01L-1B mang trên mình một vẻ ngoài kiểu dáng đồng hồ 6 kim thể thao nam tính với các chi tiết vạch số tạo hình dày dặn, điểm nhấn nổi bật với khả năng chịu nước lên đến 10ATM..',
 20,1,1,0),
-(N'CASIO A171WEMB-1ADF' ,2980000  ,0,'CASIO A171WEMB-1ADF.png',
+(N'CASIO A171WEMB-1ADF' ,2980000  ,0,'mtpe71.png',
 N'Mẫu Casio A171WEMB-1ADF mặt số điện tử với nhiều chức năng mang lại nhiều tiện ích cho người dùng, tạo nên phong cách thời trang cá tính phối với mẫu dây đeo phiên bản lưới đen.',
 20,1,1,0),
 (N'CASIO AE-1400WHD-1AVDF' ,1529000  ,0,'CASIO AE-1400WHD-1AVDF.png',
@@ -397,7 +397,7 @@ N'Mẫu Orient Mako 2 FAA02002D9 án tượng phần thiết kế vỏ viền ng
 (N'ORIENT RA-AC0H01L10B' ,7690000,0,'ORIENT RA-AC0H01L10B.png',
 N'Mẫu Orient RA-AC0H01L10B mặt số xanh size 43mm với các chi tiết kim chỉ cùng nền cọc số học trò tạo hình dày dặn nổi bật sự trẻ trung năng động.',
 20,1,2,0),
-(N'ORIENT RE-AV0006Y00B' ,24280000,0,'ORIENT RE-AV0006Y00B.png',
+(N'ORIENT RE-AV0006Y00B' ,2428000,0,'ORIENT RE-AV0006Y00B.png',
 N'Mẫu Orient RE-AV0006Y00B phiên bản lịch lãm với bộ dây da được tạo hình vân cá sấu, điểm nhấn nổi bật máy cơ lộ tim độc đáo trên mặt số size 42mm.',
 20,1,2,0),
 (N'ORIENT RA-AC0F12S10B' ,7480000,0,'ORIENT RA-AC0F12S10B.png',
@@ -521,7 +521,7 @@ N'Mẫu đồng hồ D218SSV mang trên mình một vẻ giản dị với phiê
 N'Mẫu Doxa D105SMW phiên bản đính kim cương sang trọng, mặt số size 37mm thiết kế đơn giản 3 kim cùng với nền cọc số la mã tạo hình thời trang.',
 20,1,6,0),
 /*SeiKo*/
-(N'SEIKO SGEH89P1' ,4890000,0,'SEIKO SGEH89P1.png',
+(N'SEIKO SGEH89P1' ,4890000,0,'seiko89.jpg',
 N'Mẫu Seiko SGEH89P1 phiên bản mặt số size 40mm tone xanh thời trang cho phái mạnh đi kèm thiết  kế đơn giản 3 kim cùng chi tiết vạch số mỏng mạ bạc.',
 20,1,7,0),
 (N'SEIKO SRPG25J1' ,6525000,0,'SSRPG25J11.png',
@@ -900,4 +900,5 @@ update product set warehouse_id=85 where id=85;
 update product set warehouse_id=86 where id=86;
 update product set warehouse_id=87 where id=87;
 update product set warehouse_id=88 where id=88;
+
 
