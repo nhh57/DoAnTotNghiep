@@ -529,4 +529,11 @@ public class Utils {
             return (new SimpleDateFormat("dd-MM-yyyy").format(date));
         }
     }
+    public static String plusDateIntoDateString(String dateString,int numberDay) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = (Date)formatter.parse(dateString);
+        Date dateResult=new Date(date.getTime() + numberDay*24*60*60*1000);
+        String result= formatter.format(dateResult);
+        return result;
+    }
 }

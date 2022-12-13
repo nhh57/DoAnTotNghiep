@@ -1,5 +1,4 @@
 DROP database IF EXISTS WatchShop;
-select * from product p 
 create DATABASE WatchShop;
 use WatchShop;
 -- Danh mục sản phẩm (Điện thoại, phụ kiện)

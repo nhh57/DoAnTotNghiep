@@ -176,13 +176,92 @@
         </div>
     </nav>
     <!-- End Navbar -->
-    <select id="filterYear" class="btnCustom" data-style='btn-primary' onchange="location ='/mvc/admin/report?year=' + this.value;">
-        <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
-            <option th:value="${i}" th:text="'Năm '+${i}" th:selected="${i==thisYear}"></option>
-        </th:block>
-    </select>
+    <div style="margin:0 20px;">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link nav-custom activeTabCustom" href="/mvc/admin/report?tag=1">Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=2">Khách hàng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=3">Link</a>
+            </li>
+        </ul>
+    </div>
+    <form style="margin:0 20px;">
+        <label for="startDate">
+            Từ:
+        </label>
+        <input th:if="${startDate} != null" th:value="${startDate}" name="startDate" id="startDate" class="dateForm" type="date">
+        <input th:unless="${startDate} != null" name="startDate" id="startDate" class="dateForm" type="date">
+        <label for="endDate">
+            Đến:
+        </label>
+        <input th:if="${endDate} != null" th:value="${endDate}" name="endDate" id="endDate" class="dateForm" type="date">
+        <input th:unless="${endDate} != null"  th:value="${endDate}" name="endDate" id="endDate" class="dateForm" type="date">
+        <input type="hidden" name="tag" value="1">
+        <button style="margin-top: 14px;" formaction="/mvc/admin/report" formmethod="get" class="btn btn-success">
+            Lọc
+        </button>
+        <a style="margin-top: 14px;" href="/mvc/admin/report?tag=1" class="btn btn-danger">Xóa lọc</a>
+    </form>
     <div class="container-fluid py-4" style="background-color:#fff">
-        <div id="columnchart_material" style="width: 100%; height: 550px;"></div>
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div
+                        class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3">Danh sách sản phẩm</h6>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Id
+                            </th>
+                            <th
+                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sản phẩm
+                            </th>
+                            <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Số lượng bán
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="tableFilter">
+                        <th:block th:each="item : ${listProduct}">
+                            <tr>
+                                <td class="align-middle text-center text-sm">
+                                    <p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
+                                </td>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                            <img
+                                                    th:src="@{'/assets/img/products/'+${item.images}}"
+                                                    class="avatar avatar-sm me-3 border-radius-lg">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">[[${item.productName}]]</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center"><span
+                                        class="text-secondary text-xs font-weight-bold">[[${item.numberOfSale}]]</span>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </main>
 <script
@@ -205,6 +284,7 @@
 					options);
 		}
 
+
 </script>
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -225,41 +305,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    google.charts.load('current', {
-        'packages' : [ 'bar' ]
-    });
-    google.charts.setOnLoadCallback(drawChart);
-    var listReport = /*[[${report.getListReport()}]]*/;
-    console.log("listReport",listReport);
-    var nameChart=/*[[${report.getNameChart()}]]*/;
-    var result=[];
-    var title=["Tháng","Doanh thu"];
-    result.push(title);
-    listReport.forEach(function(item){
-        var arrayTemp=[];
-        arrayTemp.push(item.name);
-        arrayTemp.push(item.value);
-        result.push(arrayTemp);
-    });
-    function drawChart() {
-        var data = google.visualization
-                .arrayToDataTable(result);
-        var options = {
-            chart : {
-                title : 'Thống kê doanh thu',
-                subtitle : nameChart,
-            }
-        };
-
-        var chart = new google.charts.Bar(document
-                .getElementById('columnchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
-    /*]]>*/
-</script>
 </body>
 
 </html>
