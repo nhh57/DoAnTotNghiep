@@ -43,4 +43,7 @@ public interface OrderRepo extends JpaRepository<Orders,Integer> {
     @Query("SELECT od FROM Orders od WHERE od.accountId=?1")
     List<Orders> findAllByAccountId(Integer accountId);
 
+    @Query(value = "SELECT * FROM Orders od WHERE od.account_id=?1 and od.order_date >= ?2 and od.order_date < ?3",nativeQuery = true)
+    List<Orders> findAllByAccountIdAndDate(Integer accountId,String startDate,String endDate);
+
 }

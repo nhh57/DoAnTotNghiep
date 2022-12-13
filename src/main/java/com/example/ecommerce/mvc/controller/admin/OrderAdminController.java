@@ -7,6 +7,7 @@ import com.example.ecommerce.model.Orders;
 import com.example.ecommerce.model.ShipDetail;
 import com.example.ecommerce.model.helper.OrderHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
+import com.example.ecommerce.mvc.model.OrderResult;
 import com.example.ecommerce.repository.OrderDetailRepo;
 import com.example.ecommerce.repository.OrderRepo;
 import com.example.ecommerce.repository.ShipDetailRepo;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +76,16 @@ public class OrderAdminController {
                     ? orderDAO.findByOrderId(pageable,txtSearch.get())
                     : orderDAO.findAllCustom(pageable);
             List<Orders> list = pageOrders.getContent();
-            model.addAttribute("listOrder",list);
+            List<OrderResult> listOrderResult=new ArrayList<>();
+            if(list !=null){
+                for(Orders orders:list){
+                    OrderResult orderResult=new OrderResult();
+                    orderResult.setOrders(orders);
+                    orderResult.setListOrderDetail(orderDetailDAO.findAllByOrderId(orders.getId()));
+                    listOrderResult.add(orderResult);
+                }
+            }
+            model.addAttribute("listOrderResult",listOrderResult);
             model.addAttribute("soTrangHienTai", soTrang);
             model.addAttribute("soSanPhamHienTai", soSanPham);
             model.addAttribute("tongSoTrang", tongSoTrang);
@@ -111,23 +122,11 @@ public class OrderAdminController {
 
     }
 
-    @GetMapping("detail")
-    public String detail(Model model,@RequestParam("orderId") Integer orderId){
-        Account admin=(Account) session.get("admin");
-        if(admin==null){
-            return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
-        }
-        model.addAttribute("order", orderDAO.findById(orderId).get());
-        model.addAttribute("orderDetail", orderDetailDAO.findAllByOrderId(orderId));
-        return "admin/order-detail";
-    }
-
     @PostMapping("save")
     public String save(@RequestParam("orderId") Optional<Integer> id,
                        @RequestParam("shipMethod") Optional<String> shipMethod,
                        @RequestParam("shipMethodId") Optional<Integer> shipMethodId,
                        @RequestParam("deliveryCharges") Optional<Integer> deliveryCharges,
-                       @RequestParam("orderDate") Optional<String> orderDate,
                        @RequestParam("deliveryDate") Optional<String> deliveryDate,
                        @RequestParam("orderStatus") Optional<String> orderStatus,
                        @RequestParam("totalMoney") Optional<Integer> totalMoney,
@@ -145,9 +144,7 @@ public class OrderAdminController {
             return "redirect:/mvc/admin/login?error=errorNoLogin&urlReturn=order";
         }
         try{
-            Orders order = new Orders();
-            order.setId(id.get());
-            order.setOrderDate(Utils.converStringToDate(orderDate.get()));
+            Orders order = orderDAO.findById(id.get()).get();
             order.setDeliveryDate(Utils.converStringToDate(deliveryDate.get()));
             order.setOrderStatus(orderStatus.get());
             order.setTotalMoney(new BigDecimal(totalMoney.get()));
