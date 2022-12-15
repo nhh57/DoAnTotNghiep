@@ -14,7 +14,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -532,8 +535,41 @@ public class Utils {
     public static String plusDateIntoDateString(String dateString,int numberDay) throws ParseException {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = (Date)formatter.parse(dateString);
-        Date dateResult=new Date(date.getTime() + numberDay*24*60*60*1000);
+        long millisecond=date.getTime() + (long)numberDay*24*60*60*1000;
+        Date dateResult=new Date(millisecond);
         String result= formatter.format(dateResult);
         return result;
+    }
+
+    public static int getNumberOfDaysInMonth(String year, String month){
+        YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+        int daysInMonth = yearMonthObject.lengthOfMonth();
+        return daysInMonth;
+    }
+
+    public static int getDistanceBetweenTwoDateString(String dateString1,String dateString2) throws ParseException {
+        //Date yyyy-mm-dd
+        Date date1=converStringToDate(dateString1);
+        Date date2=converStringToDate(dateString2);
+        int diff = (int) ((date2.getTime() - date1.getTime())/1000/60/60/24);
+        return diff;
+    }
+    public static String getYearFromDateString(String dateString) throws ParseException {
+        Date date=converStringToDate(dateString);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year  = localDate.getYear();
+        return String.valueOf(year);
+    }
+    public static String getMonthFromDateString(String dateString) throws ParseException {
+        Date date=converStringToDate(dateString);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int month = localDate.getMonthValue();
+        return String.valueOf(month);
+    }
+    public static String getDayFromDateString(String dateString) throws ParseException {
+        Date date=converStringToDate(dateString);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int day   = localDate.getDayOfMonth();
+        return String.valueOf(day);
     }
 }

@@ -103,7 +103,7 @@ public class PaymentController {
             ordersDetail.setOrderId(orderId);
             ordersDetail.setProductId(item.getProductId());
             ordersDetail.setAmount(item.getAmount());
-            ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()));
+            ordersDetail.setPrice(BigDecimal.valueOf(product.getPrice()*(100-product.getDiscount())/100));
             ordersDetail.setDeleted(false);
             //Save chi tiết đơn hàng
             orderDetailDAO.save(ordersDetail);

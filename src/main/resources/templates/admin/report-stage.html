@@ -176,13 +176,122 @@
         </div>
     </nav>
     <!-- End Navbar -->
-    <select id="filterYear" class="btnCustom" data-style='btn-primary' onchange="location ='/mvc/admin/report?year=' + this.value;">
-        <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
-            <option th:value="${i}" th:text="'Năm '+${i}" th:selected="${i==thisYear}"></option>
-        </th:block>
-    </select>
+    <div style="margin:0 20px;">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=1">Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=2">Khách hàng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom activeTabCustom" href="/mvc/admin/report?tag=3">Thời gian</a>
+            </li>
+        </ul>
+    </div>
+    <form>
+        <input type="hidden" name="tabPanelIndex" id="idTab" th:value="${tabPanelIndex}">
+    </form>
+    <div style="margin:20px;">
+        <label for="loaiThoiGian">
+            Loại thời gian:
+        </label>
+        <select id="loaiThoiGian" class="btn-infor-custom">
+            <option value="year">Báo cáo theo năm</option>
+            <option value="month">Báo cáo theo tháng</option>
+            <option selected value="stage">Khoảng thời gian</option>
+        </select>
+        <span hidden="true" id="filterYear">
+            <label for="yColumn">Loại cột:</label>
+            <select id="yColumn" class="btn-secondary-custom">
+                <option value="1">Tháng</option>
+                <option value="2">Quý</option>
+            </select>
+            <select id="yYear" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
+                    <option th:value="${i}" th:text="'Năm '+${i}"></option>
+                </th:block>
+            </select>
+            <button id="yFilter" style="margin-top: 2px;" class="btn btn-success">Lọc</button>
+        </span>
+        <span hidden="true" id="filterMonth">
+            <select id="mYear" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
+                    <option th:value="${i}" th:text="'Năm '+${i}"></option>
+                </th:block>
+            </select>
+            <select id="mMonth" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(1,12)}">
+                    <option th:value="${i}" th:text="'Tháng '+${i}"></option>
+                </th:block>
+            </select>
+            <button id="mFilter" style="margin-top: 2px;" class="btn btn-success">Lọc</button>
+        </span>
+        <span id="filterStage">
+            <label for="sStartDate">Từ:</label>
+            <input th:value="${sStartDate}" name="sStartDate" id="sStartDate" class="dateForm" type="date">
+            <label for="sEndDate">Đến:</label>
+            <input th:value="${sEndDate}" name="sEndDate" id="sEndDate" class="dateForm" type="date">
+            <button id="sFilter" style="margin-top: 14px;" class="btn btn-success">Lọc</button>
+        </span>
+    </div>
     <div class="container-fluid py-4" style="background-color:#fff">
-        <div id="columnchart_material" style="width: 100%; height: 550px;"></div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" href="#tongQuan" role="tab" data-toggle="tab">Tổng quan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#chiTiet" role="tab" data-toggle="tab">Chi tiết</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade" id="tongQuan">
+                <div class="container-fluid py-4" style="background-color:#fff">
+                    <div id="columnchart_material" style="width: 1200px; height: 600px;"></div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="chiTiet">
+                <div class="card my-4" style="margin-top:50px !important;">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div
+                                class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Doanh thu tháng [[${mMonth}]] năm
+                                [[${mYear}]]</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Ngày
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Doanh thu
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody id="tableFilter">
+                                <th:block th:each="item : ${report.listReport}">
+                                    <tr>
+                                        <td class="align-middle text-center text-sm">
+                                            <p class="text-xs font-weight-bold mb-0">[[${item.name}]]</p>
+                                        </td>
+                                        <td class="align-middle text-center"><span
+                                                class="text-secondary text-xs font-weight-bold">[[${#numbers.formatDecimal(item.value, 0, 'COMMA', 0, 'POINT')}]] đ</span>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script
@@ -205,6 +314,7 @@
 					options);
 		}
 
+
 </script>
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -224,6 +334,7 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script th:src="@{/admin/custom/js/report.js}"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -232,10 +343,9 @@
     });
     google.charts.setOnLoadCallback(drawChart);
     var listReport = /*[[${report.getListReport()}]]*/;
-    console.log("listReport",listReport);
     var nameChart=/*[[${report.getNameChart()}]]*/;
     var result=[];
-    var title=["Tháng","Doanh thu"];
+    var title=["Ngày","Doanh thu"];
     result.push(title);
     listReport.forEach(function(item){
         var arrayTemp=[];
@@ -249,8 +359,16 @@
         var options = {
             chart : {
                 title : 'Thống kê doanh thu',
-                subtitle : nameChart,
-            }
+                subtitle : nameChart
+            },
+            vAxis: {
+              title: "Doanh thu",
+            },
+            hAxis: {
+                title: "Ngày",
+				slantedText: true,
+				slantedTextAngle: 45,
+			}
         };
 
         var chart = new google.charts.Bar(document
@@ -259,6 +377,9 @@
         chart.draw(data, google.charts.Bar.convertOptions(options));
     }
     /*]]>*/
+
+
+
 </script>
 </body>
 
