@@ -3,10 +3,12 @@ package com.example.ecommerce.mvc.controller;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.CartDetail;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ProductImage;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
 import com.example.ecommerce.repository.CartDetailRepo;
+import com.example.ecommerce.repository.ProductImageRepo;
 import com.example.ecommerce.repository.ProductRepo;
 import com.example.ecommerce.repository.ReviewRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class ProductDetailController {
     @Autowired
     ReviewRepo reviewRepo;
 
+    @Autowired
+    ProductImageRepo productImageRepo;
+
     CartHelper cartHelper=new CartHelper();
 
     @Autowired
@@ -43,7 +48,7 @@ public class ProductDetailController {
 
     @GetMapping("")
     public String index(Model model, @RequestParam("id") Optional<String> productIdParam){
-        if(productIdParam.isPresent()){
+        try{
             model.addAttribute("productIdParam",productIdParam.get());
             int productId=Integer.parseInt(productIdParam.get());
             Product product=productDAO.findById(productId).get();
@@ -61,8 +66,13 @@ public class ProductDetailController {
             }else{
                 model.addAttribute("tongSoLuongGioHang",shoppingCartDAO.getCount());
             }
+            List<ProductImage> listProductImage=productImageRepo.findByProductId(productId);
+            model.addAttribute("listProductImage",listProductImage);
+            model.addAttribute("sizeListMoreImage",listProductImage.size());
             model.addAttribute("listReviews",reviewRepo.findByProductId(productId));
+            return "customer/single-product";
+        }catch (Exception e){
+            return "customer/404";
         }
-        return "customer/single-product";
     }
 }

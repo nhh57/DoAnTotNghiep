@@ -3,12 +3,18 @@ package com.example.ecommerce.mvc.controller.admin;
 
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.ProductHelper;
+import com.example.ecommerce.model.result.ProductResult;
 import com.example.ecommerce.mvc.dao.SessionDAO;
+import com.example.ecommerce.mvc.model.ProductAdminResult;
 import com.example.ecommerce.repository.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +33,10 @@ import java.util.Optional;
 public class ProductAdminController {
     @Autowired
     ProductRepo productDAO;
+
+    @Autowired
+    ProductImageRepo productImageDAO;
+
     @Autowired
     WarehouseRepo warehouseDAO;
 
@@ -75,6 +86,13 @@ public class ProductAdminController {
                 ? productDAO.findByName(pageable,txtSearch.get())
                 : productDAO.findAll(pageable);
         List<Product> list=pageProduct.getContent();
+        List<ProductAdminResult> listResult=new ArrayList<>();
+        for(Product product:list){
+            ProductAdminResult productAdminResult=new ProductAdminResult();
+            productAdminResult.setProduct(product);
+            productAdminResult.setListProductImage(productImageDAO.findByProductId(product.getId()));
+            listResult.add(productAdminResult);
+        }
         if(save.isPresent()) {
             if(save.get().equals("true")){
                 model.addAttribute("message","Lưu lại thành công!");
@@ -96,7 +114,7 @@ public class ProductAdminController {
                 model.addAttribute("message","Khôi phục thất bại!");
             }
         }
-        model.addAttribute("listProduct",list);
+        model.addAttribute("listProduct",listResult);
         //Category
         List<Categories> listCategory=categoryDAO.findAll();
         model.addAttribute("listCategory",listCategory);
@@ -118,6 +136,7 @@ public class ProductAdminController {
                        @RequestParam("warehouseId") Optional<Integer> warehouseId,
                        @RequestParam("amount") Optional<Integer> amount,
                        @RequestParam("images") MultipartFile fileImages,
+                       @RequestParam("imageMore") Optional<MultipartFile[]> imageMores,
                        @RequestParam("imagesOld") Optional<String> imagesOld,HttpServletRequest req){
         Account admin=(Account) session.get("admin");
         if(admin==null){
@@ -125,9 +144,16 @@ public class ProductAdminController {
         }
         try{
             //Lưu file vào thư mục của project
-            productHelper.saveFile(fileImages);
+            String imagesNameSaved= productHelper.saveFile(fileImages);
             // Upload file lên server tomcat
-            String imagesNameSaved= productHelper.uploadImage(req);
+            productHelper.saveFile(fileImages);
+            List<String> listImageMore=new ArrayList<>();
+            if(imageMores.isPresent()){
+                //Lưu file vào thư mục của project
+                productHelper.saveFiles(imageMores.get());
+                // Upload file lên server tomcat
+                listImageMore= productHelper.uploadImages(req,imagesNameSaved);
+            }
             Product product=new Product();
             if(id.isPresent()){
                 product.setId(Integer.parseInt(id.get()));
@@ -149,6 +175,18 @@ public class ProductAdminController {
             }
             product.setImages(imagesNameSaved==null || imagesNameSaved.isEmpty()?imagesOld.get():imagesNameSaved);
             Product productSaved=productDAO.save(product);
+            //Lưu hình ảnh thêm
+            if(listImageMore.size() > 0){
+                for(String imageName:listImageMore){
+                    if(!productHelper.checkExistProductImageName(productImageDAO.findAll(),imageName)){
+                        ProductImage productImage=new ProductImage();
+                        productImage.setProductId(productSaved.getId());
+                        productImage.setProductImageName(imageName);
+                        productImage.setDeleted(false);
+                        productImageDAO.save(productImage);
+                    }
+                }
+            }
             // Lưu số lượng vô kho
             Warehouse warehouse=new Warehouse();
             if(warehouseId.isPresent()){
@@ -200,5 +238,13 @@ public class ProductAdminController {
         }catch (Exception e){
             return "redirect:/mvc/admin/product?revert=false";
         }
+    }
+
+    @PostMapping("product-image/delete")
+    public ResponseEntity<String> deleteProductImage(@RequestParam("imageId") Integer imageId) throws JSONException {
+       productImageDAO.deleteById(imageId);
+        JSONObject json=new JSONObject();
+        json.put("status","Thành công!");
+        return ResponseEntity.ok(String.valueOf(json));
     }
 }

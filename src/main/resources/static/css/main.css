@@ -2841,3 +2841,15 @@ line-height: 1.8;
     font-weight: 700;
     margin-bottom: 15px;
 }
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(50%);
+}
+.carousel-indicators li {
+  background-color: #999;
+  background-color: rgba(70, 70, 70, 0.25);
+}
+
+.carousel-indicators .active {
+  background-color: #444;
+}

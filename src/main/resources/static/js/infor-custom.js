@@ -136,9 +136,16 @@ $(document).ready(() => {
                 orderId: orderId
             },
             success: function(response) {
-                const obj = JSON.parse(response);
-                console.log(obj)
-                $('#checkout_items').html(obj.soLuong);
+                console.log(response);
+                toastr.options.timeOut = 1000;
+                toastr.options = {
+                    "positionClass": "toast-bottom-right"
+                }
+                response.listCartDetail.forEach(function(item){
+                    console.log("aaa");
+                    toastr.success('+'+item.amount+' '+item.productName+' vào giỏ hàng');
+                });
+                $('#checkout_items').html(response.numberOfCart);
             }
         });
     });

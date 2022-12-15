@@ -1,6 +1,7 @@
 package com.example.ecommerce.model.helper;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ProductImage;
 import com.example.ecommerce.model.data.ProductDataModel;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -114,6 +115,22 @@ public class ProductHelper {
         return filename;
     }
 
+    public List<String> saveFiles(MultipartFile[] files) {
+        List<String> filenames=new ArrayList<String>();
+        for(MultipartFile file:files) {
+            String filename=file.getOriginalFilename();
+            Path path=this.getPath(filename);
+            try {
+                // upload file to server folder path
+                file.transferTo(path);
+                filenames.add(filename);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return filenames;
+    }
+
     public String uploadImage(HttpServletRequest req) throws IOException, ServletException {
         // đường dẫn thư mục tính từ gốc của website
         File dir = new File(req.getServletContext().getRealPath("/assets/img/products"));
@@ -132,4 +149,38 @@ public class ProductHelper {
         return tenHinhAnh;
     }
 
+    public List<String> uploadImages(HttpServletRequest req,String imageName) throws IOException, ServletException {
+        List<String> filenames=new ArrayList<>();
+        // đường dẫn thư mục tính từ gốc của website
+        File dir = new File(req.getServletContext().getRealPath("/assets/img/products"));
+        if (!dir.exists()) { // tạo nếu chưa tồn tại
+            dir.mkdirs();
+        }
+        // lưu các file upload vào thư mục img/products
+        List<Part> photos= (List<Part>) req.getParts();
+        for(Part photo:photos){
+            String filePath = photo.getSubmittedFileName();
+            if(filePath!=null){
+                Path p = Paths.get(filePath); // creates a Path object
+                String tenHinhAnh = p.getFileName().toString();
+                if(!tenHinhAnh.equals(imageName)){
+                    filenames.add(tenHinhAnh);
+                    File photoFile = new File(dir, filePath);
+                    if (!photoFile.exists()) {
+                        photo.write(photoFile.getAbsolutePath());
+                    }
+                }
+            }
+        }
+        return filenames;
+    }
+
+    public boolean checkExistProductImageName(List<ProductImage> list, String name){
+        for(ProductImage productImage:list){
+            if(productImage.getProductImageName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
