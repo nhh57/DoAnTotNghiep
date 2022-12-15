@@ -179,37 +179,62 @@
     <div style="margin:0 20px;">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link nav-custom activeTabCustom" href="/mvc/admin/report?tag=1">Sản phẩm</a>
+                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=1">Sản phẩm</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-custom" href="/mvc/admin/report?tag=2">Khách hàng</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-custom" href="/mvc/admin/report?tag=3">Thời gian</a>
+                <a class="nav-link nav-custom activeTabCustom" href="/mvc/admin/report?tag=3">Thời gian</a>
             </li>
         </ul>
     </div>
-    <form style="margin:0 20px;">
-        <label for="startDate">
-            Từ:
-        </label>
-        <input th:if="${startDate} != null" th:value="${startDate}" name="startDate" id="startDate" class="dateForm"
-               type="date">
-        <input th:unless="${startDate} != null" name="startDate" id="startDate" class="dateForm" type="date">
-        <label for="endDate">
-            Đến:
-        </label>
-        <input th:if="${endDate} != null" th:value="${endDate}" name="endDate" id="endDate" class="dateForm"
-               type="date">
-        <input th:unless="${endDate} != null" th:value="${endDate}" name="endDate" id="endDate" class="dateForm"
-               type="date">
-        <input type="hidden" name="tag" value="1">
+    <form>
         <input type="hidden" name="tabPanelIndex" id="idTab" th:value="${tabPanelIndex}">
-        <button style="margin-top: 14px;" formaction="/mvc/admin/report" formmethod="get" class="btn btn-success">
-            Lọc
-        </button>
-        <a style="margin-top: 14px;" href="/mvc/admin/report?tag=1" class="btn btn-danger tab-panel-custom">Xóa lọc</a>
     </form>
+    <div style="margin:20px;" >
+        <label for="loaiThoiGian">
+            Loại thời gian:
+        </label>
+        <select id="loaiThoiGian" class="btn-infor-custom">
+            <option value="year">Báo cáo theo năm</option>
+            <option value="month">Báo cáo theo tháng</option>
+            <option value="stage">Khoảng thời gian</option>
+        </select>
+        <span id="filterYear">
+            <label for="yColumn">Loại cột:</label>
+            <select id="yColumn" class="btn-secondary-custom">
+                <option th:selected="${column==1}" value="1">Tháng</option>
+                <option th:selected="${column==2}" value="2">Quý</option>
+            </select>
+            <select id="yYear" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
+                    <option th:value="${i}" th:text="'Năm '+${i}" th:selected="${i==thisYear}"></option>
+                </th:block>
+            </select>
+            <button id="yFilter" style="margin-top: 2px;" class="btn btn-success">Lọc</button>
+        </span>
+        <span hidden="true" id="filterMonth">
+            <select id="mYear" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(2022,report.oldestYear)}">
+                    <option th:value="${i}" th:text="'Năm '+${i}"></option>
+                </th:block>
+            </select>
+            <select id="mMonth" class="btn-secondary-custom">
+                <th:block th:each="i: ${#numbers.sequence(1,12)}">
+                    <option th:value="${i}" th:text="'Tháng '+${i}"></option>
+                </th:block>
+            </select>
+            <button id="mFilter" style="margin-top: 2px;" class="btn btn-success">Lọc</button>
+        </span>
+        <span hidden="true" id="filterStage">
+            <label for="sStartDate">Từ:</label>
+            <input name="sStartDate" id="sStartDate" class="dateForm" type="date">
+            <label for="sEndDate">Đến:</label>
+            <input name="sEndDate" id="sEndDate" class="dateForm" type="date">
+            <button id="sFilter" style="margin-top: 14px;" class="btn btn-success">Lọc</button>
+        </span>
+    </div>
     <div class="container-fluid py-4" style="background-color:#fff">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
@@ -222,14 +247,16 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" id="tongQuan">
-                <div id="myChart" class="card my-4" style="with:1200px !important; height:700px; "></div>
+                <div class="container-fluid py-4" style="background-color:#fff">
+                    <div id="columnchart_material" style="width: 1200px; height: 600px;"></div>
+                </div>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="chiTiet">
                 <div class="card my-4" style="margin-top:50px !important;">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div
                                 class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Danh sách sản phẩm</h6>
+                            <h6 class="text-white text-capitalize ps-3">Doanh thu năm [[${thisYear}]]</h6>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -237,48 +264,23 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Id
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Tháng
                                     </th>
-                                    <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Sản phẩm
-                                    </th>
-                                    <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Số lượng bán
-                                    </th>
-                                    <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Doanh thu
                                     </th>
 
                                 </tr>
                                 </thead>
                                 <tbody id="tableFilter">
-                                <th:block th:each="item : ${listProduct}">
+                                <th:block th:each="item : ${report.listReport}">
                                     <tr>
                                         <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img
-                                                            th:src="@{'/assets/img/products/'+${item.images}}"
-                                                            class="avatar avatar-sm me-3 border-radius-lg">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">[[${item.productName}]]</h6>
-                                                </div>
-                                            </div>
+                                            <p class="text-xs font-weight-bold mb-0">[[${item.name}]]</p>
                                         </td>
                                         <td class="align-middle text-center"><span
-                                                class="text-secondary text-xs font-weight-bold">[[${item.numberOfSale}]]</span>
-                                        </td>
-                                        <td class="align-middle text-center"><span
-                                                class="text-secondary text-xs font-weight-bold">[[${#numbers.formatDecimal(item.totalMoney, 0, 'COMMA', 0, 'POINT')}]] đ</span>
+                                                class="text-secondary text-xs font-weight-bold">[[${#numbers.formatDecimal(item.value, 0, 'COMMA', 0, 'POINT')}]] đ</span>
                                         </td>
                                     </tr>
                                 </th:block>
@@ -289,8 +291,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </main>
 <script
@@ -312,7 +312,6 @@
 			Scrollbar.init(document.querySelector('#sidenav-scrollbar'),
 					options);
 		}
-
 
 
 
@@ -339,31 +338,47 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    google.charts.load('current', {'packages':['corechart']});
+    google.charts.load('current', {
+        'packages' : [ 'bar' ]
+    });
     google.charts.setOnLoadCallback(drawChart);
-
-    var listReport = /*[[${listProductChart}]]*/;
+    var listReport = /*[[${report.getListReport()}]]*/;
+    var nameChart=/*[[${report.getNameChart()}]]*/;
     var result=[];
-    var title=["Sản phẩm","Doanh thu"];
+    var title=["Tháng","Doanh thu"];
     result.push(title);
     listReport.forEach(function(item){
         var arrayTemp=[];
-        arrayTemp.push(item.productName);
-        arrayTemp.push(item.totalMoney);
+        arrayTemp.push(item.name);
+        arrayTemp.push(item.value);
         result.push(arrayTemp);
     });
-
     function drawChart() {
-    var data = google.visualization.arrayToDataTable(result);
+        var data = google.visualization
+                .arrayToDataTable(result);
+        var options = {
+            chart : {
+                title : 'Thống kê doanh thu',
+                subtitle : nameChart,
+            },
+            vAxis: {
+              title: "Doanh thu",
+            },
+            hAxis: {
+                title: "Tháng",
+			}
+        };
 
-    var options = {
-      title:'Thống kê doanh thu theo sản phẩm'
-    };
+        var chart = new google.charts.Bar(document
+                .getElementById('columnchart_material'));
 
-    var chart = new google.visualization.BarChart(document.getElementById('myChart'));
-      chart.draw(data, options);
+        chart.draw(data, google.charts.Bar.convertOptions(options));
     }
     /*]]>*/
+
+
+
+
 </script>
 </body>
 

@@ -20,4 +20,5 @@ public class ProductReport {
     private String productName;
     private String images;
     private Integer numberOfSale;
+    private Integer totalMoney;
 }
