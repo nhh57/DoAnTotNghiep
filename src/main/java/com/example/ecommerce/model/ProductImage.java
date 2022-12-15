@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product_image")
-public class ProductImage extends BaseEntity implements Serializable {
+public class ProductImage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)

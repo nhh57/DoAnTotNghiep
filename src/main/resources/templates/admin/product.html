@@ -147,7 +147,7 @@
 				<form action="/mvc/admin/product" method="get" class="ms-md-auto pe-md-3 d-flex align-items-center">
 					<div class="input-group input-group-outline">
 						<label class="form-label">Tìm kiếm...</label> <input id="myInput"
-							name="txtSearch" type="text" class="form-control">
+																			 name="txtSearch" type="text" class="form-control">
 					</div>
 					<button style="margin-top: 20px;" class="btn btn-primary">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -305,8 +305,20 @@
 													 id="imgProduct"
 													 hidden="hidden"
 													 src=""
-													 width="150px;"
-													 height="150px;" />
+													 width="100"
+													 height="100" />
+											</p>
+											<p><input
+													id="imagesMore"
+													style="border: solid; padding: 10px 15px;"
+													class="form-control"
+													type="file"
+													name="imageMore"
+													multiple
+													required="required"
+													title="Không được bỏ trống!"
+													placeholder="Hình ảnh thêm">
+											<div class="showImages"></div>
 											</p>
 										</div>
 									</div>
@@ -367,75 +379,75 @@
 							</thead>
 							<tbody id="tableFilter">
 							<th:block th:each="item : ${listProduct}">
-								<tr th:class="${item.getDeleted} ? isDeleted : ''">
+								<tr th:class="${item.product.getDeleted} ? isDeleted : ''">
 									<td class="align-middle text-center text-sm">
-										<p class="text-xs font-weight-bold mb-0">[[${item.id}]]</p>
+										<p class="text-xs font-weight-bold mb-0">[[${item.product.id}]]</p>
 									</td>
 									<td>
 										<div class="d-flex px-2 py-1">
 											<div>
 												<img
-														th:src="@{'/assets/img/products/'+${item.images}}"
+														th:src="@{'/assets/img/products/'+${item.product.images}}"
 														class="avatar avatar-sm me-3 border-radius-lg">
 											</div>
 											<div class="d-flex flex-column justify-content-center">
-												<h6 class="mb-0 text-sm">[[${item.productName}]]</h6>
+												<h6 class="mb-0 text-sm">[[${item.product.productName}]]</h6>
 											</div>
 										</div>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]] đ</span>
+											class="text-secondary text-xs font-weight-bold">[[${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}]] đ</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.discount}]]
+											class="text-secondary text-xs font-weight-bold">[[${item.product.discount}]]
 												</span></td>
 									<td class="align-middle"><span
-											class="text-secondary text-xs font-weight-bold">[[${#strings.substring(item.note,0,30)}]]...</span>
+											class="text-secondary text-xs font-weight-bold">[[${#strings.substring(item.product.note,0,30)}]]...</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.images}]]</span>
+											class="text-secondary text-xs font-weight-bold">[[${item.product.images}]]</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.numberOfSale}]]</span>
+											class="text-secondary text-xs font-weight-bold">[[${item.product.numberOfSale}]]</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.warehouse.amount}]]</span>
+											class="text-secondary text-xs font-weight-bold">[[${item.product.warehouse.amount}]]</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.categoriesByCategoryId.categoryName}]]</span>
+											class="text-secondary text-xs font-weight-bold">[[${item.product.categoriesByCategoryId.categoryName}]]</span>
 									</td>
 									<td class="align-middle text-center"><span
-											class="text-secondary text-xs font-weight-bold">[[${item.brandByBrandId.brandName}]]</span>
+											class="text-secondary text-xs font-weight-bold">[[${item.product.brandByBrandId.brandName}]]</span>
 									</td>
-									<td th:if="${item.getDeleted()}" class="align-middle text-center"><span
+									<td th:if="${item.product.getDeleted()}" class="align-middle text-center"><span
 											class="text-secondary text-xs font-weight-bold">Đã xóa</span>
 									</td>
-									<td th:unless="${item.getDeleted()}" class="align-middle text-center"><span
+									<td th:unless="${item.product.getDeleted()}" class="align-middle text-center"><span
 											class="text-secondary text-xs font-weight-bold">Chưa xóa</span>
 									</td>
 									<td class="align-middle text-center">
 										<a style="cursor: pointer;"
 										   class="text-secondary font-weight-bold text-xs"
 										   data-toggle="modal"
-										   th:attr="data-target='#modelChiTiet'+${item.id}"
+										   th:attr="data-target='#modelChiTiet'+${item.product.id}"
 										> Chi tiết
 										</a>
-										<a th:unless="${item.getDeleted()}"
-										   th:href="@{'/mvc/admin/product/delete?productId='+${item.id}}"
-										   th:attr="onclick=|return confirm('Bạn có chắc chắn muốn xóa sản phẩm ${item.productName} không?')|"
+										<a th:unless="${item.product.getDeleted()}"
+										   th:href="@{'/mvc/admin/product/delete?productId='+${item.product.id}}"
+										   th:attr="onclick=|return confirm('Bạn có chắc chắn muốn xóa sản phẩm ${item.product.productName} không?')|"
 										   class="text-secondary font-weight-bold text-xs"
 										   style="margin-left: 10px; cursor: pointer;"> Xóa
 										</a>
-										<a th:if="${item.getDeleted()}"
-										   th:href="@{'/mvc/admin/product/revert?productId='+${item.id}}"
-										   th:attr="onclick=|return confirm('Bạn có muốn khôi phục sản phẩm ${item.productName} không?')|"
+										<a th:if="${item.product.getDeleted()}"
+										   th:href="@{'/mvc/admin/product/revert?productId='+${item.product.id}}"
+										   th:attr="onclick=|return confirm('Bạn có muốn khôi phục sản phẩm ${item.product.productName} không?')|"
 										   class="text-secondary font-weight-bold text-xs"
 										   style="margin-left: 10px; cursor: pointer;"> Khôi phục
 										</a>
 									</td>
 									<form enctype="multipart/form-data">
 										<div class="modal fade"
-											 th:id="'modelChiTiet' + ${item.id}"
+											 th:id="'modelChiTiet' + ${item.product.id}"
 											 tabindex="-1"
 											 role="dialog"
 											 aria-labelledby="exampleModalCenterTitle"
@@ -459,7 +471,7 @@
 																		min="1" max="1000000"
 																		required="required"
 																		placeholder="Mã kho"
-																		th:value="${item.warehouseId}"
+																		th:value="${item.product.warehouseId}"
 																		th:name="warehouseId">
 																</p>
 																<p><input
@@ -470,7 +482,7 @@
 																		min="1" max="1000000"
 																		required="required"
 																		placeholder="Mã sản phẩm"
-																		th:value="${item.id}"
+																		th:value="${item.product.id}"
 																		th:name="id">
 																</p>
 																<p><input
@@ -481,7 +493,7 @@
 																		required="required"
 																		title="Không được bỏ trống!"
 																		placeholder="Tên sản phẩm"
-																		th:value="${item.productName}">
+																		th:value="${item.product.productName}">
 																</p>
 																<p><input
 																		style="border: solid; padding: 10px 15px;"
@@ -492,7 +504,7 @@
 																		required="required"
 																		title="Không được bỏ trống!"
 																		placeholder="Đơn giá"
-																		th:value="${item.price}">
+																		th:value="${item.product.price}">
 																</p>
 																<p><input
 																		style="border: solid; padding: 10px 15px;"
@@ -503,7 +515,7 @@
 																		required="required"
 																		title="Không được bỏ trống!"
 																		placeholder="Giảm giá"
-																		th:value="${item.discount}">
+																		th:value="${item.product.discount}">
 																</p>
 																<p><input
 																		style="border: solid; padding: 10px 15px;"
@@ -514,7 +526,7 @@
 																		required="required"
 																		title="Không được bỏ trống!"
 																		placeholder="Số lượng trong kho"
-																		th:value="${item.warehouse.amount}">
+																		th:value="${item.product.warehouse.amount}">
 																</p>
 																<p><input
 																		style="border: solid; padding: 10px 15px;"
@@ -524,7 +536,7 @@
 																		required="required"
 																		title="Không được bỏ trống!"
 																		placeholder="Mô tả sản phẩm"
-																		th:value="${item.note}">
+																		th:value="${item.product.note}">
 																</p>
 																<p><input
 																		style="border: solid; padding: 10px 15px;"
@@ -532,7 +544,7 @@
 																		type="hidden"
 																		name="isDeleted"
 																		placeholder="Trạng thái xóa"
-																		th:value="${item.getDeleted()}">
+																		th:value="${item.product.getDeleted()}">
 																</p>
 																<p>
 																	<select style="border: solid; padding: 10px 15px;"
@@ -541,7 +553,7 @@
 																		<option th:each="category : ${listCategory}"
 																				th:value="${category.id}"
 																				th:text="${category.categoryName}"
-																				th:selected="${category.id} == ${item.categoryId}">
+																				th:selected="${category.id} == ${item.product.categoryId}">
 																		</option>
 																	</select>
 																</p>
@@ -552,12 +564,12 @@
 																		<option th:each="brand : ${listBrand}"
 																				th:value="${brand.id}"
 																				th:text="${brand.brandName}"
-																				th:selected="${brand.id} == ${item.brandId}">
+																				th:selected="${brand.id} == ${item.product.brandId}">
 																		</option>
 																	</select>
 																</p>
 																<p><input
-																		th:attr="data-masanpham=${item.id}"
+																		th:attr="data-masanpham=${item.product.id}"
 																		style="border: solid; padding: 10px 15px;"
 																		class="form-control inputImgProductChiTiet"
 																		type="file"
@@ -567,15 +579,33 @@
 																			style="border: solid; padding: 10px 15px;"
 																			class="form-control inputImgProductChiTiet"
 																			type="hidden"
-																			placeholder="Hình ảnh sản phẩm"
-																			th:value="${item.images}"
+																			th:value="${item.product.images}"
 																			name="imagesOld">
 																	<img style="margin-top:8px;"
-																		 th:id="'imgProductChiTiet' + ${item.id}"
-																		 th:src="@{'/assets/img/products/'+${item.images}}"
-																		 width="150px;"
-																		 height="150px;" />
+																		 th:id="'imgProductChiTiet' + ${item.product.id}"
+																		 th:src="@{'/assets/img/products/'+${item.product.images}}"
+																		 width="100"
+																		 height="100" />
 																</p>
+																<p><input
+																		style="border: solid; padding: 10px 15px;"
+																		class="form-control inputImageMore"
+																		th:attr="data-pid=${item.product.id}"
+																		type="file"
+																		multiple
+																		name="imageMore">
+																	<th:block th:if="${item.listProductImage != null and !item.listProductImage.empty}">
+																		<img th:each="image : ${item.listProductImage}"
+																			 style="margin:5px;"
+																			 th:attr="data-imgid=${image.id}"
+																			 class="imageMore"
+																			 th:src="@{'/assets/img/products/'+${image.productImageName}}"
+																			 width="60"
+																			 height="60" />
+																	</th:block>
+																	<div th:class="'showMoreImage'+${item.product.id}"></div>
+																</p>
+
 															</div>
 														</div>
 													</div>
@@ -771,6 +801,8 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
+<!-- jquery -->
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <script
 		th:src="@{/admin/assets/js/product.js}"></script>
 <script

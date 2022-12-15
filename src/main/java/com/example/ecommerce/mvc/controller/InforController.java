@@ -6,8 +6,10 @@ import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.model.helper.ShipDetailHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
+import com.example.ecommerce.mvc.model.CartDetailResult;
 import com.example.ecommerce.mvc.model.OrderResult;
 import com.example.ecommerce.mvc.model.OrderStatus;
+import com.example.ecommerce.mvc.model.RepurchaseResult;
 import com.example.ecommerce.repository.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -354,30 +356,35 @@ public class InforController {
     }
 
     @PostMapping("order/repurchase")
-    public ResponseEntity<String> repurchase(@RequestParam("orderId") Integer orderId) throws JSONException {
+    public ResponseEntity<RepurchaseResult> repurchase(@RequestParam("orderId") Integer orderId){
         Account khachHang = session.get("user") != null ? (Account) session.get("user") : null;
         Integer cartId = khachHang != null ? khachHang.getCartId() : null;
         List<OdersDetail> listOrderDetail = orderDetailRepo.findAllByOrderId(orderId);
+        List<CartDetailResult> listResult=new ArrayList<>();
         for (OdersDetail o : listOrderDetail) {
+            CartDetail cartDetailSaved=new CartDetail();
+            CartDetailResult cartDetailResult=new CartDetailResult();
             Integer maSanPham = o.getProductId();
             Integer soLuong = o.getAmount();
             CartDetail cartDetail = cartDetailRepo.existByProductId(cartId, maSanPham);
             if (cartDetail != null) {
                 cartDetail.setAmount(cartDetail.getAmount() + soLuong);
-                cartDetailRepo.save(cartDetail);
+                cartDetailSaved=cartDetailRepo.saveAndFlush(cartDetail);
             } else {
                 CartDetail cartDetailNew = new CartDetail();
                 cartDetailNew.setCartId(cartId);
                 cartDetailNew.setProductId(maSanPham);
                 cartDetailNew.setAmount(soLuong);
-                cartDetailRepo.save(cartDetailNew);
+                cartDetailSaved=cartDetailRepo.saveAndFlush(cartDetailNew);
             }
+            cartDetailResult.setProductName(productDAO.findById(cartDetailSaved.getProductId()).get().getProductName());
+            cartDetailResult.setAmount(soLuong);
+            listResult.add(cartDetailResult);
         }
         List<CartDetail> listCart = cartDetailRepo.getCartDetail(cartId);
         int tongSoLuongGioHang = cartHelper.getNumberOfListCart(listCart);
-        JSONObject json = new JSONObject();
-        json.put("soLuong", tongSoLuongGioHang);
-        return ResponseEntity.ok(String.valueOf(json));
+        RepurchaseResult repurchaseResult=new RepurchaseResult(listResult,tongSoLuongGioHang);
+        return ResponseEntity.ok(repurchaseResult);
     }
 
     @PostMapping("review/save")
