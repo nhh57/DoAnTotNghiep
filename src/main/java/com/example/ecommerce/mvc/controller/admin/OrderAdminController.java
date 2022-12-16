@@ -1,5 +1,6 @@
 package com.example.ecommerce.mvc.controller.admin;
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.OdersDetail;
@@ -89,6 +90,7 @@ public class OrderAdminController {
             model.addAttribute("soTrangHienTai", soTrang);
             model.addAttribute("soSanPhamHienTai", soSanPham);
             model.addAttribute("tongSoTrang", tongSoTrang);
+            model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
             if(txtSearch.isPresent() && txtSearch.get()!=null){
                 model.addAttribute("timKiemHienTai", txtSearch.get());
             }else{

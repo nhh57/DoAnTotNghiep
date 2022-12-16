@@ -494,10 +494,10 @@ public class Utils {
         if (dateString == null) {
             return "";
         } else {
-            String date=dateString.substring(dateString.length()-2,dateString.length());
+            String day=dateString.substring(dateString.length()-2,dateString.length());
             String month=dateString.substring(dateString.indexOf("-")+1,dateString.indexOf("-")+3);
-            String dateMonth=date+"."+month;
-            return dateMonth;
+            String dayMonth=day+"."+month;
+            return dayMonth;
         }
     }
 
@@ -571,5 +571,17 @@ public class Utils {
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int day   = localDate.getDayOfMonth();
         return String.valueOf(day);
+    }
+
+    //Date string có dạng yyyy-mm-dd
+    public static String formatDateString(String dateString){
+        if (dateString == null) {
+            return "";
+        } else {
+            String day=dateString.substring(dateString.length()-2,dateString.length());
+            String month=dateString.substring(dateString.indexOf("-")+1,dateString.indexOf("-")+3);
+            String year=dateString.substring(0,dateString.indexOf("-"));
+            return day+"/"+month+"/"+year;
+        }
     }
 }

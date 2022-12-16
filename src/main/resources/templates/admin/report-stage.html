@@ -315,6 +315,7 @@
 		}
 
 
+
 </script>
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -338,15 +339,9 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    google.charts.load('current', {
-        'packages' : [ 'bar' ]
-    });
-    google.charts.setOnLoadCallback(drawChart);
     var listReport = /*[[${report.getListReport()}]]*/;
     var nameChart=/*[[${report.getNameChart()}]]*/;
     var result=[];
-    var title=["Ngày","Doanh thu"];
-    result.push(title);
     listReport.forEach(function(item){
         var arrayTemp=[];
         arrayTemp.push(item.name);
@@ -354,31 +349,27 @@
         result.push(arrayTemp);
     });
     function drawChart() {
-        var data = google.visualization
-                .arrayToDataTable(result);
+        var data = google.visualization.arrayToDataTable(result, true);
         var options = {
-            chart : {
-                title : 'Thống kê doanh thu',
-                subtitle : nameChart
-            },
+            title: nameChart,
+            colors: ['#e91e63'],
             vAxis: {
-              title: "Doanh thu",
+                title: "Doanh thu",
             },
             hAxis: {
                 title: "Ngày",
-				slantedText: true,
-				slantedTextAngle: 45,
-			}
+                slantedText: true,
+                slantedTextAngle: 45
+            },
+            width: 1200,
+		    height: 600
         };
-
-        var chart = new google.charts.Bar(document
-                .getElementById('columnchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+        var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+        chart.draw(data, options);
     }
+    google.load("visualization", "1", { packages: ['corechart'] });
+    google.setOnLoadCallback(drawChart);
     /*]]>*/
-
-
 
 </script>
 </body>

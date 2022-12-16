@@ -310,20 +310,19 @@
 
         <div class="row">
             <div class="col-lg-12 text-center">
-                <div class="pagination-wrap">
-                    <ul>
-                        <li>
-                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai-1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Prev</a>
+                <div class="pagination-custom">
+                    <ul class="paging-custom">
+                        <li class="bc-custom">
+                            <a class="a-custom" th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai-1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Previous</a>
                         </li>
-                        <th:block th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
-                            <li><a class="active" th:if="${soTrangHienTai==i}" th:href="@{'/mvc/shop?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}">[[${i}]]</a>
+                        <th:block th:each="page : ${paging}">
+                            <li class="bc-custom" th:classappend="${soTrangHienTai == page} ? 'active-custom' : ''" th:if="${page} != 0">
+                                <a class="a-custom" th:href="@{'/mvc/shop?soTrang='+${page}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">[[${page}]]</a>
                             </li>
-                            <li><a th:unless="${soTrangHienTai==i}"
-                                   th:href="@{'/mvc/shop?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">[[${i}]]</a>
-                            </li>
+                            <li class="bc-custom" th:if="${page} == 0"><a class="a-custom">...</a></li>
                         </th:block>
-                        <li>
-                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai+1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Next</a>
+                        <li class="bc-custom">
+                            <a th:href="@{'/mvc/shop?soTrang='+${soTrangHienTai+1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}" class="a-custom">Next</a>
                         </li>
                     </ul>
                 </div>

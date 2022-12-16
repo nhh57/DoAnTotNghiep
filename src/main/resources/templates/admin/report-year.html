@@ -248,7 +248,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" id="tongQuan">
                 <div class="container-fluid py-4" style="background-color:#fff">
-                    <div id="columnchart_material" style="width: 1200px; height: 600px;"></div>
+                    <div id="columnchart_material"></div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="chiTiet">
@@ -312,9 +312,6 @@
 			Scrollbar.init(document.querySelector('#sidenav-scrollbar'),
 					options);
 		}
-
-
-
 </script>
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -366,7 +363,9 @@
             },
             hAxis: {
                 title: "Tháng",
-			}
+			},
+			width: 1200,
+		    height: 600
         };
 
         var chart = new google.charts.Bar(document

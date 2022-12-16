@@ -1,6 +1,7 @@
 package com.example.ecommerce.mvc.controller.admin;
 
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.ProductHelper;
 import com.example.ecommerce.model.result.ProductResult;
@@ -114,6 +115,7 @@ public class ProductAdminController {
                 model.addAttribute("message","Khôi phục thất bại!");
             }
         }
+        model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
         model.addAttribute("listProduct",listResult);
         //Category
         List<Categories> listCategory=categoryDAO.findAll();

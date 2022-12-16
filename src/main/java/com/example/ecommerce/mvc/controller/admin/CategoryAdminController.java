@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller.admin;
 
 
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Categories;
 import com.example.ecommerce.model.Product;
@@ -87,6 +88,7 @@ public class CategoryAdminController {
                 model.addAttribute("message", "Khôi phục thất bại!");
             }
         }
+        model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
         model.addAttribute("listCategory", list);
         model.addAttribute("admin",account);
         return "admin/category";

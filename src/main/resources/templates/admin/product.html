@@ -626,14 +626,20 @@
 				</div>
 			</div>
 			<div id="numberPageID">
-				<th:block th:if="${tongSoTrang} > 0" th:each="i: ${#numbers.sequence(1,tongSoTrang)}">
-					<a th:if="${soTrangHienTai==i}"
-					   th:href="@{'/mvc/admin/product?soTrang='+${i}+'&txtSearch='+${timKiemHienTai}}"
-					   class="btn btn-success numberPage activeCustom">[[${i}]]</a>
-					<a th:unless="${soTrangHienTai==i}"
-					   th:href="@{'/mvc/admin/product?soTrang='+${i}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}"
-					   class="btn btn-success numberPage">[[${i}]]</a>
-				</th:block>
+				<ul class="paging-custom">
+					<li class="bc-custom">
+						<a class="a-custom" th:href="@{'/mvc/admin/product?soTrang='+${soTrangHienTai-1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">Previous</a>
+					</li>
+					<th:block th:each="page : ${paging}">
+						<li class="bc-custom" th:classappend="${soTrangHienTai == page} ? 'active-custom' : ''" th:if="${page} != 0">
+							<a class="a-custom" th:href="@{'/mvc/admin/product?soTrang='+${page}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}">[[${page}]]</a>
+						</li>
+						<li class="bc-custom" th:if="${page} == 0"><a class="a-custom">...</a></li>
+					</th:block>
+					<li class="bc-custom">
+						<a th:href="@{'/mvc/admin/product?soTrang='+${soTrangHienTai+1}+'&soSanPham='+${soSanPhamHienTai}+'&txtSearch='+${timKiemHienTai}}" class="a-custom">Next</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
