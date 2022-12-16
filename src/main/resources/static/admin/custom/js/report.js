@@ -53,7 +53,9 @@ $('#sFilter').on('click',function(){
     const startDate=$('#sStartDate').val();
     const endDate=$('#sEndDate').val();
     const idTab=$('#idTab').val();
-    location ='/mvc/admin/report?tag=3&sStartDate=' + startDate+'&sEndDate='+endDate+'&tabPanelIndex='+idTab;
+    if(startDate && endDate){
+        location ='/mvc/admin/report?tag=3&sStartDate=' + startDate+'&sEndDate='+endDate+'&tabPanelIndex='+idTab;
+    }
 });
 
 $('#sStartDate').on('change',function(){

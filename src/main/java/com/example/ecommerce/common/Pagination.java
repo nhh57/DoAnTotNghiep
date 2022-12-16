@@ -26,6 +26,8 @@ package com.example.ecommerce.common;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A pagination object to be used to describe pagination (offset, limit) which can be used in queries.
@@ -122,6 +124,61 @@ public class Pagination implements Serializable {
         int result = offset;
         result = 31 * result + limit;
         return result;
+    }
+    public static List<Integer> getListPage(int page, int size){
+        List<Integer> list=new ArrayList<>();
+        if(size <=11){
+            for(int i=1;i<=size;i++){
+                list.add(i);
+            }
+        }else{
+            if(page <=6){
+                for(int i=1;i<=11;i++){
+                    if(i<=8){
+                        list.add(i);
+                    }else if(i==9){
+                        list.add(0);
+                    }else if(i==10){
+                        list.add(size-1);
+                    }else if(i==11){
+                        list.add(size);
+                    }
+                }
+            }else{
+                if(page + 5 < size){
+                    for(int i=1;i<=11;i++){
+                        if(i<=2){
+                            list.add(i);
+                        }else if(i==3){
+                            list.add(0);
+                        }else if(i==4){
+                            for(int j=page-2;j<=page+2;j++){
+                                list.add(j);
+                            }
+                        }else if(i==9){
+                            list.add(0);
+                        }else if(i==10){
+                            list.add(size-1);
+                        }else if(i==11){
+                            list.add(size);
+                        }
+                    }
+                }else{
+                    for(int i=1;i<=11;i++){
+                        if(i<=2){
+                            list.add(i);
+                        }else if(i==3){
+                            list.add(0);
+                        }else if(i==4){
+                            for(int k=page-2;k<=size;k++){
+                                list.add(k);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
     }
 }
 

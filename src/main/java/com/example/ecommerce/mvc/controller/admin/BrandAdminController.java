@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller.admin;
 
 
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Brand;
 import com.example.ecommerce.model.Product;
@@ -36,8 +37,6 @@ public class BrandAdminController {
     @Autowired
     SessionDAO session;
 
-    @Autowired
-    RolesDetailRepo rolesDetailDAO;
 
     BrandHelper brandHelper = new BrandHelper();
 
@@ -93,6 +92,7 @@ public class BrandAdminController {
             }
         }
         model.addAttribute("listBrand", list);
+        model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
 
         return "admin/brand";
     }

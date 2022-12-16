@@ -1,5 +1,6 @@
 package com.example.ecommerce.mvc.controller;
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
@@ -45,8 +46,6 @@ public class ShopController {
 
     ProductHelper productHelper = new ProductHelper();
 
-
-
     @GetMapping("")
     public String index(Model model, @RequestParam Optional<String> message,
                         @RequestParam("soTrang") Optional<String> soTrangString,
@@ -70,6 +69,7 @@ public class ShopController {
         model.addAttribute("soTrangHienTai", soTrang);
         model.addAttribute("soSanPhamHienTai", soSanPham);
         model.addAttribute("tongSoTrang", tongSoTrang);
+        model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
         Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
         Page<Product> pageProduct = txtSearch.isPresent()
                 ? productDAO.findByName(pageable, txtSearch.get())

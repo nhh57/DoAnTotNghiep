@@ -2,6 +2,7 @@ package com.example.ecommerce.mvc.controller.admin;
 
 
 
+import com.example.ecommerce.common.Pagination;
 import com.example.ecommerce.common.Utils;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.AccountHelper;
@@ -120,6 +121,7 @@ public class AccountAdminController {
         List<Roles> listRoles=rolesDAO.findAll();
         model.addAttribute("listRole",listRoles);
         model.addAttribute("listAccount", getListAccountResult(list,listRoles));
+        model.addAttribute("paging", Pagination.getListPage(soTrang,tongSoTrang));
         return "admin/account";
     }
 

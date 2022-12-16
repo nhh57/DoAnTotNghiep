@@ -171,7 +171,7 @@ public class ReportAdminController {
                 Statistical statistical = statisticalRepo.getOldestYear();
 
                 reportResult.setOldestYear(statistical == null ? yearNow : statistical.getValue());
-                reportResult.setNameChart("Doanh thu từ " + sStartDate.get() + " đến " + sEndDate.get());
+                reportResult.setNameChart("Doanh thu từ " + Utils.formatDateString(sStartDate.get()) + " đến " + Utils.formatDateString(sEndDate.get()));
                 model.addAttribute("tabPanelIndex", tabPanelIndex.isPresent() ? tabPanelIndex.get() : "tongQuan");
                 model.addAttribute("report", reportResult);
                 model.addAttribute("sStartDate", sStartDate.get());
