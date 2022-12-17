@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -583,5 +584,9 @@ public class Utils {
             String year=dateString.substring(0,dateString.indexOf("-"));
             return day+"/"+month+"/"+year;
         }
+    }
+    public static long getSecondBetweenTwoDate(Date date1, Date date2) {
+        long diffInMinutes = (date2.getTime() - date1.getTime())/1000;
+        return diffInMinutes;
     }
 }
