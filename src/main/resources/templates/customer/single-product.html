@@ -237,26 +237,29 @@
                                 <div class="card-body" style="width: 1138px">
                                     <div class="row" id="reviews">
                                         <div class="col-md-2">
-                                            <img th:src="@{'/assets/img/products/'+${item.product.images}}"
-                                                 class="img img-rounded img-fluid"/>
-
+                                            <img th:if="${item.reviews.accountByAccountId.gender}=='Nam'" th:src="@{/assets/img/user-av/default1.jpg}"
+                                                 class="img img-rounded img-fluid text-justify" style="border-radius:50%; height: 80%;">
+                                            <img th:unless="${item.reviews.accountByAccountId.gender}=='Nam'" th:src="@{/assets/img/user-av/default2.jpg}"
+                                                 class="img img-rounded img-fluid text-justify" style="border-radius:50%; height: 80%;">
                                         </div>
                                         <div class="col-md-10">
+                                            <div>
+                                                <div style="margin-bottom: 0; font-size: 20px;"><strong id="review-user-name"
+                                                                                                        name="review-user-name">[[${item.reviews.accountByAccountId.username}]]</strong></div>
+                                                <span class="text-secondary" style="font-size: 15px;">[[${item.time}]]</span>
+
+                                            </div>
                                             <p>
-                                                <a class="float-left"
-                                                   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong
-                                                        id="review-user-name" name="review-user-name"></strong></a>
-                                                <th:block th:each="i: ${#numbers.sequence(1,item.rate)}">
-                                                    <span class="float-right"><i
-                                                            class="text-warning fa fa-star"></i></span>
+                                                <th:block th:each="i: ${#numbers.sequence(1,item.reviews.rate)}">
+                                                    <span><i class="text-warning fa fa-star"></i></span>
                                                 </th:block>
                                             </p>
                                             <div class="clearfix"></div>
-                                            <p>[[${item.comment}]]</p>
+                                            <p>[[${item.reviews.comment}]]</p>
                                             <p>
-                                                <a class="float-right btn btn-outline-primary ml-2"> <i
+                                                <a class="btn btn-outline-primary ml-2"> <i
                                                         class="fa fa-reply"></i> Reply</a>
-                                                <a class="float-right btn text-white btn-danger"> <i
+                                                <a class="btn text-white btn-danger"> <i
                                                         class="fa fa-heart"></i> Like</a>
                                             </p>
                                         </div>

@@ -1,12 +1,12 @@
 package com.example.ecommerce.mvc.controller;
 
-import com.example.ecommerce.model.Account;
-import com.example.ecommerce.model.CartDetail;
-import com.example.ecommerce.model.Product;
-import com.example.ecommerce.model.ProductImage;
+import com.example.ecommerce.common.Utils;
+import com.example.ecommerce.model.*;
 import com.example.ecommerce.model.helper.CartHelper;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.dao.ShoppingCartDAO;
+import com.example.ecommerce.mvc.helper.ReviewsHelper;
+import com.example.ecommerce.mvc.model.ReviewsResult;
 import com.example.ecommerce.repository.CartDetailRepo;
 import com.example.ecommerce.repository.ProductImageRepo;
 import com.example.ecommerce.repository.ProductRepo;
@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("mvc/single-product")
@@ -45,6 +48,8 @@ public class ProductDetailController {
 
     @Autowired
     SessionDAO session;
+
+    ReviewsHelper reviewsHelper=new ReviewsHelper();
 
     @GetMapping("")
     public String index(Model model, @RequestParam("id") Optional<String> productIdParam){
@@ -69,7 +74,19 @@ public class ProductDetailController {
             List<ProductImage> listProductImage=productImageRepo.findByProductId(productId);
             model.addAttribute("listProductImage",listProductImage);
             model.addAttribute("sizeListMoreImage",listProductImage.size());
-            model.addAttribute("listReviews",reviewRepo.findByProductId(productId));
+
+            //Reviews
+            List<Reviews> listReviews=reviewRepo.findByProductId(productId);
+            List<ReviewsResult> listReviewsResult=new ArrayList<>();
+            for(Reviews reviews:listReviews){
+                ReviewsResult reviewsResult=new ReviewsResult();
+                reviewsResult.setReviews(reviews);
+                //số giây
+                long distance=Utils.getSecondBetweenTwoDate(reviews.getCreatedAt(),new Date());
+                reviewsResult.setTime(reviewsHelper.getTime(distance));
+                listReviewsResult.add(reviewsResult);
+            }
+            model.addAttribute("listReviews",listReviewsResult);
             return "customer/single-product";
         }catch (Exception e){
             return "customer/404";
