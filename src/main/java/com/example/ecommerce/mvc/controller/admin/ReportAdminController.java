@@ -5,6 +5,9 @@ import com.example.ecommerce.model.Account;
 import com.example.ecommerce.model.Orders;
 import com.example.ecommerce.model.Statistical;
 import com.example.ecommerce.mvc.dao.SessionDAO;
+import com.example.ecommerce.mvc.excel.ProductExcelExporter;
+import com.example.ecommerce.mvc.excel.TimeExcelExporter;
+import com.example.ecommerce.mvc.excel.UserExcelExporter;
 import com.example.ecommerce.mvc.model.*;
 import com.example.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,6 +107,7 @@ public class ReportAdminController {
             model.addAttribute("tabPanelIndex", tabPanelIndex.isPresent() ? tabPanelIndex.get() : "tongQuan");
             model.addAttribute("startDate", startDate.isPresent() ? startDate.get() : "");
             model.addAttribute("endDate", endDate.isPresent() ? endDate.get() : "");
+            session.set("listProductExcel",listProductResult);
             model.addAttribute("listProduct", listProductResult);
             model.addAttribute("listProductChart", listProductChart);
             return "admin/report-product";
@@ -150,6 +158,7 @@ public class ReportAdminController {
             model.addAttribute("endDate", endDate.isPresent() ? endDate.get() : "");
             model.addAttribute("listAccountChart", listAccountChart);
             model.addAttribute("listAccount", listAccountResult);
+            session.set("listUserExcel",listAccountResult);
             return "admin/report-user";
         } else {
             int yearNow = Year.now().getValue();
@@ -176,6 +185,7 @@ public class ReportAdminController {
                 model.addAttribute("report", reportResult);
                 model.addAttribute("sStartDate", sStartDate.get());
                 model.addAttribute("sEndDate", sEndDate.get());
+                session.set("listTimeExcel",listReport);
                 return "admin/report-stage";
             } else if (mMonth.isPresent() && mYear.isPresent()) {
                 ReportResult reportResult = new ReportResult();
@@ -196,6 +206,7 @@ public class ReportAdminController {
                 model.addAttribute("report", reportResult);
                 model.addAttribute("mYear", Integer.parseInt(mYear.get()));
                 model.addAttribute("mMonth", Integer.parseInt(mMonth.get()));
+                session.set("listTimeExcel",listReport);
                 return "admin/report-month";
             } else {
                 int columnInt = column.isPresent() ? column.get() : 1;
@@ -218,6 +229,7 @@ public class ReportAdminController {
                     model.addAttribute("report", reportResult);
                     model.addAttribute("thisYear", year.isPresent() ? Integer.parseInt(year.get()) : yearNow);
                     model.addAttribute("column", columnInt);
+                    session.set("listTimeExcel",listReport);
                     return "admin/report-year";
                 } else {
                     ReportResult reportResult = new ReportResult();
@@ -244,9 +256,53 @@ public class ReportAdminController {
                     model.addAttribute("report", reportResult);
                     model.addAttribute("thisYear", year.isPresent() ? Integer.parseInt(year.get()) : yearNow);
                     model.addAttribute("column", columnInt);
+                    session.set("listTimeExcel",listReport);
                     return "admin/report-quarter";
                 }
             }
         }
+    }
+
+    @GetMapping("product/export-excel")
+    public void exportProductToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=product_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<ProductReport> listProductExcel = (List<ProductReport>) session.get("listProductExcel");
+        ProductExcelExporter excelExporter = new ProductExcelExporter(listProductExcel);
+        excelExporter.export(response);
+    }
+    @GetMapping("user/export-excel")
+    public void exportUserToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=user_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<AccountReport> listUserExcel = (List<AccountReport>) session.get("listUserExcel");
+        UserExcelExporter excelExporter = new UserExcelExporter(listUserExcel);
+        excelExporter.export(response);
+    }
+    @GetMapping("time/export-excel")
+    public void exportTimeToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=time_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Report> listTimeExcel = (List<Report>) session.get("listTimeExcel");
+        TimeExcelExporter excelExporter = new TimeExcelExporter(listTimeExcel);
+        excelExporter.export(response);
     }
 }

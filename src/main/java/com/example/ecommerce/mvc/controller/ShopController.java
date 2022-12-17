@@ -73,7 +73,7 @@ public class ShopController {
         Pageable pageable = PageRequest.of(soTrang - 1, soSanPham);
         Page<Product> pageProduct = txtSearch.isPresent()
                 ? productDAO.findByName(pageable, txtSearch.get())
-                : productDAO.findAll(pageable);
+                : productDAO.findProductExist(pageable);
         List<Product> list = pageProduct.getContent();
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
