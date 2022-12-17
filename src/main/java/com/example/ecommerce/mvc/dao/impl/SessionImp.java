@@ -3,6 +3,7 @@ package com.example.ecommerce.mvc.dao.impl;
 import com.example.ecommerce.mvc.dao.SessionDAO;
 import com.example.ecommerce.mvc.model.Session;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 
 
 @Service
+@SessionScope
 public class SessionImp implements SessionDAO {
 	public static List<Session> listSession=new ArrayList<>();
 	@Override
