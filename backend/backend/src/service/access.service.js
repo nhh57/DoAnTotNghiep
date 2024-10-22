@@ -14,11 +14,16 @@ class AccessService {
         //1.
         const foundShop = await User.findUserByEmail(email)
         console.log('User found:', foundShop); // In ra thông tin người dùng nếu tìm thấy
-
+console.log("password:: %s, password_hash:: %s",password,foundShop.password)
         if (!foundShop) throw new BadRequestError('Shop not registered!')
         //2.
-        const match = bcrypt.compare(password, foundShop.password)
-        if (!match) throw new AuthFailureError('Authentication error')
+        const match = await bcrypt.compare(password, foundShop.password)
+
+        if (!match){
+            console.log("aaaaaaaaa")
+            throw new AuthFailureError('Authentication error')
+        }
+
         //3.
         // create privateKey, publicKey
         const privateKey = crypto.randomBytes(64).toString('hex')
