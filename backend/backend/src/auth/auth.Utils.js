@@ -18,22 +18,18 @@ const HEADER = {
 const authenticationV2 = asyncHandler(async (req, res, next) => {
     console.log('auth.Utils - authenticationV2')
     const userId = req.headers[HEADER.CLIENT_ID]
-    console.log("userId:: %s", userId)
     if (!userId) throw new AuthFailureError('Invalid Request')
 
     //2
     const keyStore = await findByUserId(userId)
-
     if (!keyStore) throw new NotFoundError('Not Found KeyStore')
 
     // 3
     if (req.headers[HEADER.REFRESH_TOKEN]) {
         try {
             const refreshToken = req.headers[HEADER.REFRESH_TOKEN]
-            console.log("refreshToken:: %s", refreshToken)
             const decodeUser = JWT.verify(refreshToken, keyStore.private_key)
-            console.log("decodeUser3::%s", decodeUser)
-            if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid UserId')
+            if (String(userId) !== String(decodeUser.userId)) throw new AuthFailureError('Invalid UserId')
             req.keyStore = keyStore
             req.user = decodeUser
             req.refreshToken = refreshToken
@@ -44,12 +40,12 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
     }
 
     const accessToken = req.headers[HEADER.AUTHORIZATION]
-    console.log("accessToken4::%s", accessToken)
     if (!accessToken) throw new AuthFailureError('Invalid Request')
 
     try {
-        const decodeUser = JWT.verify(accessToken, keyStore.public_key)
-        if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid Request')
+        const decodeUser = await JWT.verify(accessToken, keyStore.public_key)
+
+        if (String(userId) !== String(decodeUser.userId)) throw new AuthFailureError('Invalid Request')
         req.keyStore = keyStore
         req.user = decodeUser
         return next()

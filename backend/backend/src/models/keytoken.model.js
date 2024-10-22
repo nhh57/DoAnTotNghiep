@@ -74,7 +74,7 @@ class KeytokenModel {
                     return;
                 }
                 // Trả về toàn bộ rows, không chỉ rows[0]
-                resolve(rows);
+                resolve(rows.length > 0 ? rows[0] : null);
             });
         });
     }
@@ -107,7 +107,25 @@ class KeytokenModel {
         return rows.length > 0 ? rows[0] : null;
     }
 
-
+    // Phương thức cập nhật refreshToken và refreshTokensUsed
+    static async updateKeyToken(userId, newRefreshToken, refreshTokenUsed) {
+        console.log("userId::%s, newRefreshToken::%s, refreshTokenUsed::%s ",userId, newRefreshToken, refreshTokenUsed)
+        const query = `
+            UPDATE key_token 
+            SET refresh_token = ?, 
+                refresh_tokens_used = JSON_ARRAY_APPEND(refresh_tokens_used, '$', ?)
+            WHERE user_id = ?
+        `;
+        return new Promise((resolve, reject) => {
+            db.execute(query, [newRefreshToken, refreshTokenUsed, userId], (err, result) => {
+                if (err) {
+                    reject(new Error('Error updating key token: ' + err.message));
+                    return;
+                }
+                resolve(result);
+            });
+        });
+    }
 }
 
 

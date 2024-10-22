@@ -36,6 +36,17 @@ class KeyTokenService {
         return await KeytokenModel.findByRefreshToken({refreshToken})
     }
 
+    static async updateKeyToken(userId, tokens, refreshToken) {
+        console.log("tokens::%s", tokens);
+        try {
+            // Gọi phương thức cập nhật từ model
+            await KeytokenModel.updateKeyToken(userId, tokens, refreshToken);
+        } catch (error) {
+            console.error('Error updating key token:', error);
+            throw new Error('Unable to update key token');
+        }
+    }
+
 }
 
 module.exports = KeyTokenService;

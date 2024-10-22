@@ -23,12 +23,9 @@ Content-Type: application/json
 
 
 ###Refresh Token
-POST /api/handler-refresh-token HTTP/1.1
-Host: 10.56.66.52:3000
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTU4ODYyMiwiZXhwIjoxNzI5NzYxNDIyfQ.Fut0gUmkGLjxIdbHxpSK5K_1cGwfUJddGRzOUvFC0XA
-x-client-id: 22
-Content-Type: application/json
 
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTU4ODYyMiwiZXhwIjoxNzMwMTkzNDIyfQ.08Hi-Yvn09T6KwJxiOOUQTtTC0ewRmuTb6MIX5sdboU"
-}
+POST /api/handler-refresh-token HTTP/1.1
+Host: localhost:3000
+x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTYwNTY2OCwiZXhwIjoxNzMwMjEwNDY4fQ.5aU82hiSIaKrjQhpqbmYjIHLveDNJF_gBb9v439ICow
+x-client-id: 21
+Content-Type: application/json

@@ -394,6 +394,8 @@ INSERT INTO `users` (`id`, `fullname`, `password`, `phone_number`, `role`, `emai
 
 -- --------------------------------------------------------
 
+
+
 --
 -- Table structure for table `vouchers`
 --
@@ -450,17 +452,7 @@ INSERT INTO `wishlistitems` (`id`, `user_id`, `product_id`, `created_at`, `updat
 
 
 
-CREATE TABLE key_token (
-                           id INT AUTO_INCREMENT PRIMARY KEY,
-                           user_id INT NOT NULL,
-                           public_key TEXT NOT NULL,  -- Sử dụng TEXT thay vì VARCHAR
-                           private_key TEXT NOT NULL,  -- Sử dụng TEXT thay vì VARCHAR
-                           refresh_tokens_used TEXT DEFAULT NULL, -- Dùng JSON để lưu trữ mảng
-                           refresh_token TEXT NOT NULL, -- Sử dụng TEXT để đảm bảo đủ độ dài
-                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                           FOREIGN KEY (user_id) REFERENCES users(id) -- Giả định bạn có bảng 'users' với cột 'id'
-);
+
 
 
 
