@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_ROOT_PASSWORD: Admin123
+      MYSQL_DATABASE: datn
+      MYSQL_USER: hainh
+      MYSQL_PASSWORD: Admin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    image: backend-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Port của ứng dụng Node.js
+    environment:
+      PORT: 3000  # Đặt lại PORT cho ứng dụng Node.js
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: Admin123
+      DB_NAME: datn
+    depends_on:
+      - db
+
+volumes:
+  db_data:

@@ -22,7 +22,6 @@ class KeytokenModel {
                 }
 
                 if (rows.length > 0) {
-                    console.log("Update::::::");
                     const queryUpdate = `
                         UPDATE key_token
                         SET public_key          = ?,
@@ -43,7 +42,6 @@ class KeytokenModel {
                         }
                     );
                 } else {
-                    console.log("INSERT::::::");
                     const queryInsert = `
                         INSERT INTO key_token (user_id, public_key, private_key, refresh_tokens_used, refresh_token)
                         VALUES (?, ?, ?, ?, ?)`;
@@ -96,9 +94,17 @@ class KeytokenModel {
     // Xóa token theo userId
     static async deleteKeyById(userId) {
         const query = 'DELETE FROM key_token WHERE user_id = ?';
-        const [result] = await db.execute(query, [userId]);
-        return result.affectedRows > 0;
+        return new Promise((resolve, reject) => {
+            db.execute(query, [userId], (err, result) => {
+                if (err) {
+                    reject(new Error('Error deleting key by userId: ' + err.message));
+                    return;
+                }
+                resolve(result.affectedRows > 0);
+            });
+        });
     }
+
 
     // Tìm kiếm token theo refreshToken
     static async findByRefreshToken(refreshToken) {
