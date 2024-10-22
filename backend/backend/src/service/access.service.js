@@ -14,12 +14,12 @@ class AccessService {
         //1.
         const foundShop = await User.findUserByEmail(email)
         console.log('User found:', foundShop); // In ra thông tin người dùng nếu tìm thấy
-console.log("password:: %s, password_hash:: %s",password,foundShop.password)
+        console.log("password:: %s, password_hash:: %s", password, foundShop.password)
         if (!foundShop) throw new BadRequestError('Shop not registered!')
         //2.
         const match = await bcrypt.compare(password, foundShop.password)
 
-        if (!match){
+        if (!match) {
             console.log("aaaaaaaaa")
             throw new AuthFailureError('Authentication error')
         }
@@ -51,7 +51,34 @@ console.log("password:: %s, password_hash:: %s",password,foundShop.password)
     }
 
 
-
+    static handlerRefreshTokenV2 = async ({keyStore, user, refreshToken}) => {
+        console.log('start -- service -- handlerRefreshTokenV2')
+        console.log("handlerRefreshTokenV2 ==== keyStore:: %s, user:: %s, refreshToken::%s", keyStore, user, refreshToken)
+        // const {userId, email} = user;
+        if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+            await KeyTokenService.deleteKeyById(userId)
+            throw new ForbiddenError('Something wrong happened !! Pls relogin')
+        }
+        if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop not registered')
+        //check userId
+        const foundShop = await User.findUserByEmail(email)
+        if (!foundShop) throw new AuthFailureError('Shop not registered 2')
+        // tao 1 cap moi
+        const tokens = await createTokenPair({userId, email}, keyStore.publicKey, keyStore.privateKey)
+        // cap nhat token
+        await keyStore.updateOne({
+            $set: {
+                refreshToken: tokens.refreshToken
+            },
+            $addToSet: {
+                refreshTokensUsed: refreshToken // da dc su dung de lay token moi
+            }
+        })
+        return {
+            user,
+            tokens
+        }
+    }
 
 
     static signUp = async ({name, email, password}) => {
@@ -122,9 +149,6 @@ console.log("password:: %s, password_hash:: %s",password,foundShop.password)
     }
 
 }
-
-
-
 
 
 module.exports = AccessService

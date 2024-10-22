@@ -10,7 +10,7 @@ class KeytokenModel {
         this.refreshToken = refreshToken;
     }
 
-    static createOrUpdateKeyToken({ userId, publicKey, privateKey, refreshToken }) {
+    static createOrUpdateKeyToken({userId, publicKey, privateKey, refreshToken}) {
         console.log("userId:: %s, publicKey:: %s, privateKey:: %s, refreshToken:: %s", userId, publicKey, privateKey, refreshToken);
 
         const querySelect = 'SELECT * FROM key_token WHERE user_id = ?';
@@ -25,10 +25,10 @@ class KeytokenModel {
                     console.log("Update::::::");
                     const queryUpdate = `
                         UPDATE key_token
-                        SET public_key = ?,
-                            private_key = ?,
+                        SET public_key          = ?,
+                            private_key         = ?,
                             refresh_tokens_used = ?,
-                            refresh_token = ?
+                            refresh_token       = ?
                         WHERE user_id = ?`;
 
                     db.execute(
@@ -63,6 +63,51 @@ class KeytokenModel {
             });
         });
     }
+
+    // Tìm kiếm token theo userId
+    static async findByUserId(userId) {
+        const query = 'SELECT * FROM key_token WHERE user_id = ?';
+        return new Promise((resolve, reject) => {
+            db.execute(query, [userId], (err, rows) => {
+                if (err) {
+                    reject(new Error('Error finding user: ' + err.message));
+                    return;
+                }
+                // Trả về toàn bộ rows, không chỉ rows[0]
+                resolve(rows);
+            });
+        });
+    }
+
+    // Xóa token theo id
+    static async removeKeyById(id) {
+        const query = 'DELETE FROM key_token WHERE id = ?';
+        const [result] = await db.execute(query, [id]);
+        return result.affectedRows > 0; // Trả về true nếu xóa thành công
+    }
+
+    // Tìm kiếm token theo refreshTokensUsed
+    static async findByRefreshTokenUsed(refreshToken) {
+        const query = 'SELECT * FROM key_token WHERE refresh_tokens_used = ?';
+        const [rows] = await db.execute(query, [refreshToken]);
+        return rows.length > 0 ? rows[0] : null;
+    }
+
+    // Xóa token theo userId
+    static async deleteKeyById(userId) {
+        const query = 'DELETE FROM key_token WHERE user_id = ?';
+        const [result] = await db.execute(query, [userId]);
+        return result.affectedRows > 0;
+    }
+
+    // Tìm kiếm token theo refreshToken
+    static async findByRefreshToken(refreshToken) {
+        const query = 'SELECT * FROM key_token WHERE refresh_token = ?';
+        const [rows] = await db.execute(query, [refreshToken]);
+        return rows.length > 0 ? rows[0] : null;
+    }
+
+
 }
 
 
