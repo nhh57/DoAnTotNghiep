@@ -1,0 +1,22 @@
+
+###Signup
+POST /api/signup HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+  "name": "hainh",
+  "email": "nguyenhoanghai@gmail.com",
+  "password": "abc@123"
+}
+
+
+###Login
+POST /api/login HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+  "email":"nguyenhoanghai@gmail.com",
+  "password" :"abc@123"
+}
