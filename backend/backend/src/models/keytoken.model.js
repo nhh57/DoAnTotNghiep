@@ -80,6 +80,15 @@ class KeytokenModel {
     // Xóa token theo id
     static async removeKeyById(id) {
         const query = 'DELETE FROM key_token WHERE id = ?';
+        return new Promise((resolve, reject) => {
+            db.execute(query, [id], (err, rows) => {
+                if (err) {
+                    reject(new Error("Error del ", err.message));
+                    return;
+                }
+                resolve(rows);
+            })
+        })
         const [result] = await db.execute(query, [id]);
         return result.affectedRows > 0; // Trả về true nếu xóa thành công
     }
@@ -115,10 +124,10 @@ class KeytokenModel {
 
     // Phương thức cập nhật refreshToken và refreshTokensUsed
     static async updateKeyToken(userId, newRefreshToken, refreshTokenUsed) {
-        console.log("userId::%s, newRefreshToken::%s, refreshTokenUsed::%s ",userId, newRefreshToken, refreshTokenUsed)
+        console.log("userId::%s, newRefreshToken::%s, refreshTokenUsed::%s ", userId, newRefreshToken, refreshTokenUsed)
         const query = `
-            UPDATE key_token 
-            SET refresh_token = ?, 
+            UPDATE key_token
+            SET refresh_token       = ?,
                 refresh_tokens_used = JSON_ARRAY_APPEND(refresh_tokens_used, '$', ?)
             WHERE user_id = ?
         `;

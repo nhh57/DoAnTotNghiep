@@ -8,6 +8,12 @@ const {createTokenPair} = require("../auth/auth.Utils");
 
 class AccessService {
 
+    static logout = async (keyStore) => {
+        console.log("logout === keyStore.user_id ::%s", keyStore)
+        const delKey = await KeyTokenService.removeKeyById(keyStore)
+        console.log(`key ${delKey}`)
+        return delKey
+    }
 
     static login = async ({email, password, refreshToken = null}) => {
         console.log("login:: email %s :: password %s :: refreshToken %s", email, password, refreshToken)
@@ -41,11 +47,11 @@ class AccessService {
 
         })
         return {
-            // shop: {
-            //     // "user_id": newShop,
-            //     // "name": name,
-            //     // "email": email
-            // },
+            shop: {
+                "user_id": foundShop.id,
+                "name": foundShop.fullname,
+                "email": email
+            },
             tokens
         }
     }
@@ -65,7 +71,7 @@ class AccessService {
         if (!foundShop) throw new AuthFailureError('Shop not registered 2')
         // tao 1 cap moi
         const tokens = await createTokenPair({userId, email}, keyStore.public_key, keyStore.private_key)
-        console.log("tokensss::%s",tokens)
+        console.log("tokensss::%s", tokens)
         // cap nhat token
         await KeyTokenService.updateKeyToken(userId, tokens.refreshToken, refreshToken);
         return {

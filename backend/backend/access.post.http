@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "hainh",
-  "email": "nguyenhoanghai@gmail.com",
+  "email": "nguyenhoanghai121@gmail.com",
   "password": "abc@123"
 }
 
@@ -20,6 +20,12 @@ Content-Type: application/json
   "email":"nguyenhoanghai@gmail.com",
   "password" :"abc@123"
 }
+
+###logout
+POST /api/logout HTTP/1.1
+Host: localhost:3000
+x-client-id: 22
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY1NTI3OCwiZXhwIjoxNzI5ODI4MDc4fQ.AdZ1R5YcRvnqNemJ4wgk9XDKgiBczet1GxyafP2tHqk
 
 
 ###Refresh Token
