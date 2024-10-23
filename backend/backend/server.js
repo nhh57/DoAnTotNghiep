@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-const productRoutes = require('./src/routes/productRoutes');
+// const productRoutes = require('./src/routes/productRoutes');
 const db = require('./src/config/db'); // Nhập db từ config
 
 // Load environment variables from .env file
@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use('/api', productRoutes);
+// app.use('/api', productRoutes);
+app.use('/api', require("./src/routes/index"));
 
 app.use((req,res,next) => {
   const error = new Error('Not Found')

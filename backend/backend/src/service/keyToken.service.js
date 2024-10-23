@@ -16,7 +16,6 @@ class KeyTokenService {
 
 
     static findByUserId = async (userId) => {
-        console.log("findByUserId === userId:: %s", userId)
         return await KeytokenModel.findByUserId(userId)
     }
 

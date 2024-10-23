@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "hainh",
-  "email": "nguyenhoanghai121@gmail.com",
+  "email": "nguyenhoanghai@gmail.com",
   "password": "abc@123"
 }
 
@@ -24,14 +24,14 @@ Content-Type: application/json
 ###logout
 POST /api/logout HTTP/1.1
 Host: localhost:3000
-x-client-id: 22
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY1NTI3OCwiZXhwIjoxNzI5ODI4MDc4fQ.AdZ1R5YcRvnqNemJ4wgk9XDKgiBczet1GxyafP2tHqk
+x-client-id: 21
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY3Mjc1MCwiZXhwIjoxNzI5ODQ1NTUwfQ.OjttvlWbraf2in1LfFu92SkJ6RtmBJcjzXRXK5OsXq4
 
 
 ###Refresh Token
 
 POST /api/handler-refresh-token HTTP/1.1
 Host: localhost:3000
-x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTYwODIzNCwiZXhwIjoxNzMwMjEzMDM0fQ.HBa8fmZgWgoypaH8hvKy0UOKjm1T_heA2D55nFawy-c
+x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY3MjczMywiZXhwIjoxNzMwMjc3NTMzfQ.y3CAxF0P_KdUtctUnioDgmbLJANNqE59FMSbdFxpvyQ
 x-client-id: 21
 Content-Type: application/json
