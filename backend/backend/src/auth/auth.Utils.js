@@ -15,8 +15,8 @@ const HEADER = {
 }
 
 
-const authenticationV2 = asyncHandler(async (req, res, next) => {
-    console.log('auth.Utils - authenticationV2')
+const authentication = asyncHandler(async (req, res, next) => {
+    console.log('auth.Utils - authentication')
     const userId = req.headers[HEADER.CLIENT_ID]
     if (!userId) throw new AuthFailureError('Invalid Request')
 
@@ -55,6 +55,37 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
 })
 
 
+const authorization = (allowedRoles) => asyncHandler(async (req, res, next) => {
+
+    const userId = req.headers[HEADER.CLIENT_ID]
+    if (!userId) throw new AuthFailureError('Invalid Request')
+
+    //2
+    const keyStore = await findByUserId(userId)
+    if (!keyStore) throw new NotFoundError('Not Found KeyStore')
+
+    const accessToken = req.headers[HEADER.AUTHORIZATION]
+    if (!accessToken) throw new AuthFailureError('Invalid Request')
+
+    try {
+        const decodeUser = await JWT.verify(accessToken, keyStore.public_key)
+
+        if (String(userId) !== String(decodeUser.userId)) throw new AuthFailureError('Invalid Request')
+
+        console.log("decodeUser.userRole::%s", String(decodeUser.userRole))
+        // Kiểm tra vai trò của người dùng
+        const match = await allowedRoles.includes(String(decodeUser.userRole));
+        if (!match) {
+            throw new AuthFailureError('Unauthorized: You do not have permission to access this resource');
+        }
+        return next()
+    } catch (error) {
+        throw error
+    }
+
+})
+
+
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
         // accessToken
@@ -88,6 +119,7 @@ module.exports = {
     createTokenPair,
     // authentication,
     verifyJWT,
-    authenticationV2,
+    authentication,
+    authorization
 
 }

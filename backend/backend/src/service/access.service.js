@@ -27,6 +27,7 @@ class AccessService {
             throw new AuthFailureError('Authentication error')
         }
 
+        const userRole = foundShop.role;
         //3.
         // create privateKey, publicKey
         const privateKey = crypto.randomBytes(64).toString('hex')
@@ -34,7 +35,7 @@ class AccessService {
         //4. generate tokens
         const {id: userId} = foundShop
 
-        const tokens = await createTokenPair({userId, email}, publicKey, privateKey)
+        const tokens = await createTokenPair({userId, email, userRole}, publicKey, privateKey)
 
         await KeyTokenService.createKeyToken({
             userId,
@@ -66,8 +67,10 @@ class AccessService {
         //check userId
         const foundShop = await User.findUserByEmail(email)
         if (!foundShop) throw new AuthFailureError('Shop not registered 2')
+        const userRole = foundShop.role;
+        console.log("userRole::", userRole)
         // tao 1 cap moi
-        const tokens = await createTokenPair({userId, email}, keyStore.public_key, keyStore.private_key)
+        const tokens = await createTokenPair({userId, email, userRole}, keyStore.public_key, keyStore.private_key)
         // cap nhat token
         await KeyTokenService.updateKeyToken(userId, tokens.refreshToken, refreshToken);
         return {

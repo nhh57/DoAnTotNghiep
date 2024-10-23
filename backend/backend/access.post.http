@@ -21,17 +21,17 @@ Content-Type: application/json
   "password" :"abc@123"
 }
 
-###logout
+###Logout
 POST /api/logout HTTP/1.1
 Host: localhost:3000
 x-client-id: 21
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY3Mjc1MCwiZXhwIjoxNzI5ODQ1NTUwfQ.OjttvlWbraf2in1LfFu92SkJ6RtmBJcjzXRXK5OsXq4
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTcyOTY3NjAzMCwiZXhwIjoxNzI5ODQ4ODMwfQ.4ykVcvx79bVMumNBviLk-qrSQKMvVuaI_F-32uAB1jM
 
 
 ###Refresh Token
 
 POST /api/handler-refresh-token HTTP/1.1
 Host: localhost:3000
-x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY3MjczMywiZXhwIjoxNzMwMjc3NTMzfQ.y3CAxF0P_KdUtctUnioDgmbLJANNqE59FMSbdFxpvyQ
+x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIxLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTY3NDc2MywiZXhwIjoxNzMwMjc5NTYzfQ.BbFA_C1AGdFLNHdkeZtvFBIdewAGbTfiQb9J_tICicA
 x-client-id: 21
 Content-Type: application/json

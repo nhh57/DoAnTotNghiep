@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const {permission} = require("../auth/checkAuth");
+// const {permission} = require("../auth/checkAuth");
 const router = express.Router()
 
 // check permission
