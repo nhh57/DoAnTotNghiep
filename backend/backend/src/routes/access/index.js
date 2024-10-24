@@ -10,7 +10,7 @@ router.post('/signup', asyncHandler(accessController.signUp))
 
 router.post('/login', asyncHandler(accessController.login))
 router.use(authentication)
-router.post('/logout', authorization(['Admin']),asyncHandler(accessController.logout))
+router.post('/logout', authorization(['user']),asyncHandler(accessController.logout))
 router.post('/handler-refresh-token', asyncHandler(accessController.handlerRefreshToken))
 
 module.exports = router;

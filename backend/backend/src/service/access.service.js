@@ -80,7 +80,7 @@ class AccessService {
     }
 
 
-    static signUp = async ({name, email, password}) => {
+    static signUp = async ({name, email, password, phone_number}) => {
         // console.log("signUp:: name %s :: email %s :: password %s", name, email, password)
         const holderShop = await User.findUserByEmail(email);
         console.log('holderShop::', holderShop)
@@ -94,7 +94,7 @@ class AccessService {
             FullName: name,
             Email: email,
             Password: passwordHash,
-            PhoneNumber: "0346135365",
+            PhoneNumber: phone_number,
             Role: "user", // Có thể để mặc định là 'user'
             Status: "active" // Có thể để mặc định là 'active'
         });
@@ -125,6 +125,7 @@ class AccessService {
                     shop: {
                         "user_id": newShop,
                         "name": name,
+                        "phone_number": phone_number,
                         "email": email
                     },
                     tokens
