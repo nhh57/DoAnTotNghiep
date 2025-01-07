@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Thanh toán PayPal với Spring Boot </title>
+</head>
+<body>
+<h1>Thanh toán PayPal với Spring Boot</h1>
+<form method="post" th:action="@{/pay}">
+    <input type="text" value="5" name="price" />
+    <button type="submit"> Thanh toán với PayPal </button>
+</form>
+
+</body>
+</html>
