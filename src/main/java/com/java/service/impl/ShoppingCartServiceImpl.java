@@ -1,14 +1,14 @@
 package com.java.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.java.entity.Cart;
+import com.java.entity.Customer;
 import com.java.repository.CartItemRepository;
 import com.java.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.java.entity.Book;
 import com.java.entity.CartItem;
@@ -36,6 +36,49 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
+    @Override
+    public void addItemToCart(String userId, CartItem item) {
+        try {
+            // Tìm cart của người dùng
+            Cart cart = cartRepository.findByUserId(userId);
+
+            // Nếu chưa có cart thì tạo mới
+            if (cart == null) {
+                cart = new Cart();
+                cart.setUserId(userId);
+                cart.setItems(new ArrayList<>());  // Đảm bảo items không bị null
+                cartRepository.save(cart);  // Lưu Cart trước, đảm bảo Cart có id
+            }
+
+            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng hay chưa
+            CartItem existedItem = cart.getItems()
+                    .stream()
+                    .filter(i -> i.getBookId().equals(item.getBookId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existedItem != null) {
+                // Nếu đã có, cập nhật số lượng
+                existedItem.setQuantity(existedItem.getQuantity() + item.getQuantity());
+                existedItem.setTotalPrice(existedItem.getQuantity() * existedItem.getUnitPrice());
+            } else {
+                // Gán cart cho CartItem
+                item.setCart(cart);
+                cart.getItems().add(item);  // Thêm CartItem vào giỏ hàng
+
+            }
+
+            // Sau khi CartItem đã được lưu, lưu lại Cart nếu có thay đổi (trong trường hợp đã thêm CartItem mới)
+            cartRepository.save(cart);  // Lưu lại Cart nếu có thay đổi
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
     // Cập nhật số lượng sản phẩm trong giỏ hàng (Cả CartItem và số lượng)
     @Override
     public void update(CartItem item, int qty) {
@@ -58,48 +101,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
-    @Override
-    public void addItemToCart(Integer userId, CartItem item) {
-        try {
-
-
-            Cart cart = cartRepository.findByUserId(userId);
-
-            // Nếu chưa có cart thì tạo mới
-            if (cart == null) {
-                cart = new Cart();
-                cart.setUserId(userId);
-                cart.setItems(new ArrayList<>());  // Đảm bảo items không bị null
-            }
-
-            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng hay chưa
-            CartItem existedItem = cart.getItems()
-                    .stream()
-                    .filter(i -> i.getBookId().equals(item.getBookId()))
-                    .findFirst()
-                    .orElse(null);
-
-            if (existedItem != null) {
-                // Nếu đã có, cập nhật số lượng
-                existedItem.setQuantity(existedItem.getQuantity() + item.getQuantity());
-                existedItem.setTotalPrice(existedItem.getQuantity() * existedItem.getUnitPrice());
-            } else {
-                item.setCart(cart);  // Thiết lập quan hệ ngược
-                cart.getItems().add(item);  // Thêm vào danh sách
-            }
-
-            // Lưu cart (cascade sẽ tự lưu cartItem)
-            cartRepository.save(cart);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 //    @Override
 //    public void update(CartItem item, int qty) {
 //        // Tìm sản phẩm trong giỏ hàng theo ID
 //        CartItem existingItem = map.get(item.getBookId());
-//        
+//
 //        if (existingItem != null) {
 //            // Cập nhật lại số lượng sản phẩm
 //            existingItem.setQuantity(qty);
@@ -139,7 +145,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     // Lấy danh sách tất cả sản phẩm trong giỏ hàng
     @Override
-    public Collection<CartItem> getCartItems() {
+    public Collection<CartItem> getCartItems(String userId) {
+
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+            return map.values();
+        }
+        cart.getItems().forEach(item -> map.put(item.getBookId(), item));
         return map.values();
     }
 

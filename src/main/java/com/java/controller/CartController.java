@@ -1,8 +1,10 @@
 package com.java.controller;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,184 +48,157 @@ import com.paypal.base.rest.PayPalRESTException;
 @Controller
 public class CartController {
 
-    @Autowired
-    OrderRepository orderRepository;
+	@Autowired
+	OrderRepository orderRepository;
 
-    @Autowired
-    OrderDetailRepository orderDetailRepository;
+	@Autowired
+	OrderDetailRepository orderDetailRepository;
 
-    @Autowired
-    ShoppingCartService shoppingCartService;
+	@Autowired
+	ShoppingCartService shoppingCartService;
 
-    @Autowired
-    BookRepository bookRepository;
+	@Autowired
+	BookRepository bookRepository;
 
-    @Autowired
-    HttpSession session;
+	@Autowired
+	HttpSession session;
 
-    public Order orderFinal = new Order();
+	public Order orderFinal = new Order();
 
-    public static final String URL_PAYPAL_SUCCESS = "pay/success";
-    public static final String URL_PAYPAL_CANCEL = "pay/cancel";
-    private Logger log = LoggerFactory.getLogger(getClass());
+	public static final String URL_PAYPAL_SUCCESS = "pay/success";
+	public static final String URL_PAYPAL_CANCEL = "pay/cancel";
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private PaypalService paypalService;
+	@Autowired
+	private PaypalService paypalService;
 
-    @Autowired
-    private ServiceCommon serviceCommon;
+	@Autowired
+	private ServiceCommon serviceCommon;
 
-    @ModelAttribute(value = "customer")
-    public Customer initCustomer(Principal principal) {
-        Customer customer = new Customer();
-        if (principal != null) {
-            customer = (Customer) ((Authentication) principal).getPrincipal();
-        }
-        return customer;
-    }
+	@ModelAttribute(value = "customer")
+	public Customer initCustomer(Principal principal) {
+		Customer customer = new Customer();
+		if (principal != null) {
+			customer = (Customer) ((Authentication) principal).getPrincipal();
+		}
+		return customer;
+	}
 
-    @GetMapping(value = "/cartItem")
-    public String shoppingCart(Model model, HttpServletRequest request) {
-        Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("total", shoppingCartService.getAmount());
-        double totalPrice = 0;
-        for (CartItem cartItem : cartItems) {
-            double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
-            totalPrice += price;
-        }
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("totalCartItems", shoppingCartService.getCount());
-        return "site/shoppingCart";
-    }
+	@GetMapping(value = "/cartItem")
+	public String shoppingCart(Model model, HttpServletRequest request) {
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("total", shoppingCartService.getAmount());
+		double totalPrice = 0;
+		for (CartItem cartItem : cartItems) {
+			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
+			totalPrice += price;
+		}
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		return "site/shoppingCart";
+	}
 
-//	// add cartItem
-//	@GetMapping(value = "/addCart")
-//	@ResponseBody
-//	public Map<String, String> add(@RequestParam("id") Integer id, HttpServletRequest request, Model model) {
-//		Map<String, String> data = new LinkedHashMap<>();
-//		Book book = bookRepository.findById(id).get();
-//		session = request.getSession();
-//		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-//		if (book != null) {
-//			CartItem item = new CartItem();
-//			BeanUtils.copyProperties(book, item);
-//			item.setQuantity(1);
-//			item.setBook(book);
-//			item.setBookId(id);
-//			item.setTotalPrice(book.getPrice());
+	// add cartItem
+	@GetMapping(value = "/addCart")
+	@ResponseBody
+	public Map<String, String> add(@RequestParam("id") Integer id, HttpServletRequest request, Model model) {
+
+		// Lấy thông tin người dùng từ SecurityContext
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId ="";
+		// Nếu người dùng đã đăng nhập
+		if (authentication != null && authentication.isAuthenticated()) {
+			// Lấy userId từ Authentication (giả sử Customer đã được lưu trong principal)
+			Customer customer = (Customer) authentication.getPrincipal();
+			userId = customer.getCustomerId();
+		}
+
+		Map<String, String> data = new LinkedHashMap<>();
+		Book book = bookRepository.findById(id).get();
+		int quantityBook = 0;
+		quantityBook = book.getQuality();
+		if(quantityBook <= 0){
+			data.put("unsuccessful", "san pham da het");
+			return data;
+		}
+		session = request.getSession();
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userId);
+		if (book != null) {
+			CartItem item = new CartItem();
+			BeanUtils.copyProperties(book, item);
+			item.setQuantity(1);
+			item.setBook(book);
+			item.setUnitPrice(book.getPrice());
+			item.setBookId(id);
+			item.setTotalPrice(item.getQuantity() *book.getPrice());
+
 //			shoppingCartService.add(item);
-//		}
-//		session.setAttribute("cartItems", cartItems);
-//		session.setAttribute("totalCartItems", cartItems);
-//		data.put("success", "add cart ok");
-//		return data;
-//	}
-
-
-    @GetMapping(value = "/addCart")
-    @ResponseBody
-    public Map<String, String> add(@RequestParam("id") Integer id, HttpServletRequest request, Model model) {
-        try {
-            Map<String, String> data = new LinkedHashMap<>();
-            Book book = bookRepository.findById(id).orElse(null);
-            List<Object[]> bookObj = bookRepository.getBookById(id);
-
-            if (bookObj != null && !bookObj.isEmpty()) {
-                session = request.getSession();
-
-                // Lấy cartItems từ session, khởi tạo lại nếu cần
-                Collection<CartItem> cartItems = (Collection<CartItem>) session.getAttribute("cartItems");
-                if (cartItems == null) {
-                    cartItems = new ArrayList<>();  // Khởi tạo lại nếu cartItems là null
-                }
-
-                // Tạo CartItem từ Book
-                CartItem item = new CartItem();
-                item.setBookId((Integer) bookObj.get(0)[0]);
-                item.setName((String) bookObj.get(0)[1]);
-                item.setUnitPrice(2.2);  // Sử dụng giá cố định cho test
-                item.setQuantity((Integer) bookObj.get(0)[3]);
-                item.setTotalPrice(2.2);  // Sử dụng giá cố định cho test
-
-                // Lưu vào CSDL
-                Integer userId = (Integer) session.getAttribute("userId");
-                if (userId == null) {
-                    userId = 1001;  // Gán user mặc định cho test
-                }
-
-                // Lưu cart và item vào database
-                shoppingCartService.addItemToCart(userId, item);
-
-                // Cập nhật session
-                cartItems.add(item);  // Đây không nên bị lỗi nếu cartItems là một ArrayList
-                session.setAttribute("cartItems", cartItems);
-                session.setAttribute("totalCartItems", cartItems.size());
-
-                data.put("success", "Sản phẩm đã được thêm vào giỏ hàng.");
-            } else {
-                data.put("error", "Không tìm thấy sản phẩm.");
-            }
-
-            return data;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+			shoppingCartService.addItemToCart(userId, item);
+		}
+		session.setAttribute("cartItems", cartItems);
+		session.setAttribute("totalCartItems", cartItems);
+		data.put("success", "add cart ok");
+		return data;
+	}
 
 
 
-    // delete cartItem
-    @SuppressWarnings("unlikely-arg-type")
-    @GetMapping(value = "/remove/{id}")
-    public String remove(@PathVariable("id") Integer id, HttpServletRequest request, Model model) {
-        Book book = bookRepository.findById(id).orElse(null);
 
-        Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-        session = request.getSession();
-        if (book != null) {
-            CartItem item = new CartItem();
-            BeanUtils.copyProperties(book, item);
-            item.setBook(book);
-            item.setBookId(id);
-            cartItems.remove(session);
-            shoppingCartService.remove(item);
-        }
-        model.addAttribute("totalCartItems", shoppingCartService.getCount());
-        return "redirect:/cartItem";
-    }
 
-    // update cart item quantity
-    @PostMapping("/updateQuantity")
-    public String updateQuantity(@RequestParam("quantity") Integer quantity,
-                                 @RequestParam("id") Integer id,
-                                 HttpServletRequest request,
-                                 Model model) {
-        Book book = bookRepository.findById(id).orElse(null);
 
-        if (book != null) {
-            Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-            CartItem cartItem = cartItems.stream()
-                    .filter(item -> item.getBook().getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
 
-            if (cartItem != null) {
-                // Cập nhật số lượng và tính lại giá trị tổng
-                cartItem.setQuantity(quantity);
-//                cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
-                shoppingCartService.update(cartItem, quantity);  // Cập nhật giỏ hàng
-            }
-        }
 
-        // Cập nhật lại session và model
-        session = request.getSession();
-        session.setAttribute("cartItems", shoppingCartService.getCartItems());
-        session.setAttribute("totalCartItems", shoppingCartService.getCount());
+	// delete cartItem
+	@SuppressWarnings("unlikely-arg-type")
+	@GetMapping(value = "/remove/{id}")
+	public String remove(@PathVariable("id") Integer id, HttpServletRequest request, Model model) {
+		Book book = bookRepository.findById(id).orElse(null);
 
-        model.addAttribute("totalCartItems", shoppingCartService.getCount());
-        return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
-    }
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		session = request.getSession();
+		if (book != null) {
+			CartItem item = new CartItem();
+			BeanUtils.copyProperties(book, item);
+			item.setBook(book);
+			item.setBookId(id);
+			cartItems.remove(session);
+			shoppingCartService.remove(item);
+		}
+		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		return "redirect:/cartItem";
+	}
+	// update cart item quantity
+	@PostMapping("/updateQuantity")
+	public String updateQuantity(@RequestParam("quantity") Integer quantity, 
+	                             @RequestParam("id") Integer id, 
+	                             HttpServletRequest request, 
+	                             Model model) {
+	    Book book = bookRepository.findById(id).orElse(null);
+
+	    if (book != null) {
+	        Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+	        CartItem cartItem = cartItems.stream()
+	                                      .filter(item -> item.getBook().getId().equals(id))
+	                                      .findFirst()
+	                                      .orElse(null);
+
+	        if (cartItem != null) {
+	            // Cập nhật số lượng và tính lại giá trị tổng
+	            cartItem.setQuantity(quantity);
+	            cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
+	            shoppingCartService.update(cartItem, quantity);  // Cập nhật giỏ hàng
+	        }
+	    }
+
+	    // Cập nhật lại session và model
+	    session = request.getSession();
+	    session.setAttribute("cartItems", shoppingCartService.getCartItems(""));
+	    session.setAttribute("totalCartItems", shoppingCartService.getCount());
+
+	    model.addAttribute("totalCartItems", shoppingCartService.getCount());
+	    return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
+	}
 
 //	@GetMapping(value = "/update/{id}")
 //	public String update(@PathVariable("id") Integer id, 
@@ -258,148 +234,151 @@ public class CartController {
 //	}
 
 
-    @GetMapping(value = "/checkout")
-    public String checkOut(Model model) {
+	
+	
 
-        Integer totalCartItems = shoppingCartService.getCount();
+	@GetMapping(value = "/checkout")
+	public String checkOut(Model model) {
 
-        model.addAttribute("totalCartItems", totalCartItems);
+		Integer totalCartItems = shoppingCartService.getCount();
 
-        Order order = new Order();
-        model.addAttribute("order", order);
+		model.addAttribute("totalCartItems", totalCartItems);
 
-        Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("total", shoppingCartService.getAmount());
+		Order order = new Order();
+		model.addAttribute("order", order);
 
-        model.addAttribute("NoOfItems", shoppingCartService.getCount());
-        double totalPrice = 0;
-        for (CartItem cartItem : cartItems) {
-            double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
-            totalPrice += price;
-        }
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("total", shoppingCartService.getAmount());
 
-        model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("NoOfItems", shoppingCartService.getCount());
+		double totalPrice = 0;
+		for (CartItem cartItem : cartItems) {
+			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
+			totalPrice += price;
+		}
 
-        return "site/checkOut";
-    }
+		model.addAttribute("totalPrice", totalPrice);
 
-    // submit checkout
-    @PostMapping(value = "/checkout")
-    @Transactional
-    public String checkedOut(Model model, Order order, HttpServletRequest request, Customer customer)
-            throws MessagingException {
+		return "site/checkOut";
+	}
 
-        String checkOut = request.getParameter("checkOut");
+	// submit checkout
+	@PostMapping(value = "/checkout")
+	@Transactional
+	public String checkedOut(Model model, Order order, HttpServletRequest request, Customer customer)
+			throws MessagingException {
 
-        Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+		String checkOut = request.getParameter("checkOut");
 
-        double totalPrice = 0;
-        for (CartItem cartItem : cartItems) {
-            double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
-            totalPrice += price;
-        }
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
 
-        BeanUtils.copyProperties(order, orderFinal);
-        if (StringUtils.equals(checkOut, "paypal")) {
+		double totalPrice = 0;
+		for (CartItem cartItem : cartItems) {
+			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
+			totalPrice += price;
+		}
 
-            String cancelUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-            String successUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
-            try {
-                totalPrice = totalPrice / 22;
-                Payment payment = paypalService.createPayment(totalPrice, "USD", PaypalPaymentMethod.paypal,
-                        PaypalPaymentIntent.sale, "payment description", cancelUrl, successUrl);
-                for (Links links : payment.getLinks()) {
-                    if (links.getRel().equals("approval_url")) {
-                        return "redirect:" + links.getHref();
-                    }
-                }
-            } catch (PayPalRESTException e) {
-                log.error(e.getMessage());
-            }
+		BeanUtils.copyProperties(order, orderFinal);
+		if (StringUtils.equals(checkOut, "paypal")) {
 
-        }
+			String cancelUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
+			String successUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+			try {
+				totalPrice = totalPrice / 22;
+				Payment payment = paypalService.createPayment(totalPrice, "USD", PaypalPaymentMethod.paypal,
+						PaypalPaymentIntent.sale, "payment description", cancelUrl, successUrl);
+				for (Links links : payment.getLinks()) {
+					if (links.getRel().equals("approval_url")) {
+						return "redirect:" + links.getHref();
+					}
+				}
+			} catch (PayPalRESTException e) {
+				log.error(e.getMessage());
+			}
 
-        session = request.getSession();
-        Date date = new Date();
-        order.setCreatedAt(date);
-        order.setOrderStatus("Đang xử lý đơn hàng");
-        order.getId();
-        orderRepository.save(order);
+		}
 
-        for (CartItem cartItem : cartItems) {
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setQuality(cartItem.getQuantity());
-            orderDetail.setOrder(order);
-            orderDetail.setBook(cartItem.getBook());
-            double unitPrice = cartItem.getBook().getPrice();
-            orderDetail.setPrice(unitPrice);
-            orderDetailRepository.save(orderDetail);
-        }
+		session = request.getSession();
+		Date date = new Date();
+		order.setCreatedAt(date);
+		order.setOrderStatus("Đang xử lý đơn hàng");
+		order.getId();
+		orderRepository.save(order);
 
-        serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
-                totalPrice, order);
-        shoppingCartService.clear();
-        session.removeAttribute("cartItems");
-        model.addAttribute("orderId", order.getId());
+		for (CartItem cartItem : cartItems) {
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setQuality(cartItem.getQuantity());
+			orderDetail.setOrder(order);
+			orderDetail.setBook(cartItem.getBook());
+			double unitPrice = cartItem.getBook().getPrice();
+			orderDetail.setPrice(unitPrice);
+			orderDetailRepository.save(orderDetail);
+		}
 
-        return "redirect:/success";
-    }
+		serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
+				totalPrice, order);
+		shoppingCartService.clear();
+		session.removeAttribute("cartItems");
+		model.addAttribute("orderId", order.getId());
 
-    @GetMapping(URL_PAYPAL_SUCCESS)
-    public String successPay(@RequestParam("" + "" + "") String paymentId, @RequestParam("PayerID") String payerId,
-                             HttpServletRequest request, Customer customer, Model model) throws MessagingException {
-        Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("total", shoppingCartService.getAmount());
-        double totalPrice = 0;
-        for (CartItem cartItem : cartItems) {
-            double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
-            totalPrice += price;
-        }
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		return "redirect:/success";
+	}
 
-        try {
-            Payment payment = paypalService.executePayment(paymentId, payerId);
-            if (payment.getState().equals("approved")) {
+	@GetMapping(URL_PAYPAL_SUCCESS)
+	public String successPay(@RequestParam("" + "" + "") String paymentId, @RequestParam("PayerID") String payerId,
+			HttpServletRequest request, Customer customer, Model model) throws MessagingException {
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("total", shoppingCartService.getAmount());
+		double totalPrice = 0;
+		for (CartItem cartItem : cartItems) {
+			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
+			totalPrice += price;
+		}
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalCartItems", shoppingCartService.getCount());
 
-                session = request.getSession();
-                Date date = new Date();
-                orderFinal.setCreatedAt(date);
-                orderFinal.setOrderStatus("ĐÃ THANH TOÁN");
-                orderFinal.getId();
-                orderFinal.setCustomer(customer);
-                orderRepository.save(orderFinal);
+		try {
+			Payment payment = paypalService.executePayment(paymentId, payerId);
+			if (payment.getState().equals("approved")) {
 
-                for (CartItem cartItem : cartItems) {
-                    OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setQuality(cartItem.getQuantity());
-                    orderDetail.setOrder(orderFinal);
-                    orderDetail.setBook(cartItem.getBook());
-                    double unitPrice = cartItem.getBook().getPrice();
-                    orderDetail.setPrice(unitPrice);
-                    orderDetailRepository.save(orderDetail);
-                }
+				session = request.getSession();
+				Date date = new Date();
+				orderFinal.setCreatedAt(date);
+				orderFinal.setOrderStatus("ĐÃ THANH TOÁN");
+				orderFinal.getId();
+				orderFinal.setCustomer(customer);
+				orderRepository.save(orderFinal);
 
-                serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
-                        totalPrice, orderFinal);
-                shoppingCartService.clear();
-                session.removeAttribute("cartItems");
-                model.addAttribute("orderId", orderFinal.getId());
-                orderFinal = new Order();
-                return "redirect:/success";
-            }
-        } catch (PayPalRESTException e) {
-            log.error(e.getMessage());
-        }
-        return "redirect:/success";
-    }
+				for (CartItem cartItem : cartItems) {
+					OrderDetail orderDetail = new OrderDetail();
+					orderDetail.setQuality(cartItem.getQuantity());
+					orderDetail.setOrder(orderFinal);
+					orderDetail.setBook(cartItem.getBook());
+					double unitPrice = cartItem.getBook().getPrice();
+					orderDetail.setPrice(unitPrice);
+					orderDetailRepository.save(orderDetail);
+				}
 
-    @GetMapping(value = "success")
-    public String success(Model model, HttpServletRequest request) {
-        return "site/success";
+				serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
+						totalPrice, orderFinal);
+				shoppingCartService.clear();
+				session.removeAttribute("cartItems");
+				model.addAttribute("orderId", orderFinal.getId());
+				orderFinal = new Order();
+				return "redirect:/success";
+			}
+		} catch (PayPalRESTException e) {
+			log.error(e.getMessage());
+		}
+		return "redirect:/success";
+	}
 
-    }
+	@GetMapping(value = "success")
+	public String success(Model model, HttpServletRequest request) {
+		return "site/success";
+
+	}
 
 }

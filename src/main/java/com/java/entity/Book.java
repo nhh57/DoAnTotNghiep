@@ -55,7 +55,7 @@ public class Book implements Serializable {
 	private Integer quality;
 	@NotNull
 	@Min(value = 1)
-	private Integer price;
+	private Double price;
 	@Column(name = "cover_price")
 	private Integer coverPrice;
 	@Column(name = "book_image")
@@ -164,11 +164,11 @@ public class Book implements Serializable {
 		this.quality = quality;
 	}
 
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

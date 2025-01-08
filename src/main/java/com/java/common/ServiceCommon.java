@@ -81,7 +81,7 @@ public class ServiceCommon {
 
 		model.addAttribute("totalCartItems", totalCartItems);
 
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(customer.getCustomerId());
 		model.addAttribute("cartItems", cartItems);
 
 	}

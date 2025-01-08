@@ -1,6 +1,5 @@
 package com.java.entity;
 
-
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -21,10 +20,10 @@ public class Cart {
     private Integer id;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private String userId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private List<CartItem> items = new ArrayList<>();  // Khởi tạo danh sách rỗng
 
 

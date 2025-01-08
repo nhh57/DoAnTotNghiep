@@ -14,12 +14,12 @@ public interface ShoppingCartService {
 
     void clear();
 
-    Collection<CartItem> getCartItems();
+    Collection<CartItem> getCartItems(String userId);
 
     void remove(CartItem item);
 
     void add(CartItem item);
-
+    void addItemToCart(String userId, CartItem item);
     void remove(Book book);
     
     /**
@@ -28,5 +28,5 @@ public interface ShoppingCartService {
      * @param qty - số lượng mới
      */
     void update(CartItem item, int qty);
-     void addItemToCart(Integer userId, CartItem item);
+    
 }
