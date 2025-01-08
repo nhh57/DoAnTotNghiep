@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	public List<Object[]> listBook10();
 
 	// Hiển thị Top 3 sách mới nhất
-	@Query(value = "SELECT *FROM BOOKS  ORDER BY id DESC LIMIT 3;", nativeQuery = true)
+	@Query(value = "SELECT *FROM books  ORDER BY id DESC LIMIT 3;", nativeQuery = true)
 	public List<Book> listNewBook3();
 
 	@Query(value = "select * from books o where id in :ids", nativeQuery = true)

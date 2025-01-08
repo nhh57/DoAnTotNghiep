@@ -75,7 +75,7 @@ public class ServiceCommon {
 			totalSave = saveRepository.selectCountSave(customer.getCustomerId());
 		}
 
-		Integer totalCartItems = shoppingCartService.getCount();
+		Integer totalCartItems = shoppingCartService.getCount(customer.getCustomerId());
 
 		model.addAttribute("totalSave", totalSave);
 
@@ -108,7 +108,7 @@ public class ServiceCommon {
 	}
 
 	public void sendSimpleEmail(String email, String subject, String contentEmail, Collection<CartItem> cartItems,
-			double totalPrice, Order orderFinal) throws MessagingException {
+								double totalPrice, Order orderFinal) throws MessagingException {
 		Locale locale = LocaleContextHolder.getLocale();
 
 		// Prepare the evaluation context

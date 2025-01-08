@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import com.java.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,9 @@ public class CartController {
 	@Autowired
 	HttpSession session;
 
+	@Autowired
+	UserUtils userUtils;
+
 	public Order orderFinal = new Order();
 
 	public static final String URL_PAYPAL_SUCCESS = "pay/success";
@@ -86,16 +90,16 @@ public class CartController {
 
 	@GetMapping(value = "/cartItem")
 	public String shoppingCart(Model model, HttpServletRequest request) {
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("total", shoppingCartService.getAmount());
+		model.addAttribute("total", shoppingCartService.getAmount(userUtils.getCurrentUserId()));
 		double totalPrice = 0;
 		for (CartItem cartItem : cartItems) {
 			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
 			totalPrice += price;
 		}
 		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 		return "site/shoppingCart";
 	}
 
@@ -104,15 +108,15 @@ public class CartController {
 	@ResponseBody
 	public Map<String, String> add(@RequestParam("id") Integer id, HttpServletRequest request, Model model) {
 
-		// Lấy thông tin người dùng từ SecurityContext
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String userId ="";
-		// Nếu người dùng đã đăng nhập
-		if (authentication != null && authentication.isAuthenticated()) {
-			// Lấy userId từ Authentication (giả sử Customer đã được lưu trong principal)
-			Customer customer = (Customer) authentication.getPrincipal();
-			userId = customer.getCustomerId();
-		}
+//		// Lấy thông tin người dùng từ SecurityContext
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		String userId ="";
+//		// Nếu người dùng đã đăng nhập
+//		if (authentication != null && authentication.isAuthenticated()) {
+//			// Lấy userId từ Authentication (giả sử Customer đã được lưu trong principal)
+//			Customer customer = (Customer) authentication.getPrincipal();
+//			userId = customer.getCustomerId();
+//		}
 
 		Map<String, String> data = new LinkedHashMap<>();
 		Book book = bookRepository.findById(id).get();
@@ -123,7 +127,7 @@ public class CartController {
 			return data;
 		}
 		session = request.getSession();
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userId);
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		if (book != null) {
 			CartItem item = new CartItem();
 			BeanUtils.copyProperties(book, item);
@@ -134,7 +138,7 @@ public class CartController {
 			item.setTotalPrice(item.getQuantity() *book.getPrice());
 
 //			shoppingCartService.add(item);
-			shoppingCartService.addItemToCart(userId, item);
+			shoppingCartService.addItemToCart(userUtils.getCurrentUserId(), item);
 		}
 		session.setAttribute("cartItems", cartItems);
 		session.setAttribute("totalCartItems", cartItems);
@@ -155,7 +159,7 @@ public class CartController {
 	public String remove(@PathVariable("id") Integer id, HttpServletRequest request, Model model) {
 		Book book = bookRepository.findById(id).orElse(null);
 
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		session = request.getSession();
 		if (book != null) {
 			CartItem item = new CartItem();
@@ -165,45 +169,45 @@ public class CartController {
 			cartItems.remove(session);
 			shoppingCartService.remove(item);
 		}
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 		return "redirect:/cartItem";
 	}
 	// update cart item quantity
 	@PostMapping("/updateQuantity")
-	public String updateQuantity(@RequestParam("quantity") Integer quantity, 
-	                             @RequestParam("id") Integer id, 
-	                             HttpServletRequest request, 
-	                             Model model) {
-	    Book book = bookRepository.findById(id).orElse(null);
+	public String updateQuantity(@RequestParam("quantity") Integer quantity,
+								 @RequestParam("id") Integer id,
+								 HttpServletRequest request,
+								 Model model) {
+		Book book = bookRepository.findById(id).orElse(null);
 
-	    if (book != null) {
-	        Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
-	        CartItem cartItem = cartItems.stream()
-	                                      .filter(item -> item.getBook().getId().equals(id))
-	                                      .findFirst()
-	                                      .orElse(null);
+		if (book != null) {
+			Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
+			CartItem cartItem = cartItems.stream()
+					.filter(item -> item.getBook().getId().equals(id))
+					.findFirst()
+					.orElse(null);
 
-	        if (cartItem != null) {
-	            // Cập nhật số lượng và tính lại giá trị tổng
-	            cartItem.setQuantity(quantity);
-	            cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
-	            shoppingCartService.update(cartItem, quantity);  // Cập nhật giỏ hàng
-	        }
-	    }
+			if (cartItem != null) {
+				// Cập nhật số lượng và tính lại giá trị tổng
+				cartItem.setQuantity(quantity);
+				cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
+				shoppingCartService.update(cartItem, quantity);  // Cập nhật giỏ hàng
+			}
+		}
 
-	    // Cập nhật lại session và model
-	    session = request.getSession();
-	    session.setAttribute("cartItems", shoppingCartService.getCartItems(""));
-	    session.setAttribute("totalCartItems", shoppingCartService.getCount());
+		// Cập nhật lại session và model
+		session = request.getSession();
+		session.setAttribute("cartItems", shoppingCartService.getCartItems(userUtils.getCurrentUserId()));
+		session.setAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 
-	    model.addAttribute("totalCartItems", shoppingCartService.getCount());
-	    return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
+		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
+		return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
 	}
 
 //	@GetMapping(value = "/update/{id}")
-//	public String update(@PathVariable("id") Integer id, 
-//	                     @RequestParam("quantity") Integer quantity, 
-//	                     HttpServletRequest request, 
+//	public String update(@PathVariable("id") Integer id,
+//	                     @RequestParam("quantity") Integer quantity,
+//	                     HttpServletRequest request,
 //	                     Model model) {
 //	    // Tìm kiếm sản phẩm theo ID trong cơ sở dữ liệu
 //	    Book book = bookRepository.findById(id).orElse(null);
@@ -223,35 +227,35 @@ public class CartController {
 //	            shoppingCartService.update(cartItem, quantity);  // Pass both the item and quantity
 //	        }
 //	    }
-//	    
+//
 //	    // Cập nhật lại session và model
 //	    session = request.getSession();
 //	    session.setAttribute("cartItems", shoppingCartService.getCartItems());
 //	    session.setAttribute("totalCartItems", shoppingCartService.getCount());
-//	    
+//
 //	    model.addAttribute("totalCartItems", shoppingCartService.getCount());
 //	    return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
 //	}
 
 
-	
-	
+
+
 
 	@GetMapping(value = "/checkout")
 	public String checkOut(Model model) {
 
-		Integer totalCartItems = shoppingCartService.getCount();
+		Integer totalCartItems = shoppingCartService.getCount(userUtils.getCurrentUserId());
 
 		model.addAttribute("totalCartItems", totalCartItems);
 
 		Order order = new Order();
 		model.addAttribute("order", order);
 
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("total", shoppingCartService.getAmount());
+		model.addAttribute("total", shoppingCartService.getAmount(userUtils.getCurrentUserId()));
 
-		model.addAttribute("NoOfItems", shoppingCartService.getCount());
+		model.addAttribute("NoOfItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 		double totalPrice = 0;
 		for (CartItem cartItem : cartItems) {
 			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
@@ -271,7 +275,7 @@ public class CartController {
 
 		String checkOut = request.getParameter("checkOut");
 
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 
 		double totalPrice = 0;
 		for (CartItem cartItem : cartItems) {
@@ -318,7 +322,7 @@ public class CartController {
 
 		serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
 				totalPrice, order);
-		shoppingCartService.clear();
+		shoppingCartService.clear(cartItems.stream().map(CartItem::getId).findFirst().get());
 		session.removeAttribute("cartItems");
 		model.addAttribute("orderId", order.getId());
 
@@ -327,17 +331,17 @@ public class CartController {
 
 	@GetMapping(URL_PAYPAL_SUCCESS)
 	public String successPay(@RequestParam("" + "" + "") String paymentId, @RequestParam("PayerID") String payerId,
-			HttpServletRequest request, Customer customer, Model model) throws MessagingException {
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems("");
+							 HttpServletRequest request, Customer customer, Model model) throws MessagingException {
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("total", shoppingCartService.getAmount());
+		model.addAttribute("total", shoppingCartService.getAmount(userUtils.getCurrentUserId()));
 		double totalPrice = 0;
 		for (CartItem cartItem : cartItems) {
 			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
 			totalPrice += price;
 		}
 		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 
 		try {
 			Payment payment = paypalService.executePayment(paymentId, payerId);
@@ -363,7 +367,7 @@ public class CartController {
 
 				serviceCommon.sendSimpleEmail(customer.getEmail(), "Book Store Xác Nhận Đơn hàng", "aaaa", cartItems,
 						totalPrice, orderFinal);
-				shoppingCartService.clear();
+				shoppingCartService.clear(cartItems.stream().map(CartItem::getId).findFirst().get());
 				session.removeAttribute("cartItems");
 				model.addAttribute("orderId", orderFinal.getId());
 				orderFinal = new Order();

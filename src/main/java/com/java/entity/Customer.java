@@ -41,6 +41,11 @@ public class Customer implements UserDetails, CredentialsContainer {
 
     private String secret;
 
+
+    public Customer(String username) {
+
+    }
+
     @PrePersist
     public void prePersist() {
         if (roleId == null) { // Nếu roleId chưa có giá trị, gán mặc định là "2"
@@ -147,8 +152,8 @@ public class Customer implements UserDetails, CredentialsContainer {
 //	@OneToMany(mappedBy = "customer")
 //	private Collection<Order> orders;
 //
-////	@OneToMany(mappedBy = "customer")
-////	private Collection<Role> roles;
+/// /	@OneToMany(mappedBy = "customer")
+/// /	private Collection<Role> roles;
 //
 //	@OneToMany(mappedBy = "customer")
 //	private List<Save> saves;

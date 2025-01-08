@@ -77,13 +77,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
 
-
-
     // Cập nhật số lượng sản phẩm trong giỏ hàng (Cả CartItem và số lượng)
     @Override
     public void update(CartItem item, int qty) {
         // Lấy sản phẩm trong giỏ hàng theo ID
-        CartItem existingItem = map.get(item.getBookId());
+        CartItem existingItem = cartItemRepository.findById(item.getId()).get();
 
         if (existingItem != null) {
             // Giới hạn số lượng theo số lượng tồn kho
@@ -98,6 +96,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
             // Tính lại tổng tiền cho sản phẩm
             existingItem.setTotalPrice(existingItem.getQuantity() * existingItem.getUnitPrice());
+            cartItemRepository.saveAndFlush(existingItem);
         }
     }
 
@@ -122,7 +121,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     // Xóa sản phẩm khỏi giỏ hàng theo CartItem
     @Override
     public void remove(CartItem item) {
-        map.remove(item.getBookId());
+        cartItemRepository.deleteByBookId(item.getBookId(),item.getId());
     }
 
     // Xóa sản phẩm khỏi giỏ hàng theo Book ID
@@ -149,30 +148,45 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         Cart cart = cartRepository.findByUserId(userId);
         if (cart == null) {
-            return map.values();
+            return Collections.emptyList();
         }
+        map.clear();
         cart.getItems().forEach(item -> map.put(item.getBookId(), item));
         return map.values();
     }
 
     // Xóa toàn bộ giỏ hàng
     @Override
-    public void clear() {
+    public void clear(int cartId) {
+        cartItemRepository.deleteByCartId(cartId);
         map.clear();
     }
 
     // Tính tổng tiền giỏ hàng
     @Override
-    public double getAmount() {
-        return map.values().stream()
-                .mapToDouble(item -> item.getQuantity() * item.getUnitPrice())
-                .sum();
+    public double getAmount(String userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+            return 0.0;
+        }
+
+        return cart.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getUnitPrice()).sum();
+
+//        return map.values().stream()
+//                .mapToDouble(item -> item.getQuantity() * item.getUnitPrice())
+//                .sum();
     }
 
     // Đếm số lượng sản phẩm trong giỏ hàng
     @Override
-    public int getCount() {
-        return map.size();
+    public int getCount(String userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null || cart.getItems().isEmpty()) {
+            return 0;
+        }
+
+        return cart.getItems().size();
+
     }
 
     // Kiểm tra giỏ hàng có rỗng hay không
