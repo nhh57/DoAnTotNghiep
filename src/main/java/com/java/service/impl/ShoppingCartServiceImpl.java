@@ -120,8 +120,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     // Xóa sản phẩm khỏi giỏ hàng theo CartItem
     @Override
-    public void remove(CartItem item) {
-        cartItemRepository.deleteByBookId(item.getBookId(),item.getId());
+    public void remove(int bookId, int cartId) {
+        cartItemRepository.deleteByBookId(bookId,cartId);
     }
 
     // Xóa sản phẩm khỏi giỏ hàng theo Book ID

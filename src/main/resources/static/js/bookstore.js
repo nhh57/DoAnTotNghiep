@@ -1,26 +1,49 @@
 function addCart(bookId) {
-
 	var url = "/addCart?id=" + bookId;
 
-	var totalCartItems = $("#totalCartItems").text();
+	// Lấy số lượng sản phẩm hiện tại trong giỏ hàng
+	var totalCartItems = parseInt($("#totalCartItems").text()) || 0;
 
 	$.ajax({
 		url: url,
 		type: "GET",
 		dataType: "json",
-		data: 'json',
 		success: function(result) {
-			$("#totalCartItems").text("");
-			totalCartItems = parseInt(totalCartItems) + 1;
-			$("#totalCartItems").text(totalCartItems);
-
+			if (result.unsuccessful) {
+				console.log("Error Notification: ", result.unsuccessful);
+				showNotification(result.unsuccessful, "error");
+			} else {
+				console.log("Success Notification: ", result.success);
+				$("#totalCartItems").text(parseInt(totalCartItems) + 1);
+				showNotification(result.success, "success");
+			}
 		},
 		error: function(err) {
-			// check the err for error details
+			console.error("Lỗi AJAX:", err);
+			showNotification("Đã xảy ra lỗi, vui lòng thử lại.", "error");
 		}
-	}); // ajax call
-
+	});
 }
+function showNotification(message, type) {
+	// Tạo một thông báo mới
+	var notification = document.createElement("div");
+	notification.className = "notification " + (type === "success" ? "success" : "error");
+	notification.innerText = message;
+
+	// Thêm hiệu ứng và hiển thị thông báo
+	var container = document.getElementById("notification-container");
+	container.appendChild(notification);
+
+	// Ẩn thông báo sau 3 giây
+	setTimeout(function() {
+		notification.style.opacity = 0;
+		setTimeout(function() {
+			notification.remove();
+		}, 500); // Đợi hiệu ứng mờ dần hoàn tất
+	}, 3000);
+}
+
+
 
 function doFavorite(index) {
 

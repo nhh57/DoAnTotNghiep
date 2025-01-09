@@ -1,10 +1,7 @@
 package com.java.controller;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -103,46 +100,62 @@ public class CartController {
 		return "site/shoppingCart";
 	}
 
-	// add cartItem
 	@GetMapping(value = "/addCart")
 	@ResponseBody
 	public Map<String, String> add(@RequestParam("id") Integer id, HttpServletRequest request, Model model) {
-
-//		// Lấy thông tin người dùng từ SecurityContext
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String userId ="";
-//		// Nếu người dùng đã đăng nhập
-//		if (authentication != null && authentication.isAuthenticated()) {
-//			// Lấy userId từ Authentication (giả sử Customer đã được lưu trong principal)
-//			Customer customer = (Customer) authentication.getPrincipal();
-//			userId = customer.getCustomerId();
-//		}
-
 		Map<String, String> data = new LinkedHashMap<>();
-		Book book = bookRepository.findById(id).get();
-		int quantityBook = 0;
-		quantityBook = book.getQuality();
-		if(quantityBook <= 0){
-			data.put("unsuccessful", "san pham da het");
+
+		// Tìm sách theo ID
+		Optional<Book> optionalBook = bookRepository.findById(id)
+				;
+
+		// Kiểm tra xem sách có tồn tại không
+		if (!optionalBook.isPresent()) {
+			data.put("unsuccessful", "Sản phẩm không tồn tại.");
 			return data;
 		}
+
+		Book book = optionalBook.get();
+		int quantityInStock = book.getQuality();  // Lấy số lượng tồn kho
+
+		// Kiểm tra nếu sản phẩm hết hàng
+		if (quantityInStock <= 0) {
+			data.put("unsuccessful", "Sản phẩm đã hết hàng.");
+			return data;
+		}
+
 		session = request.getSession();
 		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
-		if (book != null) {
-			CartItem item = new CartItem();
-			BeanUtils.copyProperties(book, item);
-			item.setQuantity(1);
-			item.setBook(book);
-			item.setUnitPrice(book.getPrice());
-			item.setBookId(id);
-			item.setTotalPrice(item.getQuantity() *book.getPrice());
 
-//			shoppingCartService.add(item);
-			shoppingCartService.addItemToCart(userUtils.getCurrentUserId(), item);
+		// Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+		CartItem existingItem = cartItems.stream()
+				.filter(item -> item.getBookId().equals(id))
+				.findFirst()
+				.orElse(null);
+
+		// Nếu sản phẩm đã có trong giỏ hàng và vượt quá số lượng tồn kho
+		if (existingItem != null && existingItem.getQuantity() >= quantityInStock) {
+			data.put("unsuccessful", "Không thể thêm sản phẩm vì vượt quá số lượng trong kho.");
+			return data;
 		}
+
+		// Nếu sách hợp lệ và còn hàng
+		CartItem item = new CartItem();
+		BeanUtils.copyProperties(book, item);  // Copy thông tin sách vào giỏ hàng
+		item.setQuantity(1);  // Đặt mặc định là thêm 1 sản phẩm
+		item.setBook(book);
+		item.setUnitPrice(book.getPrice());
+		item.setBookId(id)
+		;
+		item.setTotalPrice(item.getQuantity() * book.getPrice());
+
+		// Thêm vào giỏ hàng
+		shoppingCartService.addItemToCart(userUtils.getCurrentUserId(), item);
+
 		session.setAttribute("cartItems", cartItems);
 		session.setAttribute("totalCartItems", cartItems);
-		data.put("success", "add cart ok");
+
+		data.put("success", "Sản phẩm đã được thêm vào giỏ hàng.");
 		return data;
 	}
 
@@ -167,8 +180,7 @@ public class CartController {
 			item.setBook(book);
 			item.setBookId(id);
 			cartItems.remove(session);
-			shoppingCartService.remove(item);
-		}
+			shoppingCartService.remove(id, cartItems.stream().map(x->x.getCart().getId()).findFirst().get());		}
 		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 		return "redirect:/cartItem";
 	}

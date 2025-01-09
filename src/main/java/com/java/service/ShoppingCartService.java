@@ -16,7 +16,7 @@ public interface ShoppingCartService {
 
     Collection<CartItem> getCartItems(String userId);
 
-    void remove(CartItem item);
+    void remove(int bookId, int cartId);
 
     void add(CartItem item);
     void addItemToCart(String userId, CartItem item);
