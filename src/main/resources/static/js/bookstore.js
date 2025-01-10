@@ -27,21 +27,65 @@ function addCart(bookId) {
 function showNotification(message, type) {
 	// Tạo một thông báo mới
 	var notification = document.createElement("div");
-	notification.className = "notification " + (type === "success" ? "success" : "error");
-	notification.innerText = message;
 
-	// Thêm hiệu ứng và hiển thị thông báo
+	// Thêm nội dung và biểu tượng
+	notification.innerHTML = `<span>${type === "success" ? "✔️" : "❌"} ${message}</span>`;
+
+	// Áp dụng CSS trực tiếp
+	notification.style.padding = "10px 20px";
+	notification.style.marginBottom = "10px";
+	notification.style.borderRadius = "5px";
+	notification.style.color = "#fff";
+	notification.style.fontSize = "14px";
+	notification.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.2)";
+	notification.style.transition = "opacity 0.5s ease-in-out";
+	notification.style.opacity = "1";
+	notification.style.position = "relative";
+	notification.style.backgroundColor = type === "success" ? "#4CAF50" : "#f44336"; // Màu sắc dựa trên loại thông báo
+
+	// Thêm hiệu ứng trượt
+	notification.style.transform = "translateX(100%)";
+	notification.style.animation = "slide-in 0.5s forwards";
+
+	// Đặt vị trí của thông báo
 	var container = document.getElementById("notification-container");
+	if (!container) {
+		container = document.createElement("div");
+		container.id = "notification-container";
+		container.style.position = "fixed";
+		container.style.top = "20px";
+		container.style.right = "20px";
+		container.style.zIndex = "9999";
+		document.body.appendChild(container);
+	}
+
 	container.appendChild(notification);
 
 	// Ẩn thông báo sau 3 giây
-	setTimeout(function() {
-		notification.style.opacity = 0;
-		setTimeout(function() {
+	setTimeout(function () {
+		notification.style.opacity = "0";
+		setTimeout(function () {
 			notification.remove();
 		}, 500); // Đợi hiệu ứng mờ dần hoàn tất
 	}, 3000);
 }
+
+// Thêm animation keyframes bằng JavaScript
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerHTML = `
+    @keyframes slide-in {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+`;
+document.head.appendChild(styleSheet);
+
+
 
 
 
