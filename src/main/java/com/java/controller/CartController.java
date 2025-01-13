@@ -184,6 +184,8 @@ public class CartController {
 		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
 		return "redirect:/cartItem";
 	}
+
+
 	// update cart item quantity
 	@PostMapping("/updateQuantity")
 	public String updateQuantity(@RequestParam("quantity") Integer quantity,

@@ -1,3 +1,6 @@
+// Mảng để lưu các bookId đã có trong giỏ hàng
+var cartItems = [];
+
 function addCart(bookId) {
 	var url = "/addCart?id=" + bookId;
 
@@ -14,7 +17,14 @@ function addCart(bookId) {
 				showNotification(result.unsuccessful, "error");
 			} else {
 				console.log("Success Notification: ", result.success);
-				$("#totalCartItems").text(parseInt(totalCartItems) + 1);
+
+				// Nếu sản phẩm là mới (ID khác), tăng số hiển thị icon và thêm vào danh sách `cartItems`
+				if (!cartItems.includes(bookId)) {
+					cartItems.push(bookId); // Thêm bookId vào danh sách giỏ hàng
+					$("#totalCartItems").text(totalCartItems + 1); // Tăng hiển thị icon
+				}
+
+				// Hiển thị thông báo thành công
 				showNotification(result.success, "success");
 			}
 		},
@@ -24,6 +34,8 @@ function addCart(bookId) {
 		}
 	});
 }
+
+
 function showNotification(message, type) {
 	// Tạo một thông báo mới
 	var notification = document.createElement("div");
