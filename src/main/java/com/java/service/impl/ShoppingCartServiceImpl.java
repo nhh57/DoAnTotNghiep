@@ -80,25 +80,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     // Cập nhật số lượng sản phẩm trong giỏ hàng (Cả CartItem và số lượng)
     @Override
     public void update(CartItem item, int qty) {
-        // Lấy sản phẩm trong giỏ hàng theo ID
-        CartItem existingItem = cartItemRepository.findById(item.getId()).get();
+        CartItem existingItem = cartItemRepository.findById(item.getId()).orElse(null);
 
         if (existingItem != null) {
-            // Giới hạn số lượng theo số lượng tồn kho
-            int availableStock = item.getBook().getQuality(); // Giả sử bạn có phương thức này để lấy số lượng tồn kho
+            int availableStock = item.getBook().getQuality();
             if (qty > availableStock) {
-                // Nếu số lượng người dùng nhập vào lớn hơn số lượng tồn kho, gán số lượng tối đa là số lượng tồn kho
-                qty = availableStock;
+                throw new IllegalArgumentException("Số lượng yêu cầu vượt quá số lượng tồn kho.");
             }
 
-            // Cập nhật lại số lượng sản phẩm
             existingItem.setQuantity(qty);
-
-            // Tính lại tổng tiền cho sản phẩm
             existingItem.setTotalPrice(existingItem.getQuantity() * existingItem.getUnitPrice());
             cartItemRepository.saveAndFlush(existingItem);
         }
     }
+
 
 //    @Override
 //    public void update(CartItem item, int qty) {
