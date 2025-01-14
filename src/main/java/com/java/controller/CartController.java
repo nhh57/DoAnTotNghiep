@@ -42,6 +42,7 @@ import com.java.util.Utils;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CartController {
@@ -86,17 +87,24 @@ public class CartController {
 	}
 
 	@GetMapping(value = "/cartItem")
-	public String shoppingCart(Model model, HttpServletRequest request) {
+	public String shoppingCart(Model model, HttpServletRequest request,
+							   @ModelAttribute("errorMessage") String errorMessage) {
 		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("total", shoppingCartService.getAmount(userUtils.getCurrentUserId()));
+
 		double totalPrice = 0;
 		for (CartItem cartItem : cartItems) {
 			double price = cartItem.getQuantity() * cartItem.getBook().getPrice();
 			totalPrice += price;
 		}
+
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			model.addAttribute("errorMessage", errorMessage);
+		}
+
 		return "site/shoppingCart";
 	}
 
@@ -191,32 +199,34 @@ public class CartController {
 	public String updateQuantity(@RequestParam("quantity") Integer quantity,
 								 @RequestParam("id") Integer id,
 								 HttpServletRequest request,
-								 Model model) {
+								 RedirectAttributes redirectAttributes) {
 		Book book = bookRepository.findById(id).orElse(null);
 
-		if (book != null) {
-			Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
-			CartItem cartItem = cartItems.stream()
-					.filter(item -> item.getBook().getId().equals(id))
-					.findFirst()
-					.orElse(null);
-
-			if (cartItem != null) {
-				// Cập nhật số lượng và tính lại giá trị tổng
-				cartItem.setQuantity(quantity);
-				cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
-				shoppingCartService.update(cartItem, quantity);  // Cập nhật giỏ hàng
-			}
+		if (book == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Sách không tồn tại.");
+			return "redirect:/cartItem";
 		}
 
-		// Cập nhật lại session và model
-		session = request.getSession();
-		session.setAttribute("cartItems", shoppingCartService.getCartItems(userUtils.getCurrentUserId()));
-		session.setAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
+		if (quantity > book.getQuality()) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Số lượng sản phẩm vượt quá số lượng trong kho.");
+			return "redirect:/cartItem";
+		}
 
-		model.addAttribute("totalCartItems", shoppingCartService.getCount(userUtils.getCurrentUserId()));
-		return "redirect:/cartItem";  // Điều hướng về trang giỏ hàng
+		Collection<CartItem> cartItems = shoppingCartService.getCartItems(userUtils.getCurrentUserId());
+		CartItem cartItem = cartItems.stream()
+				.filter(item -> item.getBook().getId().equals(id))
+				.findFirst()
+				.orElse(null);
+
+		if (cartItem != null) {
+			cartItem.setQuantity(quantity);
+			cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getBook().getPrice());
+			shoppingCartService.update(cartItem, quantity);
+		}
+
+		return "redirect:/cartItem";
 	}
+
 
 //	@GetMapping(value = "/update/{id}")
 //	public String update(@PathVariable("id") Integer id,
