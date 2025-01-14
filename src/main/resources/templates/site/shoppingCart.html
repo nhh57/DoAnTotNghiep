@@ -8,6 +8,19 @@
 td, th {
 	text-align: center !important;
 }
+
+#errorMessage {
+	display: none; /* Ẩn mặc định */
+	background-color: #f8d7da; /* Nền đỏ nhạt (Bootstrap mặc định) */
+	color: #721c24; /* Màu chữ đỏ đậm */
+	padding: 10px;
+	border: 1px solid #f5c6cb;
+	border-radius: 5px;
+}
+
+#errorMessage.show {
+	display: block; /* Hiển thị khi có thông báo */
+}
 </style>
 <body>
 
@@ -58,6 +71,9 @@ td, th {
 					<div class="row">
 						<div class="col-12">
 							<!-- Shopping Summery -->
+							<div th:if="${errorMessage != null}" id="errorMessage" class="alert alert-danger mt-3">
+								<span th:text="${errorMessage}"></span>
+							</div>
 							<table class="table shopping-summery">
 								<thead>
 									<tr class="main-hading">
@@ -181,6 +197,17 @@ td, th {
 	<!--************************************
 			Wrapper End
 	*************************************-->
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const errorMessage = document.getElementById("errorMessage");
+			if (errorMessage && errorMessage.innerText.trim() !== "") {
+				errorMessage.classList.add("show"); // Hiển thị thông báo
+				setTimeout(() => {
+					errorMessage.classList.remove("show"); // Ẩn sau 5 giây
+				}, 5000); // 5000ms = 5 giây
+			}
+		});
+	</script>
 	<script src="js/vendor/jquery-library.js"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script
@@ -194,6 +221,7 @@ td, th {
 	<script src="js/appear.js"></script>
 	<script src="js/gmap3.js"></script>
 	<script src="js/main.js"></script>
+
 </body>
 
 </html>
